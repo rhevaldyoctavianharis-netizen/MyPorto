@@ -5,14 +5,9 @@
     "folderName": "webproject",
     "projects": [
       {
-        "title": "Personal Portfolio V2",
-        "description": "Desain portofolio statis menggunakan TailwindCSS. Fokus pada tata letak grid asimetris, tipografi tegas, dan transisi halus ala Apple.",
-        "images": ["1.png", "2.png"]
-      },
-      {
-        "title": "E-Commerce Mockup Interface",
-        "description": "Eksperimen antarmuka pengguna untuk halaman detail produk, interaksi keranjang belanja, dan checkout minimalis.",
-        "images": ["3.png"]
+        "title": "Enterprise Pteropanel",
+        "description": "Desain modern menggunakan TailwindCSS. Fokus pada kemudahan penggunaan, biaya murah, dan mudah di oprek karena ini memang project open source.",
+        "images": ["1.png"]
       }
     ]
   },
