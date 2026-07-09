@@ -1,0 +1,48 @@
+[
+  {
+    "id": "webproject",
+    "title": "Web & UI Design",
+    "folderName": "webproject",
+    "projects": [
+      {
+        "title": "Personal Portfolio V2",
+        "description": "Desain portofolio statis menggunakan TailwindCSS. Fokus pada tata letak grid asimetris, tipografi tegas, dan transisi halus ala Apple.",
+        "images": ["1.png", "2.png"]
+      },
+      {
+        "title": "E-Commerce Mockup Interface",
+        "description": "Eksperimen antarmuka pengguna untuk halaman detail produk, interaksi keranjang belanja, dan checkout minimalis.",
+        "images": ["3.png"]
+      }
+    ]
+  },
+  {
+    "id": "hardware",
+    "title": "Hardware & IoT",
+    "folderName": "hardware",
+    "projects": [
+      {
+        "title": "Smart Home Switch System",
+        "description": "Sistem saklar pintar otomatis menggunakan mikrokontroler ESP8266 yang terintegrasi dengan jaringan lokal via WiFi.",
+        "images": ["1.png"]
+      },
+      {
+        "title": "Custom LED Matrix Display",
+        "description": "Pembuatan animasi teks berjalan (running text) kustom menggunakan bahasa C++ pada modul sirkuit dot-matrix.",
+        "images": ["2.png"]
+      }
+    ]
+  },
+  {
+    "id": "animation",
+    "title": "Digital Animation",
+    "folderName": "animation",
+    "projects": [
+      {
+        "title": "Scroll-Driven Interaction",
+        "description": "Pengujian Intersection Observer API untuk memicu transisi visual halus saat elemen web memasuki area pandang browser.",
+        "images": ["1.png"]
+      }
+    ]
+  }
+]
