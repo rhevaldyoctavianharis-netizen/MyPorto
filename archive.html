@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Archive | Rhevaldy Octavian Haris</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Fonts -->
+    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        heading: ['Clash Display', 'sans-serif'],
+                        body: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        dark: '#0a0a0a',
+                        borderline: '#1c1c1c',
+                        muted: '#666666',
+                        subtext: '#b3b3b3'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0a0a0a;
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            width: 100%;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .font-heading { font-family: 'Clash Display', sans-serif; }
+
+        /* Animasi Accordion Menggunakan JS ScrollHeight (Sangat Mulus & Ringan) */
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease;
+            opacity: 0;
+        }
+
+        .icon-rotate {
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Desain Garis Pemisah Kategori yang Lembut */
+        .category-item {
+            border-bottom: 1px solid #1c1c1c;
+        }
+
+        /* Style untuk penanda angka dekoratif (01, 02) */
+        .project-number {
+            font-family: 'Clash Display', sans-serif;
+            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3);
+            color: transparent;
+        }
+        
+        /* Fallback Gambar Polos dan Elegan */
+        .img-fallback {
+            background-color: #111111;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #444444;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            border: 1px dashed #222222;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-white selection:text-black">
+
+    <!-- Navbar Minimalis -->
+    <nav class="w-full px-6 py-6 border-b border-borderline">
+        <div class="max-w-[1200px] mx-auto flex justify-between items-center">
+            <a href="index.html" class="flex items-center gap-3 text-muted hover:text-white transition-colors">
+                <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                <span class="text-sm font-medium uppercase tracking-widest">Kembali</span>
+            </a>
+            
+            <span class="font-heading font-medium text-lg tracking-widest uppercase text-white">
+                ARCHIVE.
+            </span>
+        </div>
+    </nav>
+
+    <!-- Header Halaman -->
+    <header class="px-6 py-16 md:py-24 max-w-[1200px] mx-auto w-full">
+        <h1 class="font-heading text-5xl md:text-8xl font-medium uppercase mb-6 tracking-tight">
+            Project <br> Index
+        </h1>
+        <p class="text-muted text-base max-w-sm leading-relaxed">
+            Arsip seluruh riwayat eksperimen, koding, dan dokumentasi perangkat keras Anda.
+        </p>
+    </header>
+
+    <!-- Tempat Daftar Kategori Dirender -->
+    <main class="flex-grow px-6 pb-32 max-w-[1200px] mx-auto w-full">
+        <!-- Loading State -->
+        <div id="loading" class="text-center py-12 text-muted uppercase tracking-widest text-sm">
+            Memuat indeks arsip...
+        </div>
+        
+        <div id="archive-container" class="border-t border-borderline hidden">
+            <!-- Konten akan otomatis digenerate dari archive.json -->
+        </div>
+    </main>
+
+    <!-- Footer Minimalis -->
+    <footer class="px-6 py-12 border-t border-borderline text-center">
+        <p class="text-xs uppercase tracking-widest text-muted">
+            &copy; 2026 Rhevaldy Octavian Haris &bull; Jepara, Jawa Tengah
+        </p>
+    </footer>
+
+    <script>
+        // 1. Inisialisasi Awal Ikon
+        lucide.createIcons();
+
+        // 2. Mengambil Data Konfigurasi secara Dinamis dari archive.json
+        document.addEventListener("DOMContentLoaded", () => {
+            fetch('archive.json')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Gagal memuat file archive.json");
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    renderArchive(data);
+                })
+                .catch(error => {
+                    console.error(error);
+                    document.getElementById('loading').innerHTML = `
+                        <div class="text-red-500 py-4">
+                            Gagal memuat konfigurasi arsip.<br>
+                            <span class="text-xs text-muted">Pastikan file archive.json sudah ditaruh di folder yang sama.</span>
+                        </div>
+                    `;
+                });
+        });
+
+        // 3. Fungsi Render HTML berdasarkan Data JSON
+        function renderArchive(archiveData) {
+            const container = document.getElementById('archive-container');
+            const loading = document.getElementById('loading');
+            
+            // Pengganti jika gambar lokal belum diunggah ke Github
+            const fallbackFn = "this.onerror=null; this.outerHTML='<div class=\\'img-fallback w-full aspect-video rounded-sm\\'>File '+this.getAttribute('data-filename')+' Belum Diupload</div>';";
+
+            let htmlContent = '';
+
+            archiveData.forEach((category, catIndex) => {
+                let projectsHtml = '';
+                
+                category.projects.forEach((project, projIndex) => {
+                    let imagesHtml = '';
+                    
+                    project.images.forEach(imgName => {
+                        const imgPath = `upload/${category.folderName}/${imgName}`;
+                        imagesHtml += `
+                            <div class="mb-4">
+                                <img src="${imgPath}" data-filename="${imgName}" onerror="${fallbackFn}" alt="${project.title}" class="w-full object-cover rounded-sm bg-[#111]">
+                                <p class="text-[10px] text-muted mt-2 tracking-widest uppercase">Path: ${imgPath}</p>
+                            </div>
+                        `;
+                    });
+
+                    // Format angka urutan project (contoh: 01, 02)
+                    const formattedNum = String(projIndex + 1).padStart(2, '0');
+
+                    // Pembagian layout detail project dalam kategori (Grid Kiri-Kanan)
+                    projectsHtml += `
+                        <div class="mb-16 last:mb-0 md:grid md:grid-cols-12 md:gap-12 pt-8 border-t border-[#161616] first:border-t-0 first:pt-0">
+                            <!-- Informasi Project (Kiri) -->
+                            <div class="md:col-span-4 mb-6 md:mb-0">
+                                <div class="flex items-start gap-3">
+                                    <span class="project-number text-3xl font-bold leading-none select-none">${formattedNum}</span>
+                                    <div>
+                                        <h4 class="font-heading text-xl md:text-2xl font-medium uppercase text-white leading-tight mb-2">
+                                            ${project.title}
+                                        </h4>
+                                        <p class="text-xs text-muted font-mono uppercase tracking-widest mb-4">
+                                            [Project Detail]
+                                        </p>
+                                    </div>
+                                </div>
+                                <p class="text-sm text-subtext leading-relaxed">
+                                    ${project.description}
+                                </p>
+                            </div>
+                            
+                            <!-- Galeri Gambar Project (Kanan) -->
+                            <div class="md:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                ${imagesHtml}
+                            </div>
+                        </div>
+                    `;
+                });
+
+                // Menyusun Struktur Utama Accordion Kategori
+                // Menambahkan teks pembantu "Daftar Eksplorasi" di bawah judul kategori
+                htmlContent += `
+                    <div class="category-item">
+                        <!-- Tombol Header Kategori -->
+                        <button class="w-full flex items-center justify-between py-10 text-left focus:outline-none group" onclick="toggleAccordion('content-${category.id}', 'icon-${category.id}')">
+                            <div>
+                                <h3 class="font-heading text-2xl md:text-4xl font-semibold uppercase tracking-tight text-white group-hover:text-[#aaaaaa] transition-colors">
+                                    ${category.title}
+                                </h3>
+                                <p class="text-[11px] text-muted font-mono uppercase tracking-[0.2em] mt-2 flex items-center gap-2">
+                                    <span>Folder: /upload/${category.folderName}</span>
+                                    <span class="text-[#333]">&bull;</span>
+                                    <span>Total: ${category.projects.length} Project</span>
+                                </p>
+                            </div>
+                            <div id="icon-${category.id}" class="icon-rotate w-8 h-8 rounded-full border border-borderline flex items-center justify-center text-muted group-hover:text-white group-hover:border-white/30 transition-colors">
+                                <i data-lucide="plus" class="w-5 h-5"></i>
+                            </div>
+                        </button>
+                        
+                        <!-- Panel Konten Project -->
+                        <div id="content-${category.id}" class="accordion-content">
+                            <div class="pb-12 pt-6">
+                                ${projectsHtml}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            // Ganti konten wadah utama
+            container.innerHTML = htmlContent;
+            
+            // Sembunyikan loading, tampilkan kontainer
+            loading.classList.add('hidden');
+            container.classList.remove('hidden');
+            
+            // Re-render Ikon Lucide setelah elemen HTML baru masuk
+            lucide.createIcons();
+        }
+
+        /* ====================================================================
+           LOGIKA ANIMASI ACCORDION
+        ==================================================================== */
+        function toggleAccordion(contentId, iconId) {
+            const content = document.getElementById(contentId);
+            const icon = document.getElementById(iconId);
+            
+            if (content.style.maxHeight) {
+                // Tutup Accordion
+                content.style.maxHeight = null;
+                content.style.opacity = 0;
+                icon.style.transform = 'rotate(0deg)';
+                
+                setTimeout(() => {
+                    icon.innerHTML = '<i data-lucide="plus" class="w-5 h-5"></i>';
+                    lucide.createIcons();
+                }, 150);
+            } else {
+                // Buka Accordion (Menggunakan scrollHeight agar ukuran pas)
+                content.style.maxHeight = content.scrollHeight + "px";
+                content.style.opacity = 1;
+                icon.style.transform = 'rotate(45deg)'; // Rotasi membentuk silang
+                
+                setTimeout(() => {
+                    icon.innerHTML = '<i data-lucide="x" class="w-5 h-5"></i>';
+                    lucide.createIcons();
+                }, 150);
+            }
+        }
+    </script>
+</body>
+</html>
