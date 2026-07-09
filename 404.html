@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>404 Not Found | Kok Nyasar Dek?</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        impact: ['Impact', 'Haettenschweiler', 'Arial Narrow Bold', 'sans-serif'],
+                        body: ['Montserrat', 'sans-serif'],
+                        accent: ['Caveat', 'cursive'],
+                    },
+                    colors: {
+                        dark: '#050505',
+                        borderline: '#222222',
+                        highlight: '#FF4500' // Orange kemerahan khas portofolio Anda
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        html, body {
+            background-color: #050505;
+            color: #ffffff;
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            width: 100%;
+            height: 100%;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Tipografi Brutalist */
+        .text-impact {
+            font-family: 'Impact', sans-serif;
+            text-transform: uppercase;
+            line-height: 0.85;
+            letter-spacing: 0.02em;
+        }
+
+        .text-script {
+            font-family: 'Caveat', cursive;
+        }
+
+        /* Teks Outline Transparan */
+        .text-outline {
+            color: transparent;
+            -webkit-text-stroke: 2px rgba(255, 255, 255, 0.15);
+        }
+
+        /* Animasi kedip lambat untuk simulasi error hardware */
+        @keyframes scanline {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+        .scanline::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 4px;
+            background: rgba(255, 69, 0, 0.3);
+            animation: scanline 6s linear infinite;
+            pointer-events: none;
+        }
+
+        /* Efek Grain Latar Belakang */
+        .noise-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0.04;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* Animasi tombol bergoyang agresif saat disentuh/hover */
+        @keyframes shake {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            20% { transform: translate(-2px, 2px) rotate(-1deg); }
+            40% { transform: translate(2px, -2px) rotate(1deg); }
+            60% { transform: translate(-2px, -2px) rotate(-1deg); }
+            80% { transform: translate(2px, 2px) rotate(1deg); }
+        }
+        .shake-on-hover:hover {
+            animation: shake 0.2s linear infinite;
+        }
+    </style>
+</head>
+<body class="selection:bg-highlight selection:text-white flex flex-col justify-between min-h-screen relative scanline">
+
+    <div class="noise-bg"></div>
+
+    <header class="w-full px-6 py-6 border-b border-borderline relative z-20">
+        <div class="max-w-[1400px] mx-auto flex justify-between items-center">
+            <span class="font-impact text-xl tracking-widest text-white">
+                RHEVALDY.
+            </span>
+        </div>
+    </header>
+
+    <main class="flex-grow flex flex-col items-center justify-center text-center px-4 py-12 relative z-20">
+        
+        <div class="relative w-full max-w-4xl select-none mb-4">
+            <div class="text-impact text-[25vw] md:text-[18rem] text-outline leading-none">
+                404
+            </div>
+            
+            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rotate-[-6deg] bg-highlight text-white text-xs md:text-sm font-bold uppercase tracking-[0.3em] px-4 py-2 shadow-2xl border-2 border-black z-30">
+                Akses Ditolak Dek!
+            </div>
+        </div>
+
+        <div class="w-full max-w-xl bg-[#0a0a0a] border-2 border-borderline p-6 md:p-8 rounded-sm mb-12 shadow-[0_15px_40px_rgba(0,0,0,0.8)] relative">
+            <div class="absolute -top-1 -left-1 w-3 h-3 bg-highlight"></div>
+            <div class="absolute -bottom-1 -right-1 w-3 h-3 bg-highlight"></div>
+            
+            <p class="text-[10px] font-mono font-bold tracking-[0.3em] text-gray-500 uppercase mb-4 flex items-center justify-center gap-2">
+                <i data-lucide="shield-alert" class="w-4 h-4 text-highlight"></i>
+                Pesan Sistem Untuk Lu:
+            </p>
+            
+            <h2 id="roast-text" class="text-lg md:text-2xl font-bold text-white leading-relaxed min-h-[3.5rem] flex items-center justify-center">
+                Mendeteksi kelakuan lu...
+            </h2>
+        </div>
+
+        <div class="relative">
+            <a href="index.html" class="shake-on-hover inline-flex items-center gap-3 bg-highlight text-white font-impact text-xl md:text-2xl px-8 py-5 tracking-widest shadow-[0_10px_30px_rgba(255,69,0,0.3)] hover:shadow-none hover:translate-y-1 transition-all border-2 border-black">
+                <i data-lucide="home" class="w-6 h-6"></i>
+                PULANG DEK DICARIIN MAMAH
+            </a>
+            
+            <div class="absolute -bottom-8 right-0 rotate-[-4deg] text-script text-highlight text-lg md:text-2xl pointer-events-none">
+                Sumpah mending pulang...
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="w-full px-6 py-6 border-t border-borderline relative z-20 text-center">
+        <p class="text-[9px] md:text-[10px] font-bold uppercase tracking-[0.3em] text-gray-600">
+            &copy; 2026 RHEVALDY OCTAVIAN HARIS &bull; JEPARA, ID
+        </p>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        // Kumpulan ejekan random brutal khusus untuk pengunjung yang tersesat
+        const roasts = [
+            "Cari apa mas? Disini kosong kayak hati lu.",
+            "Mau ngapain mas? Mau DDOS ya? Sorry-sorry deh, tools DDOS jelek lu gabakal tembus.",
+            "Kesasar ya dek? Makanya kalau jalan pake peta, jangan pake harapan kosong.",
+            "Link yang lu cari udah expired, sama kayak janji manis dia dulu.",
+            "Error 404: Keberadaan halaman ini sama ghaibnya kayak chat dibalas cepet sama crush lu.",
+            "Ngapain nginspect element? Mau nyolong aset ya? Ketahuan lu dek!",
+            "Waduh kesasar... mending merenungi masa depan lu daripada nyari halaman kosong.",
+            "Jangan dicari lagi dek, dia udah bahagia sama orang lain. Begitu juga halaman ini, udah nggak ada.",
+            "Lu ngetik URL-nya ngasal atau emang gabut aja pengen nyari bug di web gw?"
+        ];
+
+        // Memicu ejekan acak HANYA SEKALI saat halaman selesai dimuat/dibuka oleh user
+        document.addEventListener("DOMContentLoaded", () => {
+            const textElement = document.getElementById('roast-text');
+            const randomIndex = Math.floor(Math.random() * roasts.length);
+            textElement.innerText = `"${roasts[randomIndex]}"`;
+        });
+    </script>
+</body>
+</html>
