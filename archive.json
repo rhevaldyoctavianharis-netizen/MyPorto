@@ -7,7 +7,7 @@
       {
         "title": "Enterprise Pteropanel",
         "description": "Desain modern menggunakan TailwindCSS. Fokus pada kemudahan penggunaan, biaya murah, dan mudah di oprek karena ini memang project open source.",
-        "images": ["1.png"]
+        "images": ["1.png", "2.png"]
       }
     ]
   },
@@ -17,25 +17,25 @@
     "folderName": "hardware",
     "projects": [
       {
-        "title": "Smart Home Switch System",
-        "description": "Sistem saklar pintar otomatis menggunakan mikrokontroler ESP8266 yang terintegrasi dengan jaringan lokal via WiFi.",
+        "title": "ESP32 Deauther",
+        "description": "Sistem penyerangan Deauther menggunakan mikrokontroler ESP32 yang terintegrasi dengan OLED.",
         "images": ["1.png"]
       },
       {
-        "title": "Custom LED Matrix Display",
+        "title": "Custom Led Matrix Display",
         "description": "Pembuatan animasi teks berjalan (running text) kustom menggunakan bahasa C++ pada modul sirkuit dot-matrix.",
         "images": ["2.png"]
       }
     ]
   },
   {
-    "id": "animation",
-    "title": "Digital Animation",
-    "folderName": "animation",
+    "id": "software",
+    "title": "Software",
+    "folderName": "software",
     "projects": [
       {
-        "title": "Scroll-Driven Interaction",
-        "description": "Pengujian Intersection Observer API untuk memicu transisi visual halus saat elemen web memasuki area pandang browser.",
+        "title": "Python Telegram Bot",
+        "description": "Project ini digunakan untuk pengembangan bot telegram berbasis python serta pengoptimalan library yang belum stabil.",
         "images": ["1.png"]
       }
     ]
