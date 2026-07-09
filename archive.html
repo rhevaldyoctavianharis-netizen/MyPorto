@@ -106,7 +106,7 @@
             Project <br> Index
         </h1>
         <p class="text-muted text-base max-w-sm leading-relaxed">
-            Arsip seluruh riwayat eksperimen, koding, dan dokumentasi perangkat keras Anda.
+            Arsip seluruh riwayat eksperimen, koding, dan dokumentasi project saya.
         </p>
     </header>
 
@@ -177,7 +177,6 @@
                         imagesHtml += `
                             <div class="mb-4">
                                 <img src="${imgPath}" data-filename="${imgName}" onerror="${fallbackFn}" alt="${project.title}" class="w-full object-cover rounded-sm bg-[#111]">
-                                <p class="text-[10px] text-muted mt-2 tracking-widest uppercase">Path: ${imgPath}</p>
                             </div>
                         `;
                     });
@@ -225,7 +224,6 @@
                                     ${category.title}
                                 </h3>
                                 <p class="text-[11px] text-muted font-mono uppercase tracking-[0.2em] mt-2 flex items-center gap-2">
-                                    <span>Folder: /upload/${category.folderName}</span>
                                     <span class="text-[#333]">&bull;</span>
                                     <span>Total: ${category.projects.length} Project</span>
                                 </p>
