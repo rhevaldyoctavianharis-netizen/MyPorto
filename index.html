@@ -2,18 +2,17 @@
 <html lang="id" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <!-- Meta tag ini yang mencegah layar Android bergeser-geser sendiri -->
+    <!-- Pengunci Viewport untuk Android agar tidak geser-geser -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Rhevaldy Octavian Haris | Portfolio</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Fonts: Clash Display (untuk Heading besar) & Inter (untuk teks biasa) -->
-    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@200,400,600,700&display=swap" rel="stylesheet">
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Montserrat:wght@200;400;600;800&display=swap" rel="stylesheet">
     
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -23,16 +22,14 @@
             theme: {
                 extend: {
                     fontFamily: {
-                        heading: ['Clash Display', 'sans-serif'],
-                        body: ['Inter', 'sans-serif'],
+                        impact: ['Impact', 'Haettenschweiler', 'Arial Narrow Bold', 'sans-serif'],
+                        body: ['Montserrat', 'sans-serif'],
+                        accent: ['Caveat', 'cursive'],
                     },
                     colors: {
-                        brand: {
-                            bg: '#0a0a0a',
-                            glow: '#059669', // Emerald/Teal glow
-                            accent: '#f97316', // Orange dot
-                            text: '#f8fafc'
-                        }
+                        dark: '#050505',
+                        borderline: '#222222',
+                        highlight: '#FF4500' // Orange kemerahan
                     }
                 }
             }
@@ -40,313 +37,319 @@
     </script>
 
     <style>
-        /* Kunci Layar agar tidak geser kanan-kiri */
         html, body {
-            background-color: #0a0a0a;
-            color: #f8fafc;
-            font-family: 'Inter', sans-serif;
+            background-color: #050505;
+            color: #ffffff;
+            font-family: 'Montserrat', sans-serif;
             overflow-x: hidden;
             width: 100%;
-            position: relative;
-            -webkit-text-size-adjust: 100%;
+            -webkit-font-smoothing: antialiased;
         }
 
-        h1, h2, h3, h4, .font-heading {
-            font-family: 'Clash Display', sans-serif;
-        }
-
-        /* Gradient Glow Background */
-        .bg-glow {
-            position: absolute;
-            width: 150vw;
-            height: 150vw;
-            max-width: 800px;
-            max-height: 800px;
-            background: radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, rgba(0,0,0,0) 60%);
-            top: 20%;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 0;
-            pointer-events: none;
-            filter: blur(60px);
-        }
-
-        .bg-glow-2 {
-            position: absolute;
-            width: 120vw;
-            height: 120vw;
-            max-width: 600px;
-            max-height: 600px;
-            background: radial-gradient(circle, rgba(249, 115, 22, 0.08) 0%, rgba(0,0,0,0) 60%);
-            bottom: 0%;
-            right: -20%;
-            z-index: 0;
-            pointer-events: none;
-            filter: blur(60px);
-        }
-
-        /* Penyesuaian Teks Raksasa untuk HP dan PC */
-        .hero-text-massive {
-            font-size: clamp(2.5rem, 11vw, 8rem);
+        /* Tipografi Ekstrem (Brutalism) yang disesuaikan untuk Mobile */
+        .text-impact {
+            font-family: 'Impact', sans-serif;
+            text-transform: uppercase;
             line-height: 0.85;
-            letter-spacing: -0.02em;
-            text-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            letter-spacing: 0.02em;
         }
 
-        /* Animasi Kartu Mengambang */
-        .float-card {
-            animation: float 6s ease-in-out infinite;
+        .text-script {
+            font-family: 'Caveat', cursive;
+            text-transform: none;
         }
 
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
-            100% { transform: translateY(0px); }
+        /* Skala dinamis yang tidak terlalu besar di HP */
+        .hero-title {
+            font-size: clamp(2.5rem, 10vw, 10rem);
         }
 
-        /* Apple-style Smooth Reveal */
+        /* Teks Outline */
+        .text-outline {
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.4);
+        }
+        .text-outline:hover {
+            color: #ffffff;
+            -webkit-text-stroke: 0px;
+            transition: all 0.3s ease;
+        }
+
+        /* Efek Grain Latar Belakang */
+        .noise-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* Smooth Reveal Animasi */
         .reveal {
             opacity: 0;
             transform: translateY(30px);
-            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .reveal.active {
             opacity: 1;
             transform: translateY(0);
         }
         .delay-100 { transition-delay: 100ms; }
-        .delay-200 { transition-delay: 200ms; }
 
-        /* Tabel Pendidikan Interaktif */
-        .table-row-link {
-            transition: all 0.4s ease;
-        }
-        .table-row-link:hover {
-            background-color: rgba(255, 255, 255, 0.05);
-            transform: translateX(10px);
-            cursor: pointer;
-        }
-
-        /* Floating Taskbar Transisi */
+        /* Floating Taskbar */
         #floating-taskbar {
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
         #floating-taskbar.active {
             opacity: 1;
             pointer-events: auto;
             transform: translateX(-50%) translateY(0);
         }
+
+        /* --- EFEK DUOTONE UNTUK FOTO --- */
+        .duotone-wrapper {
+            position: relative;
+            cursor: pointer;
+        }
+        .duotone-container {
+            position: relative;
+            background-color: #FF4500; /* Warna highlight */
+            overflow: hidden;
+            transition: background-color 0.5s ease;
+        }
+        .duotone-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            /* Filter grayscale & penyesuaian kontras untuk blending */
+            filter: grayscale(100%) contrast(1.1) brightness(0.95);
+            mix-blend-mode: multiply;
+            transition: all 0.5s ease;
+        }
+        .duotone-container::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-color: #050505; /* Warna background web */
+            mix-blend-mode: lighten;
+            pointer-events: none;
+            transition: all 0.5s ease;
+        }
+        /* Mengembalikan warna asli saat di-hover/disentuh */
+        .duotone-wrapper:hover .duotone-container,
+        .duotone-wrapper:active .duotone-container {
+            background-color: transparent;
+        }
+        .duotone-wrapper:hover .duotone-container img,
+        .duotone-wrapper:active .duotone-container img {
+            filter: grayscale(0%) contrast(1) brightness(1);
+            mix-blend-mode: normal;
+        }
+        .duotone-wrapper:hover .duotone-container::after,
+        .duotone-wrapper:active .duotone-container::after {
+            opacity: 0;
+        }
+
+        /* Hover Khusus Row Pendidikan */
+        .edu-row:hover .edu-arrow {
+            transform: translateX(8px) rotate(45deg);
+            color: #FF4500;
+        }
     </style>
 </head>
-<body class="antialiased selection:bg-brand-glow selection:text-white">
+<body class="selection:bg-highlight selection:text-white flex flex-col min-h-screen relative">
 
-    <!-- Efek Cahaya Latar Belakang -->
-    <div class="bg-glow"></div>
-    <div class="bg-glow-2"></div>
+    <div class="noise-bg"></div>
 
-    <!-- Navigasi Utama -->
-    <nav class="fixed w-full top-0 z-[60] mix-blend-difference px-6 py-6">
-        <div class="max-w-[1600px] mx-auto flex justify-between items-center">
-            <a href="#" class="font-heading font-bold text-2xl tracking-wide text-white">
-                rhevaldy.
+    <!-- Navbar Minimalis -->
+    <nav class="fixed w-full top-0 z-[60] mix-blend-difference px-4 md:px-6 py-4 md:py-6 pointer-events-none">
+        <div class="max-w-[1400px] mx-auto flex justify-between items-center pointer-events-auto">
+            <a href="#" class="font-impact text-xl md:text-2xl tracking-widest text-white hover:text-highlight transition-colors">
+                RHEVALDY.
             </a>
             
-            <!-- Tombol Garis Tiga (Hamburger Menu) -->
-            <button id="menu-btn" class="text-white hover:text-brand-glow transition-colors focus:outline-none flex items-center gap-2 group">
-                <span class="hidden md:block text-xs font-medium uppercase tracking-widest mr-2 group-hover:text-brand-glow transition-colors">Menu</span>
-                <div id="menu-icon-container">
-                    <i data-lucide="menu" class="w-8 h-8"></i>
+            <button id="menu-btn" class="text-white hover:text-highlight transition-colors flex items-center gap-2 group">
+                <span class="hidden md:block text-[10px] font-bold uppercase tracking-[0.2em] mr-2">Index</span>
+                <div id="menu-icon-container" class="border-2 border-white p-1 rounded-full group-hover:border-highlight transition-colors">
+                    <i data-lucide="grid" class="w-4 h-4 md:w-5 md:h-5"></i>
                 </div>
             </button>
         </div>
     </nav>
 
-    <!-- FLOATING TASKBAR (Melayang di atas) -->
-    <div id="floating-taskbar" class="fixed top-28 left-1/2 transform -translate-x-1/2 -translate-y-8 z-[70] opacity-0 pointer-events-none bg-white/10 backdrop-blur-2xl border border-white/20 rounded-3xl md:rounded-full p-2 shadow-[0_30px_60px_rgba(0,0,0,0.8)] w-[90%] max-w-2xl">
-        <div class="flex flex-col md:flex-row items-center gap-2 md:gap-4 w-full">
-            <a href="#about" class="taskbar-link w-full md:w-auto flex-1 px-6 py-3 rounded-2xl md:rounded-full hover:bg-white/10 text-sm font-semibold uppercase tracking-widest text-white transition-colors text-center">
-                Profil
-            </a>
-            <a href="#education" class="taskbar-link w-full md:w-auto flex-1 px-6 py-3 rounded-2xl md:rounded-full hover:bg-white/10 text-sm font-semibold uppercase tracking-widest text-white transition-colors text-center">
-                Pendidikan
-            </a>
-            <a href="#contact" class="taskbar-link w-full md:w-auto flex-1 px-6 py-3 rounded-2xl md:rounded-full hover:bg-white/10 text-sm font-semibold uppercase tracking-widest text-white transition-colors text-center">
-                Kontak
-            </a>
-            <!-- Tombol Spesial Archive mengarah ke /archive.html -->
-            <a href="/archive.html" class="taskbar-link w-full md:w-auto flex-1 px-6 py-3 rounded-2xl md:rounded-full bg-brand-glow/20 border border-brand-glow/50 hover:bg-brand-glow hover:text-white text-sm font-semibold uppercase tracking-widest text-brand-glow transition-all flex items-center justify-center gap-3">
-                <i data-lucide="archive" class="w-4 h-4"></i> Archive
-            </a>
-        </div>
+    <!-- FLOATING TASKBAR (Disesuaikan untuk mobile) -->
+    <div id="floating-taskbar" class="fixed top-20 left-1/2 transform -translate-x-1/2 -translate-y-10 z-[70] opacity-0 pointer-events-none bg-white text-black border border-gray-200 p-1 md:p-2 shadow-[0_20px_50px_rgba(0,0,0,0.5)] w-[92%] max-w-sm md:max-w-lg rounded-sm flex flex-row gap-1 md:gap-2">
+        <a href="#about" class="taskbar-link flex-1 px-2 py-3 md:px-4 text-center text-[10px] md:text-xs font-bold uppercase tracking-widest hover:bg-black hover:text-white transition-colors rounded-sm">
+            Profil
+        </a>
+        <a href="#education" class="taskbar-link flex-1 px-2 py-3 md:px-4 text-center text-[10px] md:text-xs font-bold uppercase tracking-widest hover:bg-black hover:text-white transition-colors rounded-sm">
+            Riwayat
+        </a>
+        <a href="archive.html" class="taskbar-link flex-1 px-2 py-3 md:px-4 text-center text-[10px] md:text-xs font-bold uppercase tracking-widest hover:bg-black hover:text-white transition-colors rounded-sm">
+            Archive
+        </a>
+        <a href="#contact" class="taskbar-link flex-1 px-2 py-3 md:px-4 bg-highlight text-white text-center text-[10px] md:text-xs font-bold uppercase tracking-widest hover:bg-black transition-colors flex items-center justify-center gap-1 md:gap-2 rounded-sm">
+            <i data-lucide="mail" class="w-3 h-3 md:w-4 md:h-4"></i> Kontak
+        </a>
     </div>
 
-    <!-- HERO SECTION FIXED UNTUK MOBILE -->
-    <section class="relative w-full min-h-[100dvh] md:min-h-screen pt-24 md:pt-32 flex flex-col justify-between overflow-hidden">
+    <!-- HERO SECTION -->
+    <section class="relative w-full min-h-[100dvh] pt-24 pb-8 flex flex-col items-center justify-center overflow-hidden px-4 md:px-8">
         
-        <!-- Bagian Atas: Teks Pengantar & Tombol -->
-        <div class="relative z-30 px-6 max-w-[1600px] mx-auto w-full flex-shrink-0 grid lg:grid-cols-12 gap-8">
-            <div class="lg:col-span-4 flex flex-col justify-center reveal">
-                <p class="text-sm md:text-base text-gray-300 leading-relaxed max-w-sm mb-8 md:mb-12 mt-4">
-                    Melalui desain inovatif dan pemikiran logis, saya merangkai kode, sirkuit, dan animasi yang memicu koneksi serta memberikan pengalaman visual estetik.
-                </p>
-
-                <!-- Floating Mini Card -->
-                <div class="float-card border border-white/20 p-2 bg-black/40 backdrop-blur-md w-48 mb-8 md:mb-12 relative overflow-hidden group rounded-lg">
-                    <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Coding" class="w-full h-24 md:h-32 object-cover opacity-80 group-hover:opacity-100 transition duration-500 rounded-md">
-                    <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-                        <div class="w-10 h-10 rounded-full bg-white/20 backdrop-blur flex items-center justify-center border border-white/30">
-                            <i data-lucide="play" class="w-4 h-4 text-white ml-1"></i>
-                        </div>
-                    </div>
-                </div>
-
-                <a href="#contact" class="inline-flex items-center gap-3 bg-white text-black px-6 py-3 font-semibold text-xs md:text-sm hover:bg-gray-200 transition-colors w-max group shadow-lg shadow-white/10 rounded-full">
-                    LET'S CONTACT 
-                    <span class="w-2 h-2 rounded-full bg-brand-accent group-hover:scale-150 transition-transform"></span>
-                </a>
-            </div>
+        <!-- Teks Latar Belakang (Outline Besar) -->
+        <div class="absolute w-full text-center z-0 pointer-events-none opacity-40 md:opacity-100 flex flex-col gap-0 leading-none">
+            <span class="text-impact hero-title text-outline break-words">EXPLORE</span>
+            <span class="text-impact hero-title text-outline break-words">CREATE</span>
+            <span class="text-impact hero-title text-outline break-words">INNOVATE</span>
         </div>
 
-        <!-- Bagian Bawah: Overlap Teks Raksasa dan Foto -->
-        <!-- Posisi dibuat absolute/relative agar di HP mereka menyatu di tengah bawah -->
-        <div class="relative flex-grow flex items-end justify-center w-full mt-10 min-h-[45vh] lg:min-h-[60vh] max-w-[1600px] mx-auto">
+        <!-- Wadah Utama Tengah -->
+        <div class="relative z-20 w-full max-w-[1200px] mx-auto flex flex-col items-center mt-10 md:mt-20">
             
-            <!-- Teks Raksasa (Di belakang Foto) -->
-            <div class="absolute inset-0 flex items-center justify-center lg:justify-end lg:pr-12 z-10 pointer-events-none reveal delay-100 px-4">
-                <h1 class="font-heading font-bold hero-text-massive uppercase text-center lg:text-left text-white mix-blend-lighten w-full break-words">
-                    CODING<br>
-                    HARDWARE<br>
-                    ANIMATION<br>
-                    THAT INSPIRE
+            <!-- Foto Utama dengan Filter Duotone -->
+            <div class="relative w-[70%] sm:w-[50%] md:w-[40%] max-w-xs md:max-w-md mx-auto mb-[-5%] md:mb-[-5%] z-30 reveal duotone-wrapper">
+                
+                <div class="duotone-container aspect-[3/4] md:aspect-[4/5] rounded-sm shadow-[0_20px_40px_rgba(0,0,0,0.9)]">
+                    <img 
+                        src="me.png" 
+                        onerror="this.src='https://api.dicebear.com/7.x/notionists/svg?seed=Rhevaldy&backgroundColor=transparent'"
+                        alt="Rhevaldy Octavian Haris" 
+                    >
+                </div>
+
+                <!-- Aksen Script Font -->
+                <div class="absolute bottom-4 -right-4 md:-right-8 rotate-[-10deg] z-40 bg-highlight text-white px-3 py-1 md:px-4 rounded-sm shadow-xl border border-black transition-transform duration-300">
+                    <span class="text-script text-xl md:text-3xl">Digital Tinkerer!</span>
+                </div>
+            </div>
+
+            <!-- Teks Utama Solid -->
+            <div class="z-40 text-center reveal delay-100 mt-6 md:mt-8 px-2">
+                <!-- Ukuran text disesuaikan: 5xl untuk mobile, 8xl untuk md -->
+                <h1 class="text-impact text-5xl sm:text-6xl md:text-8xl lg:text-[9rem] text-white tracking-normal leading-[0.9] mix-blend-difference">
+                    RHEVALDY<br>OCTAVIAN
                 </h1>
+                <p class="mt-6 md:mt-8 text-[10px] md:text-sm font-semibold uppercase tracking-[0.2em] md:tracking-[0.3em] text-gray-400 max-w-xs md:max-w-lg mx-auto leading-relaxed border-t border-borderline pt-4 md:pt-6">
+                    Mengeksplorasi batas teknologi melalui Kode, Elektronika, dan Animasi.
+                </p>
             </div>
-
-            <!-- Foto (Diambil langsung dari me.png, di depan teks) -->
-            <!-- Note: onerror ditambahkan agar layout tidak hancur saat me.png belum diupload -->
-            <div class="relative z-20 w-full flex justify-center h-full items-end lg:absolute lg:left-1/2 lg:-translate-x-1/2 pb-0 reveal delay-200">
-                <img 
-                    src="me.png" 
-                    onerror="this.src='https://api.dicebear.com/7.x/personas/svg?seed=Rhevaldy&backgroundColor=transparent'"
-                    alt="Rhevaldy Octavian Haris" 
-                    class="object-contain object-bottom w-[95%] sm:w-[70%] md:w-[50%] lg:w-[45%] max-h-[50vh] lg:max-h-[85vh] drop-shadow-[0_20px_50px_rgba(0,0,0,0.8)] transition-transform duration-700 hover:scale-[1.03]"
-                >
-            </div>
-        </div>
-        
-    </section>
-
-    <!-- Profil & Hobi -->
-    <section id="about" class="py-24 px-6 border-t border-white/10 relative z-20">
-        <div class="max-w-[1400px] mx-auto grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             
-            <div class="reveal">
-                <p class="text-brand-glow text-xs md:text-sm font-bold tracking-[0.2em] uppercase mb-4">Profil Singkat</p>
-                <h2 class="font-heading text-4xl md:text-5xl lg:text-6xl font-bold uppercase mb-8 leading-tight">
-                    Inovasi dari <br> <span class="text-white">Jepara, Jawa Tengah.</span>
-                </h2>
-                <p class="text-gray-400 text-base md:text-lg leading-relaxed mb-6">
-                    Halo, saya <strong>Rhevaldy Octavian Haris</strong>. Saya memiliki minat besar dalam dunia teknologi, mulai dari baris kode di layar hingga sirkuit elektronik di meja kerja saya.
-                </p>
-                <div class="flex items-center gap-4 text-white mt-8 border border-white/10 p-4 w-max rounded-lg">
-                    <i data-lucide="map-pin" class="w-5 h-5 text-brand-accent"></i>
-                    <span class="text-xs md:text-sm font-medium tracking-wide uppercase">Berbasis di Jepara, ID</span>
+        </div>
+    </section>
+
+    <!-- Teks Marquee Berjalan -->
+    <div class="w-full border-y border-borderline bg-highlight text-white py-2 md:py-3 overflow-hidden flex whitespace-nowrap z-20">
+        <div class="animate-marquee font-impact text-lg md:text-2xl tracking-widest inline-block">
+            WEB DEVELOPMENT // HARDWARE IOT // DIGITAL ANIMATION // CREATIVE CODING // WEB DEVELOPMENT // HARDWARE IOT // DIGITAL ANIMATION // CREATIVE CODING //
+        </div>
+        <style>
+            .animate-marquee { animation: marquee 15s linear infinite; }
+            @media (min-width: 768px) { .animate-marquee { animation: marquee 20s linear infinite; } }
+            @keyframes marquee { 0% { transform: translateX(0%); } 100% { transform: translateX(-50%); } }
+        </style>
+    </div>
+
+    <!-- Bagian Tentang -->
+    <section id="about" class="py-16 md:py-24 px-4 md:px-6 relative z-20">
+        <div class="max-w-[1400px] mx-auto">
+            
+            <div class="grid lg:grid-cols-12 gap-8 md:gap-12 border-b border-borderline pb-12 md:pb-20 reveal">
+                <div class="lg:col-span-5">
+                    <!-- Ukuran disesuaikan untuk mobile -->
+                    <h2 class="text-impact text-4xl md:text-7xl leading-none">01<br>PROFIL<br><span class="text-highlight">SINGKAT.</span></h2>
+                </div>
+                <div class="lg:col-span-7 flex flex-col justify-end mt-4 lg:mt-0">
+                    <p class="text-lg md:text-2xl font-light leading-relaxed mb-6 md:mb-8 text-gray-200">
+                        Halo, saya <strong>Rhevaldy Octavian Haris</strong>. Seorang pembelajar otodidak yang menyukai eksperimen. Saya tidak hanya menulis <span class="text-white font-bold border-b-2 border-highlight">baris kode</span>, tetapi juga merangkai <span class="text-white font-bold border-b-2 border-highlight">sirkuit elektronik</span> di meja kerja saya.
+                    </p>
+                    <div class="flex items-center gap-3 border border-borderline p-3 md:p-4 w-max rounded-sm">
+                        <i data-lucide="map-pin" class="w-4 h-4 md:w-5 md:h-5 text-highlight"></i>
+                        <span class="text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase">Jepara, Jawa Tengah</span>
+                    </div>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 reveal delay-200">
-                <!-- Skill 1 -->
-                <div class="bg-white/5 border border-white/10 p-6 md:p-8 hover:bg-white/10 transition-colors rounded-2xl">
-                    <i data-lucide="terminal" class="w-8 h-8 text-brand-glow mb-6"></i>
-                    <h3 class="font-heading text-xl md:text-2xl font-bold uppercase mb-3 text-white">Coding Web</h3>
-                    <p class="text-sm text-gray-400 leading-relaxed">Merancang website modern dengan animasi mulus dan tata letak responsif menggunakan teknologi kekinian.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-borderline border-b border-borderline reveal delay-100">
+                <div class="p-6 md:p-12 hover:bg-[#0a0a0a] transition-colors">
+                    <h3 class="text-impact text-2xl md:text-3xl mb-3 text-white">WEB<br>CODING</h3>
+                    <p class="text-xs md:text-sm text-gray-400 font-light leading-relaxed">Merancang website modern dengan tata letak geometris dan transisi yang halus layaknya standar industri kreatif.</p>
                 </div>
-                <!-- Skill 2 -->
-                <div class="bg-white/5 border border-white/10 p-6 md:p-8 hover:bg-white/10 transition-colors rounded-2xl">
-                    <i data-lucide="cpu" class="w-8 h-8 text-brand-accent mb-6"></i>
-                    <h3 class="font-heading text-xl md:text-2xl font-bold uppercase mb-3 text-white">Oprek Elektronika</h3>
-                    <p class="text-sm text-gray-400 leading-relaxed">Bereksperimen dengan mikrokontroler dan merangkai komponen hardware untuk membuat proyek digital interaktif.</p>
+                <div class="p-6 md:p-12 hover:bg-[#0a0a0a] transition-colors">
+                    <h3 class="text-impact text-2xl md:text-3xl mb-3 text-white">HARDWARE<br>OPREK</h3>
+                    <p class="text-xs md:text-sm text-gray-400 font-light leading-relaxed">Bereksperimen dengan mikrokontroler (Arduino/ESP) untuk menciptakan perangkat keras interaktif (IoT).</p>
+                </div>
+                <div class="p-6 md:p-12 hover:bg-[#0a0a0a] transition-colors">
+                    <h3 class="text-impact text-2xl md:text-3xl mb-3 text-white">DIGITAL<br>ANIMATION</h3>
+                    <p class="text-xs md:text-sm text-gray-400 font-light leading-relaxed">Fokus pada pengalaman pengguna (UX) melalui *micro-interactions* dan pergerakan objek web yang natural.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Pendidikan (Tabel Interaktif Mengarah ke Web Sekolah) -->
-    <section id="education" class="py-24 px-6 border-t border-white/10 bg-black/50 relative z-20">
+    <!-- Pendidikan -->
+    <section id="education" class="py-16 md:py-24 px-4 md:px-6 relative z-20">
         <div class="max-w-[1400px] mx-auto reveal">
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-4">
-                <div>
-                    <p class="text-brand-glow text-xs md:text-sm font-bold tracking-[0.2em] uppercase mb-4">Riwayat</p>
-                    <h2 class="font-heading text-4xl md:text-5xl lg:text-6xl font-bold uppercase">Pendidikan</h2>
-                </div>
-                <p class="text-gray-400 text-sm md:text-right max-w-xs">
-                    Klik pada baris tabel di bawah ini untuk mengunjungi website resmi sekolah.
-                </p>
-            </div>
+            <h2 class="text-impact text-4xl md:text-7xl mb-8 md:mb-12">02<br>PENDIDIKAN.</h2>
 
-            <!-- TABEL PENDIDIKAN (Clickable Link) -->
-            <div class="w-full border-t border-white/20">
-                <a href="https://smkn1kalinyamatan.sch.id/" target="_blank" rel="noopener noreferrer" class="block">
-                    <div class="table-row-link border-b border-white/20 py-8 px-4 flex flex-col md:flex-row justify-between md:items-center group relative overflow-hidden">
-                        
-                        <!-- Hover efek cahaya -->
-                        <div class="absolute inset-0 bg-gradient-to-r from-brand-glow/0 via-brand-glow/10 to-brand-glow/0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
-
-                        <div class="flex-1 z-10 mb-4 md:mb-0">
-                            <p class="text-brand-accent text-xs md:text-sm font-bold mb-2">Sekolah Menengah Kejuruan</p>
-                            <h3 class="font-heading text-2xl md:text-4xl lg:text-5xl font-bold uppercase text-white group-hover:text-brand-glow transition-colors">
-                                SMKN 1 Kalinyamatan
-                            </h3>
-                        </div>
-                        
-                        <div class="z-10 md:px-8 text-gray-400 font-medium text-sm md:text-base mb-6 md:mb-0">
-                            Jepara, Jawa Tengah
-                        </div>
-                        
-                        <div class="z-10 flex items-center gap-3">
-                            <span class="text-xs md:text-sm font-medium uppercase tracking-widest text-gray-400 group-hover:text-white transition-colors">Kunjungi Web</span>
-                            <div class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all">
-                                <i data-lucide="arrow-up-right" class="w-5 h-5"></i>
-                            </div>
+            <a href="https://smkn1kalinyamatan.sch.id/" target="_blank" rel="noopener noreferrer" class="block edu-row border-y border-borderline hover:bg-white transition-colors duration-500 group">
+                <div class="py-6 md:py-10 px-4 md:px-8 flex flex-col md:flex-row justify-between md:items-center gap-4 md:gap-6">
+                    
+                    <div class="flex-1">
+                        <p class="text-[10px] font-bold tracking-[0.2em] md:tracking-[0.3em] uppercase text-gray-500 group-hover:text-gray-400 mb-2 md:mb-3">Sekolah Menengah Kejuruan</p>
+                        <h3 class="text-impact text-3xl md:text-5xl text-white group-hover:text-black transition-colors leading-none">
+                            SMKN 1 KALINYAMATAN
+                        </h3>
+                    </div>
+                    
+                    <div class="text-xs md:text-sm font-medium uppercase tracking-widest text-gray-500 group-hover:text-gray-800 transition-colors hidden md:block">
+                        Jepara, ID
+                    </div>
+                    
+                    <div class="flex items-center justify-between md:justify-start gap-4 mt-2 md:mt-0">
+                        <span class="text-[10px] md:text-xs font-bold uppercase tracking-widest text-highlight group-hover:text-black transition-colors">Kunjungi Web</span>
+                        <div class="w-10 h-10 md:w-12 md:h-12 rounded-full border border-borderline group-hover:border-black flex items-center justify-center transition-all edu-arrow text-white group-hover:text-black">
+                            <i data-lucide="arrow-right" class="w-4 h-4 md:w-5 md:h-5"></i>
                         </div>
                     </div>
-                </a>
-            </div>
+                </div>
+            </a>
         </div>
     </section>
 
-    <!-- Footer / Kontak -->
-    <section id="contact" class="py-24 px-6 border-t border-white/10 relative overflow-hidden z-20">
-        <div class="bg-glow-2 opacity-50"></div>
+    <!-- Kontak & Footer -->
+    <section id="contact" class="pt-24 pb-8 md:pt-32 md:pb-12 px-4 md:px-6 relative z-20 overflow-hidden bg-highlight text-black mt-10 md:mt-20">
         <div class="max-w-[1400px] mx-auto text-center reveal relative z-10">
-            <p class="text-brand-accent text-xs md:text-sm font-bold tracking-[0.2em] uppercase mb-6">Let's Connect</p>
-            <h2 class="font-heading text-4xl md:text-7xl lg:text-[8rem] font-bold uppercase leading-none tracking-tighter mb-12 word-break">
-                GET IN TOUCH
+            <p class="text-[10px] md:text-xs font-bold tracking-[0.3em] uppercase mb-4">Mari Berkolaborasi</p>
+            <!-- Responsif Text Besar -->
+            <h2 class="text-impact text-[20vw] md:text-[10rem] leading-[0.8] mb-10 md:mb-12 select-all break-words">
+                CONTACT
             </h2>
             
-            <div class="flex flex-col sm:flex-row justify-center gap-4 md:gap-6 mb-16">
-                <a href="mailto:me@rhevaldy.my.id" class="flex items-center justify-center gap-4 border border-white/20 bg-white/5 backdrop-blur py-4 px-6 md:px-8 rounded-full hover:bg-white hover:text-black transition-all group">
-                    <i data-lucide="mail" class="w-5 h-5"></i>
-                    <span class="font-semibold text-xs md:text-sm uppercase tracking-widest break-all">me@rhevaldy.my.id</span>
+            <div class="flex flex-col sm:flex-row justify-center gap-3 md:gap-8 mb-16 md:mb-20">
+                <a href="mailto:me@rhevaldy.my.id" class="flex items-center justify-center gap-2 md:gap-3 bg-black text-white py-3 px-6 md:py-4 md:px-8 font-bold text-[10px] md:text-sm uppercase tracking-widest hover:scale-105 transition-transform rounded-sm">
+                    <i data-lucide="mail" class="w-4 h-4 md:w-5 md:h-5"></i>
+                    me@rhevaldy.my.id
                 </a>
                 
-                <a href="https://t.me/rapaldy" target="_blank" class="flex items-center justify-center gap-4 border border-white/20 bg-white/5 backdrop-blur py-4 px-6 md:px-8 rounded-full hover:bg-white hover:text-black transition-all group">
-                    <i data-lucide="send" class="w-5 h-5"></i>
-                    <span class="font-semibold text-xs md:text-sm uppercase tracking-widest">@rapaldy</span>
+                <a href="https://t.me/rapaldy" target="_blank" class="flex items-center justify-center gap-2 md:gap-3 border-2 border-black text-black py-3 px-6 md:py-4 md:px-8 font-bold text-[10px] md:text-sm uppercase tracking-widest hover:bg-black hover:text-white transition-all rounded-sm">
+                    <i data-lucide="send" class="w-4 h-4 md:w-5 md:h-5"></i>
+                    @rapaldy
                 </a>
             </div>
             
-            <div class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-white/10 text-[10px] md:text-xs font-medium uppercase tracking-widest text-gray-500">
+            <div class="pt-6 md:pt-8 border-t border-black/20 flex flex-col md:flex-row justify-between items-center text-[9px] md:text-xs font-bold uppercase tracking-[0.2em] text-black/70">
                 <p>&copy; 2026 RHEVALDY OCTAVIAN HARIS.</p>
-                <p class="mt-4 md:mt-0 flex items-center gap-2">ALL RIGHTS RESERVED <span class="w-1.5 h-1.5 rounded-full bg-brand-glow block"></span></p>
+                <p class="mt-3 md:mt-0 flex items-center gap-2">JEPARA, ID</p>
             </div>
         </div>
     </section>
 
     <script>
-        // 1. Inisialisasi ikon Lucide
         lucide.createIcons();
 
-        // 2. Logika Floating Taskbar (Hamburger Menu)
+        // Logika Taskbar Menu
         const menuBtn = document.getElementById('menu-btn');
         const menuIconContainer = document.getElementById('menu-icon-container');
         const floatingTaskbar = document.getElementById('floating-taskbar');
@@ -357,11 +360,11 @@
             isMenuOpen = !isMenuOpen;
             if (isMenuOpen) {
                 floatingTaskbar.classList.add('active');
-                menuIconContainer.innerHTML = '<i data-lucide="x" class="w-8 h-8"></i>';
+                menuIconContainer.innerHTML = '<i data-lucide="x" class="w-4 h-4 md:w-5 md:h-5"></i>';
                 lucide.createIcons();
             } else {
                 floatingTaskbar.classList.remove('active');
-                menuIconContainer.innerHTML = '<i data-lucide="menu" class="w-8 h-8"></i>';
+                menuIconContainer.innerHTML = '<i data-lucide="grid" class="w-4 h-4 md:w-5 md:h-5"></i>';
                 lucide.createIcons();
             }
         };
@@ -374,7 +377,7 @@
             });
         });
 
-        // 3. Scroll Reveal Animation (Apple Smooth Effect)
+        // Scroll Reveal Animation 
         document.addEventListener("DOMContentLoaded", () => {
             const reveals = document.querySelectorAll(".reveal");
 
@@ -387,7 +390,7 @@
             }, {
                 root: null,
                 threshold: 0.1,
-                rootMargin: "0px 0px -50px 0px"
+                rootMargin: "0px 0px -20px 0px"
             });
 
             reveals.forEach(reveal => {
