@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rhevaldy Octavian Haris</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Fonts: Clash Display (untuk Heading besar) & Inter (untuk teks biasa) -->
+    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@200,400,600,700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        heading: ['Clash Display', 'sans-serif'],
+                        body: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            bg: '#0a0a0a',
+                            glow: '#059669', // Emerald/Teal glow
+                            accent: '#f97316', // Orange dot
+                            text: '#f8fafc'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0a0a0a;
+            color: #f8fafc;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, .font-heading {
+            font-family: 'Clash Display', sans-serif;
+        }
+
+        /* Gradient Glow Background */
+        .bg-glow {
+            position: absolute;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, rgba(0,0,0,0) 60%);
+            top: 20%;
+            left: -10%;
+            z-index: 0;
+            pointer-events: none;
+            filter: blur(60px);
+        }
+
+        .bg-glow-2 {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(249, 115, 22, 0.08) 0%, rgba(0,0,0,0) 60%);
+            bottom: 0%;
+            right: -10%;
+            z-index: 0;
+            pointer-events: none;
+            filter: blur(60px);
+        }
+
+        /* Tumpang Tindih (Overlapping) di Hero Section */
+        .hero-text-massive {
+            font-size: clamp(3.5rem, 8vw, 8rem);
+            line-height: 0.9;
+            letter-spacing: -0.02em;
+        }
+
+        .hero-image-wrapper {
+            position: relative;
+            z-index: 20; 
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            height: 100%;
+        }
+
+        /* Animasi Kartu Mengambang */
+        .float-card {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* Apple-style Smooth Reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+
+        /* Tabel Pendidikan Interaktif */
+        .table-row-link {
+            transition: all 0.4s ease;
+        }
+        .table-row-link:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            transform: translateX(10px);
+            cursor: pointer;
+        }
+
+        /* Floating Taskbar Transisi */
+        #floating-taskbar {
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        #floating-taskbar.active {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateX(-50%) translateY(0);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-brand-glow selection:text-white">
+
+    <!-- Efek Cahaya Latar Belakang -->
+    <div class="bg-glow"></div>
+    <div class="bg-glow-2"></div>
+
+    <!-- Navigasi Utama -->
+    <nav class="fixed w-full top-0 z-[60] mix-blend-difference px-6 py-6">
+        <div class="max-w-[1600px] mx-auto flex justify-between items-center">
+            <a href="#" class="font-heading font-bold text-2xl tracking-wide text-white">
+                rhevaldy.
+            </a>
+            
+            <!-- Tombol Garis Tiga (Hamburger Menu) -->
+            <button id="menu-btn" class="text-white hover:text-brand-glow transition-colors focus:outline-none flex items-center gap-2 group">
+                <span class="hidden md:block text-xs font-medium uppercase tracking-widest mr-2 group-hover:text-brand-glow transition-colors">Menu</span>
+                <div id="menu-icon-container">
+                    <i data-lucide="menu" class="w-8 h-8"></i>
+                </div>
+            </button>
+        </div>
+    </nav>
+
+    <!-- FLOATING TASKBAR (Melayang di atas) -->
+    <div id="floating-taskbar" class="fixed top-28 left-1/2 transform -translate-x-1/2 -translate-y-8 z-50 opacity-0 pointer-events-none bg-white/10 backdrop-blur-2xl border border-white/20 rounded-3xl md:rounded-full p-2 shadow-[0_30px_60px_rgba(0,0,0,0.5)] w-[90%] md:w-auto">
+        <div class="flex flex-col md:flex-row items-center gap-2 md:gap-4 w-full">
+            <a href="#about" class="taskbar-link w-full md:w-auto px-6 py-3 rounded-2xl md:rounded-full hover:bg-white/10 text-sm font-semibold uppercase tracking-widest text-white transition-colors text-center">
+                Profil
+            </a>
+            <a href="#education" class="taskbar-link w-full md:w-auto px-6 py-3 rounded-2xl md:rounded-full hover:bg-white/10 text-sm font-semibold uppercase tracking-widest text-white transition-colors text-center">
+                Pendidikan
+            </a>
+            <a href="#contact" class="taskbar-link w-full md:w-auto px-6 py-3 rounded-2xl md:rounded-full hover:bg-white/10 text-sm font-semibold uppercase tracking-widest text-white transition-colors text-center">
+                Kontak
+            </a>
+            <!-- Tombol Spesial Archive mengarah ke /archive.html -->
+            <a href="/archive.html" class="taskbar-link w-full md:w-auto px-6 py-3 rounded-2xl md:rounded-full bg-brand-glow/20 border border-brand-glow/50 hover:bg-brand-glow hover:text-white text-sm font-semibold uppercase tracking-widest text-brand-glow transition-all flex items-center justify-center gap-3">
+                <i data-lucide="archive" class="w-4 h-4"></i> Archive
+            </a>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="relative w-full min-h-screen pt-24 pb-12 px-6 flex flex-col justify-center overflow-hidden">
+        <div class="max-w-[1600px] mx-auto w-full h-full relative grid grid-cols-1 lg:grid-cols-12 gap-8 items-center lg:items-end pb-10">
+            
+            <!-- Kolom Kiri -->
+            <div class="lg:col-span-3 z-30 flex flex-col justify-between h-full reveal pt-10 lg:pt-32">
+                <p class="text-sm md:text-base text-gray-300 leading-relaxed max-w-xs mb-12">
+                    Melalui desain inovatif dan pemikiran logis, saya merangkai kode, sirkuit, dan animasi yang memicu koneksi serta memberikan pengalaman visual estetik.
+                </p>
+
+                <!-- Floating Mini Card -->
+                <div class="float-card border border-white/20 p-2 bg-black/40 backdrop-blur-md w-48 mb-12 relative overflow-hidden group rounded-lg">
+                    <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Coding" class="w-full h-32 object-cover opacity-80 group-hover:opacity-100 transition duration-500 rounded-md">
+                    <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                        <div class="w-10 h-10 rounded-full bg-white/20 backdrop-blur flex items-center justify-center border border-white/30">
+                            <i data-lucide="play" class="w-4 h-4 text-white ml-1"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <a href="#contact" class="inline-flex items-center gap-3 bg-white text-black px-6 py-3 font-semibold text-sm hover:bg-gray-200 transition-colors w-max group shadow-lg shadow-white/10 rounded-full">
+                    LET'S CONTACT 
+                    <span class="w-2 h-2 rounded-full bg-brand-accent group-hover:scale-150 transition-transform"></span>
+                </a>
+            </div>
+
+            <!-- Kolom Tengah: Foto (Diambil langsung dari me.png) -->
+            <div class="lg:col-span-5 hero-image-wrapper order-last lg:order-none reveal delay-100 mt-10 lg:mt-0">
+                <img 
+                    src="me.png" 
+                    alt="Rhevaldy Octavian Haris" 
+                    class="w-[80%] md:w-[60%] lg:w-full max-h-[80vh] object-contain object-bottom drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-transform duration-700 hover:scale-[1.02]"
+                >
+            </div>
+
+            <!-- Kolom Kanan: Teks Raksasa -->
+            <div class="lg:col-span-4 z-10 lg:absolute lg:right-0 lg:top-1/2 lg:-translate-y-1/2 reveal delay-200 pointer-events-none">
+                <h1 class="font-heading font-bold hero-text-massive uppercase text-right lg:text-left text-white mix-blend-lighten">
+                    CODING<br>
+                    HARDWARE<br>
+                    ANIMATION<br>
+                    THAT INSPIRE
+                </h1>
+            </div>
+        </div>
+    </section>
+
+    <!-- Profil & Hobi -->
+    <section id="about" class="py-24 px-6 border-t border-white/10 relative z-20">
+        <div class="max-w-[1400px] mx-auto grid lg:grid-cols-2 gap-16 items-center">
+            
+            <div class="reveal">
+                <p class="text-brand-glow text-sm font-bold tracking-[0.2em] uppercase mb-4">Profil Singkat</p>
+                <h2 class="font-heading text-4xl md:text-5xl font-bold uppercase mb-8 leading-tight">
+                    Inovasi dari <br> <span class="text-white">Jepara, Jawa Tengah.</span>
+                </h2>
+                <p class="text-gray-400 text-lg leading-relaxed mb-6">
+                    Halo, saya <strong>Rhevaldy Octavian Haris</strong>. Saya memiliki minat besar dalam dunia teknologi, mulai dari baris kode di layar hingga sirkuit elektronik di meja kerja saya.
+                </p>
+                <div class="flex items-center gap-4 text-white mt-8 border border-white/10 p-4 w-max rounded-lg">
+                    <i data-lucide="map-pin" class="w-5 h-5 text-brand-accent"></i>
+                    <span class="text-sm font-medium tracking-wide uppercase">Berbasis di Jepara, ID</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 reveal delay-200">
+                <!-- Skill 1 -->
+                <div class="bg-white/5 border border-white/10 p-8 hover:bg-white/10 transition-colors rounded-2xl">
+                    <i data-lucide="terminal" class="w-8 h-8 text-brand-glow mb-6"></i>
+                    <h3 class="font-heading text-2xl font-bold uppercase mb-3 text-white">Coding Web</h3>
+                    <p class="text-sm text-gray-400 leading-relaxed">Merancang website modern dengan animasi mulus dan tata letak responsif menggunakan teknologi kekinian.</p>
+                </div>
+                <!-- Skill 2 -->
+                <div class="bg-white/5 border border-white/10 p-8 hover:bg-white/10 transition-colors rounded-2xl">
+                    <i data-lucide="cpu" class="w-8 h-8 text-brand-accent mb-6"></i>
+                    <h3 class="font-heading text-2xl font-bold uppercase mb-3 text-white">Oprek Elektronika</h3>
+                    <p class="text-sm text-gray-400 leading-relaxed">Bereksperimen dengan mikrokontroler dan merangkai komponen hardware untuk membuat proyek digital interaktif.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pendidikan (Tabel Interaktif Mengarah ke Web Sekolah) -->
+    <section id="education" class="py-24 px-6 border-t border-white/10 bg-black/50 relative z-20">
+        <div class="max-w-[1400px] mx-auto reveal">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-12">
+                <div>
+                    <p class="text-brand-glow text-sm font-bold tracking-[0.2em] uppercase mb-4">Riwayat</p>
+                    <h2 class="font-heading text-4xl md:text-5xl font-bold uppercase">Pendidikan</h2>
+                </div>
+                <p class="text-gray-400 text-sm md:text-right mt-4 md:mt-0 max-w-xs">
+                    Klik pada baris tabel di bawah ini untuk mengunjungi website resmi sekolah.
+                </p>
+            </div>
+
+            <!-- TABEL PENDIDIKAN (Clickable Link) -->
+            <div class="w-full border-t border-white/20">
+                <a href="https://smkn1kalinyamatan.sch.id/" target="_blank" rel="noopener noreferrer" class="block">
+                    <div class="table-row-link border-b border-white/20 py-8 px-4 flex flex-col md:flex-row justify-between md:items-center group relative overflow-hidden">
+                        
+                        <!-- Hover efek cahaya -->
+                        <div class="absolute inset-0 bg-gradient-to-r from-brand-glow/0 via-brand-glow/10 to-brand-glow/0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+
+                        <div class="flex-1 z-10">
+                            <p class="text-brand-accent text-sm font-bold mb-2">Sekolah Menengah Kejuruan</p>
+                            <h3 class="font-heading text-3xl md:text-4xl font-bold uppercase text-white group-hover:text-brand-glow transition-colors">
+                                SMKN 1 Kalinyamatan
+                            </h3>
+                        </div>
+                        
+                        <div class="hidden md:block z-10 px-8 text-gray-400 font-medium">
+                            Jepara, Jawa Tengah
+                        </div>
+                        
+                        <div class="mt-6 md:mt-0 z-10 flex items-center gap-3">
+                            <span class="text-sm font-medium uppercase tracking-widest text-gray-400 group-hover:text-white transition-colors">Kunjungi Web</span>
+                            <div class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all">
+                                <i data-lucide="arrow-up-right" class="w-5 h-5"></i>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer / Kontak -->
+    <section id="contact" class="py-24 px-6 border-t border-white/10 relative overflow-hidden z-20">
+        <div class="bg-glow-2 opacity-50"></div>
+        <div class="max-w-[1400px] mx-auto text-center reveal relative z-10">
+            <p class="text-brand-accent text-sm font-bold tracking-[0.2em] uppercase mb-6">Let's Connect</p>
+            <h2 class="font-heading text-5xl md:text-7xl lg:text-[8rem] font-bold uppercase leading-none tracking-tighter mb-12">
+                GET IN TOUCH
+            </h2>
+            
+            <div class="flex flex-col sm:flex-row justify-center gap-6 mb-16">
+                <a href="mailto:me@rhevaldy.my.id" class="flex items-center justify-center gap-4 border border-white/20 bg-white/5 backdrop-blur py-4 px-8 rounded-full hover:bg-white hover:text-black transition-all group">
+                    <i data-lucide="mail" class="w-5 h-5"></i>
+                    <span class="font-semibold text-sm uppercase tracking-widest">me@rhevaldy.my.id</span>
+                </a>
+                
+                <a href="https://t.me/rapaldy" target="_blank" class="flex items-center justify-center gap-4 border border-white/20 bg-white/5 backdrop-blur py-4 px-8 rounded-full hover:bg-white hover:text-black transition-all group">
+                    <i data-lucide="send" class="w-5 h-5"></i>
+                    <span class="font-semibold text-sm uppercase tracking-widest">@rapaldy</span>
+                </a>
+            </div>
+            
+            <div class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-white/10 text-xs font-medium uppercase tracking-widest text-gray-500">
+                <p>&copy; 2026 RHEVALDY OCTAVIAN HARIS.</p>
+                <p class="mt-4 md:mt-0 flex items-center gap-2">ALL RIGHTS RESERVED <span class="w-1.5 h-1.5 rounded-full bg-brand-glow block"></span></p>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // 1. Inisialisasi ikon Lucide
+        lucide.createIcons();
+
+        // 2. Logika Floating Taskbar (Hamburger Menu)
+        const menuBtn = document.getElementById('menu-btn');
+        const menuIconContainer = document.getElementById('menu-icon-container');
+        const floatingTaskbar = document.getElementById('floating-taskbar');
+        const taskbarLinks = document.querySelectorAll('.taskbar-link');
+        let isMenuOpen = false;
+
+        // Fungsi toggle taskbar
+        const toggleMenu = () => {
+            isMenuOpen = !isMenuOpen;
+            if (isMenuOpen) {
+                // Tampilkan taskbar
+                floatingTaskbar.classList.add('active');
+                // Ubah ikon menjadi X
+                menuIconContainer.innerHTML = '<i data-lucide="x" class="w-8 h-8"></i>';
+                lucide.createIcons();
+            } else {
+                // Sembunyikan taskbar
+                floatingTaskbar.classList.remove('active');
+                // Kembalikan ikon ke Menu (Garis Tiga)
+                menuIconContainer.innerHTML = '<i data-lucide="menu" class="w-8 h-8"></i>';
+                lucide.createIcons();
+            }
+        };
+
+        // Event listener saat tombol garis tiga diklik
+        menuBtn.addEventListener('click', toggleMenu);
+
+        // Otomatis tutup taskbar jika salah satu link diklik (kecuali Archive yang memindahkan halaman)
+        taskbarLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if(isMenuOpen) toggleMenu();
+            });
+        });
+
+        // 3. Scroll Reveal Animation (Apple Smooth Effect)
+        document.addEventListener("DOMContentLoaded", () => {
+            const reveals = document.querySelectorAll(".reveal");
+
+            const revealOnScroll = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("active");
+                    }
+                });
+            }, {
+                root: null,
+                threshold: 0.1,
+                rootMargin: "0px 0px -50px 0px"
+            });
+
+            reveals.forEach(reveal => {
+                revealOnScroll.observe(reveal);
+            });
+            
+            // Trigger pertama kali untuk elemen hero yang muncul di awal
+            setTimeout(() => {
+                reveals.forEach(reveal => {
+                    const rect = reveal.getBoundingClientRect();
+                    if(rect.top < window.innerHeight) {
+                        reveal.classList.add("active");
+                    }
+                });
+            }, 100);
+        });
+    </script>
+</body>
+</html>
