@@ -1,9 +1,11 @@
+```html
 <!DOCTYPE html>
 <html lang="id" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rhevaldy Octavian Haris</title>
+    <!-- Meta tag ini yang mencegah layar Android bergeser-geser sendiri -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Rhevaldy Octavian Haris | Portfolio</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -39,11 +41,15 @@
     </script>
 
     <style>
-        body {
+        /* Kunci Layar agar tidak geser kanan-kiri */
+        html, body {
             background-color: #0a0a0a;
             color: #f8fafc;
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
+            width: 100%;
+            position: relative;
+            -webkit-text-size-adjust: 100%;
         }
 
         h1, h2, h3, h4, .font-heading {
@@ -53,11 +59,14 @@
         /* Gradient Glow Background */
         .bg-glow {
             position: absolute;
-            width: 800px;
-            height: 800px;
+            width: 150vw;
+            height: 150vw;
+            max-width: 800px;
+            max-height: 800px;
             background: radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, rgba(0,0,0,0) 60%);
             top: 20%;
-            left: -10%;
+            left: 50%;
+            transform: translateX(-50%);
             z-index: 0;
             pointer-events: none;
             filter: blur(60px);
@@ -65,30 +74,24 @@
 
         .bg-glow-2 {
             position: absolute;
-            width: 600px;
-            height: 600px;
+            width: 120vw;
+            height: 120vw;
+            max-width: 600px;
+            max-height: 600px;
             background: radial-gradient(circle, rgba(249, 115, 22, 0.08) 0%, rgba(0,0,0,0) 60%);
             bottom: 0%;
-            right: -10%;
+            right: -20%;
             z-index: 0;
             pointer-events: none;
             filter: blur(60px);
         }
 
-        /* Tumpang Tindih (Overlapping) di Hero Section */
+        /* Penyesuaian Teks Raksasa untuk HP dan PC */
         .hero-text-massive {
-            font-size: clamp(3.5rem, 8vw, 8rem);
-            line-height: 0.9;
+            font-size: clamp(2.5rem, 11vw, 8rem);
+            line-height: 0.85;
             letter-spacing: -0.02em;
-        }
-
-        .hero-image-wrapper {
-            position: relative;
-            z-index: 20; 
-            display: flex;
-            justify-content: center;
-            align-items: flex-end;
-            height: 100%;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
         /* Animasi Kartu Mengambang */
@@ -160,37 +163,37 @@
     </nav>
 
     <!-- FLOATING TASKBAR (Melayang di atas) -->
-    <div id="floating-taskbar" class="fixed top-28 left-1/2 transform -translate-x-1/2 -translate-y-8 z-50 opacity-0 pointer-events-none bg-white/10 backdrop-blur-2xl border border-white/20 rounded-3xl md:rounded-full p-2 shadow-[0_30px_60px_rgba(0,0,0,0.5)] w-[90%] md:w-auto">
+    <div id="floating-taskbar" class="fixed top-28 left-1/2 transform -translate-x-1/2 -translate-y-8 z-[70] opacity-0 pointer-events-none bg-white/10 backdrop-blur-2xl border border-white/20 rounded-3xl md:rounded-full p-2 shadow-[0_30px_60px_rgba(0,0,0,0.8)] w-[90%] max-w-2xl">
         <div class="flex flex-col md:flex-row items-center gap-2 md:gap-4 w-full">
-            <a href="#about" class="taskbar-link w-full md:w-auto px-6 py-3 rounded-2xl md:rounded-full hover:bg-white/10 text-sm font-semibold uppercase tracking-widest text-white transition-colors text-center">
+            <a href="#about" class="taskbar-link w-full md:w-auto flex-1 px-6 py-3 rounded-2xl md:rounded-full hover:bg-white/10 text-sm font-semibold uppercase tracking-widest text-white transition-colors text-center">
                 Profil
             </a>
-            <a href="#education" class="taskbar-link w-full md:w-auto px-6 py-3 rounded-2xl md:rounded-full hover:bg-white/10 text-sm font-semibold uppercase tracking-widest text-white transition-colors text-center">
+            <a href="#education" class="taskbar-link w-full md:w-auto flex-1 px-6 py-3 rounded-2xl md:rounded-full hover:bg-white/10 text-sm font-semibold uppercase tracking-widest text-white transition-colors text-center">
                 Pendidikan
             </a>
-            <a href="#contact" class="taskbar-link w-full md:w-auto px-6 py-3 rounded-2xl md:rounded-full hover:bg-white/10 text-sm font-semibold uppercase tracking-widest text-white transition-colors text-center">
+            <a href="#contact" class="taskbar-link w-full md:w-auto flex-1 px-6 py-3 rounded-2xl md:rounded-full hover:bg-white/10 text-sm font-semibold uppercase tracking-widest text-white transition-colors text-center">
                 Kontak
             </a>
             <!-- Tombol Spesial Archive mengarah ke /archive.html -->
-            <a href="/archive.html" class="taskbar-link w-full md:w-auto px-6 py-3 rounded-2xl md:rounded-full bg-brand-glow/20 border border-brand-glow/50 hover:bg-brand-glow hover:text-white text-sm font-semibold uppercase tracking-widest text-brand-glow transition-all flex items-center justify-center gap-3">
+            <a href="/archive.html" class="taskbar-link w-full md:w-auto flex-1 px-6 py-3 rounded-2xl md:rounded-full bg-brand-glow/20 border border-brand-glow/50 hover:bg-brand-glow hover:text-white text-sm font-semibold uppercase tracking-widest text-brand-glow transition-all flex items-center justify-center gap-3">
                 <i data-lucide="archive" class="w-4 h-4"></i> Archive
             </a>
         </div>
     </div>
 
-    <!-- Hero Section -->
-    <section class="relative w-full min-h-screen pt-24 pb-12 px-6 flex flex-col justify-center overflow-hidden">
-        <div class="max-w-[1600px] mx-auto w-full h-full relative grid grid-cols-1 lg:grid-cols-12 gap-8 items-center lg:items-end pb-10">
-            
-            <!-- Kolom Kiri -->
-            <div class="lg:col-span-3 z-30 flex flex-col justify-between h-full reveal pt-10 lg:pt-32">
-                <p class="text-sm md:text-base text-gray-300 leading-relaxed max-w-xs mb-12">
+    <!-- HERO SECTION FIXED UNTUK MOBILE -->
+    <section class="relative w-full min-h-[100dvh] md:min-h-screen pt-24 md:pt-32 flex flex-col justify-between overflow-hidden">
+        
+        <!-- Bagian Atas: Teks Pengantar & Tombol -->
+        <div class="relative z-30 px-6 max-w-[1600px] mx-auto w-full flex-shrink-0 grid lg:grid-cols-12 gap-8">
+            <div class="lg:col-span-4 flex flex-col justify-center reveal">
+                <p class="text-sm md:text-base text-gray-300 leading-relaxed max-w-sm mb-8 md:mb-12 mt-4">
                     Melalui desain inovatif dan pemikiran logis, saya merangkai kode, sirkuit, dan animasi yang memicu koneksi serta memberikan pengalaman visual estetik.
                 </p>
 
                 <!-- Floating Mini Card -->
-                <div class="float-card border border-white/20 p-2 bg-black/40 backdrop-blur-md w-48 mb-12 relative overflow-hidden group rounded-lg">
-                    <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Coding" class="w-full h-32 object-cover opacity-80 group-hover:opacity-100 transition duration-500 rounded-md">
+                <div class="float-card border border-white/20 p-2 bg-black/40 backdrop-blur-md w-48 mb-8 md:mb-12 relative overflow-hidden group rounded-lg">
+                    <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Coding" class="w-full h-24 md:h-32 object-cover opacity-80 group-hover:opacity-100 transition duration-500 rounded-md">
                     <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
                         <div class="w-10 h-10 rounded-full bg-white/20 backdrop-blur flex items-center justify-center border border-white/30">
                             <i data-lucide="play" class="w-4 h-4 text-white ml-1"></i>
@@ -198,62 +201,70 @@
                     </div>
                 </div>
 
-                <a href="#contact" class="inline-flex items-center gap-3 bg-white text-black px-6 py-3 font-semibold text-sm hover:bg-gray-200 transition-colors w-max group shadow-lg shadow-white/10 rounded-full">
+                <a href="#contact" class="inline-flex items-center gap-3 bg-white text-black px-6 py-3 font-semibold text-xs md:text-sm hover:bg-gray-200 transition-colors w-max group shadow-lg shadow-white/10 rounded-full">
                     LET'S CONTACT 
                     <span class="w-2 h-2 rounded-full bg-brand-accent group-hover:scale-150 transition-transform"></span>
                 </a>
             </div>
+        </div>
 
-            <!-- Kolom Tengah: Foto (Diambil langsung dari me.png) -->
-            <div class="lg:col-span-5 hero-image-wrapper order-last lg:order-none reveal delay-100 mt-10 lg:mt-0">
-                <img 
-                    src="me.png" 
-                    alt="Rhevaldy Octavian Haris" 
-                    class="w-[80%] md:w-[60%] lg:w-full max-h-[80vh] object-contain object-bottom drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-transform duration-700 hover:scale-[1.02]"
-                >
-            </div>
-
-            <!-- Kolom Kanan: Teks Raksasa -->
-            <div class="lg:col-span-4 z-10 lg:absolute lg:right-0 lg:top-1/2 lg:-translate-y-1/2 reveal delay-200 pointer-events-none">
-                <h1 class="font-heading font-bold hero-text-massive uppercase text-right lg:text-left text-white mix-blend-lighten">
+        <!-- Bagian Bawah: Overlap Teks Raksasa dan Foto -->
+        <!-- Posisi dibuat absolute/relative agar di HP mereka menyatu di tengah bawah -->
+        <div class="relative flex-grow flex items-end justify-center w-full mt-10 min-h-[45vh] lg:min-h-[60vh] max-w-[1600px] mx-auto">
+            
+            <!-- Teks Raksasa (Di belakang Foto) -->
+            <div class="absolute inset-0 flex items-center justify-center lg:justify-end lg:pr-12 z-10 pointer-events-none reveal delay-100 px-4">
+                <h1 class="font-heading font-bold hero-text-massive uppercase text-center lg:text-left text-white mix-blend-lighten w-full break-words">
                     CODING<br>
                     HARDWARE<br>
                     ANIMATION<br>
                     THAT INSPIRE
                 </h1>
             </div>
+
+            <!-- Foto (Diambil langsung dari me.png, di depan teks) -->
+            <!-- Note: onerror ditambahkan agar layout tidak hancur saat me.png belum diupload -->
+            <div class="relative z-20 w-full flex justify-center h-full items-end lg:absolute lg:left-1/2 lg:-translate-x-1/2 pb-0 reveal delay-200">
+                <img 
+                    src="me.png" 
+                    onerror="this.src='https://api.dicebear.com/7.x/personas/svg?seed=Rhevaldy&backgroundColor=transparent'"
+                    alt="Rhevaldy Octavian Haris" 
+                    class="object-contain object-bottom w-[95%] sm:w-[70%] md:w-[50%] lg:w-[45%] max-h-[50vh] lg:max-h-[85vh] drop-shadow-[0_20px_50px_rgba(0,0,0,0.8)] transition-transform duration-700 hover:scale-[1.03]"
+                >
+            </div>
         </div>
+        
     </section>
 
     <!-- Profil & Hobi -->
     <section id="about" class="py-24 px-6 border-t border-white/10 relative z-20">
-        <div class="max-w-[1400px] mx-auto grid lg:grid-cols-2 gap-16 items-center">
+        <div class="max-w-[1400px] mx-auto grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             
             <div class="reveal">
-                <p class="text-brand-glow text-sm font-bold tracking-[0.2em] uppercase mb-4">Profil Singkat</p>
-                <h2 class="font-heading text-4xl md:text-5xl font-bold uppercase mb-8 leading-tight">
+                <p class="text-brand-glow text-xs md:text-sm font-bold tracking-[0.2em] uppercase mb-4">Profil Singkat</p>
+                <h2 class="font-heading text-4xl md:text-5xl lg:text-6xl font-bold uppercase mb-8 leading-tight">
                     Inovasi dari <br> <span class="text-white">Jepara, Jawa Tengah.</span>
                 </h2>
-                <p class="text-gray-400 text-lg leading-relaxed mb-6">
+                <p class="text-gray-400 text-base md:text-lg leading-relaxed mb-6">
                     Halo, saya <strong>Rhevaldy Octavian Haris</strong>. Saya memiliki minat besar dalam dunia teknologi, mulai dari baris kode di layar hingga sirkuit elektronik di meja kerja saya.
                 </p>
                 <div class="flex items-center gap-4 text-white mt-8 border border-white/10 p-4 w-max rounded-lg">
                     <i data-lucide="map-pin" class="w-5 h-5 text-brand-accent"></i>
-                    <span class="text-sm font-medium tracking-wide uppercase">Berbasis di Jepara, ID</span>
+                    <span class="text-xs md:text-sm font-medium tracking-wide uppercase">Berbasis di Jepara, ID</span>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 reveal delay-200">
                 <!-- Skill 1 -->
-                <div class="bg-white/5 border border-white/10 p-8 hover:bg-white/10 transition-colors rounded-2xl">
+                <div class="bg-white/5 border border-white/10 p-6 md:p-8 hover:bg-white/10 transition-colors rounded-2xl">
                     <i data-lucide="terminal" class="w-8 h-8 text-brand-glow mb-6"></i>
-                    <h3 class="font-heading text-2xl font-bold uppercase mb-3 text-white">Coding Web</h3>
+                    <h3 class="font-heading text-xl md:text-2xl font-bold uppercase mb-3 text-white">Coding Web</h3>
                     <p class="text-sm text-gray-400 leading-relaxed">Merancang website modern dengan animasi mulus dan tata letak responsif menggunakan teknologi kekinian.</p>
                 </div>
                 <!-- Skill 2 -->
-                <div class="bg-white/5 border border-white/10 p-8 hover:bg-white/10 transition-colors rounded-2xl">
+                <div class="bg-white/5 border border-white/10 p-6 md:p-8 hover:bg-white/10 transition-colors rounded-2xl">
                     <i data-lucide="cpu" class="w-8 h-8 text-brand-accent mb-6"></i>
-                    <h3 class="font-heading text-2xl font-bold uppercase mb-3 text-white">Oprek Elektronika</h3>
+                    <h3 class="font-heading text-xl md:text-2xl font-bold uppercase mb-3 text-white">Oprek Elektronika</h3>
                     <p class="text-sm text-gray-400 leading-relaxed">Bereksperimen dengan mikrokontroler dan merangkai komponen hardware untuk membuat proyek digital interaktif.</p>
                 </div>
             </div>
@@ -263,12 +274,12 @@
     <!-- Pendidikan (Tabel Interaktif Mengarah ke Web Sekolah) -->
     <section id="education" class="py-24 px-6 border-t border-white/10 bg-black/50 relative z-20">
         <div class="max-w-[1400px] mx-auto reveal">
-            <div class="flex flex-col md:flex-row justify-between items-end mb-12">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-4">
                 <div>
-                    <p class="text-brand-glow text-sm font-bold tracking-[0.2em] uppercase mb-4">Riwayat</p>
-                    <h2 class="font-heading text-4xl md:text-5xl font-bold uppercase">Pendidikan</h2>
+                    <p class="text-brand-glow text-xs md:text-sm font-bold tracking-[0.2em] uppercase mb-4">Riwayat</p>
+                    <h2 class="font-heading text-4xl md:text-5xl lg:text-6xl font-bold uppercase">Pendidikan</h2>
                 </div>
-                <p class="text-gray-400 text-sm md:text-right mt-4 md:mt-0 max-w-xs">
+                <p class="text-gray-400 text-sm md:text-right max-w-xs">
                     Klik pada baris tabel di bawah ini untuk mengunjungi website resmi sekolah.
                 </p>
             </div>
@@ -281,19 +292,19 @@
                         <!-- Hover efek cahaya -->
                         <div class="absolute inset-0 bg-gradient-to-r from-brand-glow/0 via-brand-glow/10 to-brand-glow/0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
 
-                        <div class="flex-1 z-10">
-                            <p class="text-brand-accent text-sm font-bold mb-2">Sekolah Menengah Kejuruan</p>
-                            <h3 class="font-heading text-3xl md:text-4xl font-bold uppercase text-white group-hover:text-brand-glow transition-colors">
+                        <div class="flex-1 z-10 mb-4 md:mb-0">
+                            <p class="text-brand-accent text-xs md:text-sm font-bold mb-2">Sekolah Menengah Kejuruan</p>
+                            <h3 class="font-heading text-2xl md:text-4xl lg:text-5xl font-bold uppercase text-white group-hover:text-brand-glow transition-colors">
                                 SMKN 1 Kalinyamatan
                             </h3>
                         </div>
                         
-                        <div class="hidden md:block z-10 px-8 text-gray-400 font-medium">
+                        <div class="z-10 md:px-8 text-gray-400 font-medium text-sm md:text-base mb-6 md:mb-0">
                             Jepara, Jawa Tengah
                         </div>
                         
-                        <div class="mt-6 md:mt-0 z-10 flex items-center gap-3">
-                            <span class="text-sm font-medium uppercase tracking-widest text-gray-400 group-hover:text-white transition-colors">Kunjungi Web</span>
+                        <div class="z-10 flex items-center gap-3">
+                            <span class="text-xs md:text-sm font-medium uppercase tracking-widest text-gray-400 group-hover:text-white transition-colors">Kunjungi Web</span>
                             <div class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all">
                                 <i data-lucide="arrow-up-right" class="w-5 h-5"></i>
                             </div>
@@ -308,24 +319,24 @@
     <section id="contact" class="py-24 px-6 border-t border-white/10 relative overflow-hidden z-20">
         <div class="bg-glow-2 opacity-50"></div>
         <div class="max-w-[1400px] mx-auto text-center reveal relative z-10">
-            <p class="text-brand-accent text-sm font-bold tracking-[0.2em] uppercase mb-6">Let's Connect</p>
-            <h2 class="font-heading text-5xl md:text-7xl lg:text-[8rem] font-bold uppercase leading-none tracking-tighter mb-12">
+            <p class="text-brand-accent text-xs md:text-sm font-bold tracking-[0.2em] uppercase mb-6">Let's Connect</p>
+            <h2 class="font-heading text-4xl md:text-7xl lg:text-[8rem] font-bold uppercase leading-none tracking-tighter mb-12 word-break">
                 GET IN TOUCH
             </h2>
             
-            <div class="flex flex-col sm:flex-row justify-center gap-6 mb-16">
-                <a href="mailto:me@rhevaldy.my.id" class="flex items-center justify-center gap-4 border border-white/20 bg-white/5 backdrop-blur py-4 px-8 rounded-full hover:bg-white hover:text-black transition-all group">
+            <div class="flex flex-col sm:flex-row justify-center gap-4 md:gap-6 mb-16">
+                <a href="mailto:me@rhevaldy.my.id" class="flex items-center justify-center gap-4 border border-white/20 bg-white/5 backdrop-blur py-4 px-6 md:px-8 rounded-full hover:bg-white hover:text-black transition-all group">
                     <i data-lucide="mail" class="w-5 h-5"></i>
-                    <span class="font-semibold text-sm uppercase tracking-widest">me@rhevaldy.my.id</span>
+                    <span class="font-semibold text-xs md:text-sm uppercase tracking-widest break-all">me@rhevaldy.my.id</span>
                 </a>
                 
-                <a href="https://t.me/rapaldy" target="_blank" class="flex items-center justify-center gap-4 border border-white/20 bg-white/5 backdrop-blur py-4 px-8 rounded-full hover:bg-white hover:text-black transition-all group">
+                <a href="https://t.me/rapaldy" target="_blank" class="flex items-center justify-center gap-4 border border-white/20 bg-white/5 backdrop-blur py-4 px-6 md:px-8 rounded-full hover:bg-white hover:text-black transition-all group">
                     <i data-lucide="send" class="w-5 h-5"></i>
-                    <span class="font-semibold text-sm uppercase tracking-widest">@rapaldy</span>
+                    <span class="font-semibold text-xs md:text-sm uppercase tracking-widest">@rapaldy</span>
                 </a>
             </div>
             
-            <div class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-white/10 text-xs font-medium uppercase tracking-widest text-gray-500">
+            <div class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-white/10 text-[10px] md:text-xs font-medium uppercase tracking-widest text-gray-500">
                 <p>&copy; 2026 RHEVALDY OCTAVIAN HARIS.</p>
                 <p class="mt-4 md:mt-0 flex items-center gap-2">ALL RIGHTS RESERVED <span class="w-1.5 h-1.5 rounded-full bg-brand-glow block"></span></p>
             </div>
@@ -343,28 +354,21 @@
         const taskbarLinks = document.querySelectorAll('.taskbar-link');
         let isMenuOpen = false;
 
-        // Fungsi toggle taskbar
         const toggleMenu = () => {
             isMenuOpen = !isMenuOpen;
             if (isMenuOpen) {
-                // Tampilkan taskbar
                 floatingTaskbar.classList.add('active');
-                // Ubah ikon menjadi X
                 menuIconContainer.innerHTML = '<i data-lucide="x" class="w-8 h-8"></i>';
                 lucide.createIcons();
             } else {
-                // Sembunyikan taskbar
                 floatingTaskbar.classList.remove('active');
-                // Kembalikan ikon ke Menu (Garis Tiga)
                 menuIconContainer.innerHTML = '<i data-lucide="menu" class="w-8 h-8"></i>';
                 lucide.createIcons();
             }
         };
 
-        // Event listener saat tombol garis tiga diklik
         menuBtn.addEventListener('click', toggleMenu);
 
-        // Otomatis tutup taskbar jika salah satu link diklik (kecuali Archive yang memindahkan halaman)
         taskbarLinks.forEach(link => {
             link.addEventListener('click', () => {
                 if(isMenuOpen) toggleMenu();
@@ -391,7 +395,6 @@
                 revealOnScroll.observe(reveal);
             });
             
-            // Trigger pertama kali untuk elemen hero yang muncul di awal
             setTimeout(() => {
                 reveals.forEach(reveal => {
                     const rect = reveal.getBoundingClientRect();
