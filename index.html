@@ -2,9 +2,8 @@
 <html lang="id" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <!-- Pengunci Viewport untuk Android agar tidak geser-geser -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Rhevaldy Octavian Haris | Portfolio</title>
+    <title>Rhevaldy Octavian Haris | Portfolio & Archive</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -46,7 +45,7 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Tipografi Ekstrem (Brutalism) yang disesuaikan untuk Mobile */
+        /* Tipografi Ekstrem (Brutalism) */
         .text-impact {
             font-family: 'Impact', sans-serif;
             text-transform: uppercase;
@@ -59,7 +58,6 @@
             text-transform: none;
         }
 
-        /* Skala dinamis yang tidak terlalu besar di HP */
         .hero-title {
             font-size: clamp(2.5rem, 10vw, 10rem);
         }
@@ -68,11 +66,17 @@
         .text-outline {
             color: transparent;
             -webkit-text-stroke: 1px rgba(255, 255, 255, 0.4);
+            transition: all 0.5s ease;
         }
         .text-outline:hover {
             color: #ffffff;
             -webkit-text-stroke: 0px;
-            transition: all 0.3s ease;
+        }
+
+        /* Teks Tembus Pandang untuk Angka Besar Archive */
+        .text-outline-archive {
+            color: transparent;
+            -webkit-text-stroke: 2px rgba(255, 255, 255, 0.1);
         }
 
         /* Efek Grain Latar Belakang */
@@ -85,21 +89,41 @@
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
 
-        /* Smooth Reveal Animasi */
-        .reveal {
+        /* ==========================================================
+           ANIMASI SCROLL UNIK, MULUS, & REPEATABLE (Tanpa Stutter)
+           Menggunakan akselerasi GPU (will-change, transform)
+        ========================================================== */
+        .reveal-group {
+            /* Wadah untuk menahan perspektif efek 3D */
+            perspective: 1000px;
+        }
+
+        .anim-reveal {
             opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            /* Efek unik: Turun ke bawah, sedikit mengecil, dan miring (3D fold) */
+            transform: translateY(60px) scale(0.95) rotateX(10deg);
+            /* Kurva transisi premium (snappy di akhir) */
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
+                        transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, opacity;
         }
-        .reveal.active {
+
+        .anim-reveal.active {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateY(0) scale(1) rotateX(0deg);
         }
+
+        /* Penundaan untuk elemen berturut-turut */
         .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+
+        /* ========================================================== */
 
         /* Floating Taskbar */
         #floating-taskbar {
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, opacity;
         }
         #floating-taskbar.active {
             opacity: 1;
@@ -107,14 +131,14 @@
             transform: translateX(-50%) translateY(0);
         }
 
-        /* --- EFEK DUOTONE UNTUK FOTO --- */
+        /* EFEK DUOTONE UNTUK FOTO UTAMA */
         .duotone-wrapper {
             position: relative;
             cursor: pointer;
         }
         .duotone-container {
             position: relative;
-            background-color: #FF4500; /* Warna highlight */
+            background-color: #FF4500; 
             overflow: hidden;
             transition: background-color 0.5s ease;
         }
@@ -123,7 +147,6 @@
             height: 100%;
             object-fit: cover;
             object-position: center;
-            /* Filter grayscale & penyesuaian kontras untuk blending */
             filter: grayscale(100%) contrast(1.1) brightness(0.95);
             mix-blend-mode: multiply;
             transition: all 0.5s ease;
@@ -132,12 +155,11 @@
             content: '';
             position: absolute;
             inset: 0;
-            background-color: #050505; /* Warna background web */
+            background-color: #050505; 
             mix-blend-mode: lighten;
             pointer-events: none;
             transition: all 0.5s ease;
         }
-        /* Mengembalikan warna asli saat di-hover/disentuh */
         .duotone-wrapper:hover .duotone-container,
         .duotone-wrapper:active .duotone-container {
             background-color: transparent;
@@ -157,21 +179,31 @@
             transform: translateX(8px) rotate(45deg);
             color: #FF4500;
         }
+
+        /* Animasi Accordion Archive (Sangat Mulus & Ringan) */
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease;
+            opacity: 0;
+        }
+        .icon-rotate {
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
     </style>
 </head>
 <body class="selection:bg-highlight selection:text-white flex flex-col min-h-screen relative">
 
     <div class="noise-bg"></div>
 
-    <!-- Navbar Minimalis -->
     <nav class="fixed w-full top-0 z-[60] mix-blend-difference px-4 md:px-6 py-4 md:py-6 pointer-events-none">
         <div class="max-w-[1400px] mx-auto flex justify-between items-center pointer-events-auto">
-            <a href="#" class="font-impact text-xl md:text-2xl tracking-widest text-white hover:text-highlight transition-colors">
+            <a href="#hero" class="font-impact text-xl md:text-2xl tracking-widest text-white hover:text-highlight transition-colors">
                 RHEVALDY.
             </a>
             
             <button id="menu-btn" class="text-white hover:text-highlight transition-colors flex items-center gap-2 group">
-                <span class="hidden md:block text-[10px] font-bold uppercase tracking-[0.2em] mr-2">Index</span>
+                <span class="hidden md:block text-[10px] font-bold uppercase tracking-[0.2em] mr-2">Menu</span>
                 <div id="menu-icon-container" class="border-2 border-white p-1 rounded-full group-hover:border-highlight transition-colors">
                     <i data-lucide="grid" class="w-4 h-4 md:w-5 md:h-5"></i>
                 </div>
@@ -179,7 +211,7 @@
         </div>
     </nav>
 
-    <!-- FLOATING TASKBAR (Disesuaikan untuk mobile) -->
+    <!-- FLOATING TASKBAR -->
     <div id="floating-taskbar" class="fixed top-20 left-1/2 transform -translate-x-1/2 -translate-y-10 z-[70] opacity-0 pointer-events-none bg-white text-black border border-gray-200 p-1 md:p-2 shadow-[0_20px_50px_rgba(0,0,0,0.5)] w-[92%] max-w-sm md:max-w-lg rounded-sm flex flex-row gap-1 md:gap-2">
         <a href="#about" class="taskbar-link flex-1 px-2 py-3 md:px-4 text-center text-[10px] md:text-xs font-bold uppercase tracking-widest hover:bg-black hover:text-white transition-colors rounded-sm">
             Profil
@@ -187,7 +219,7 @@
         <a href="#education" class="taskbar-link flex-1 px-2 py-3 md:px-4 text-center text-[10px] md:text-xs font-bold uppercase tracking-widest hover:bg-black hover:text-white transition-colors rounded-sm">
             Riwayat
         </a>
-        <a href="archive.html" class="taskbar-link flex-1 px-2 py-3 md:px-4 text-center text-[10px] md:text-xs font-bold uppercase tracking-widest hover:bg-black hover:text-white transition-colors rounded-sm">
+        <a href="#archive" class="taskbar-link flex-1 px-2 py-3 md:px-4 text-center text-[10px] md:text-xs font-bold uppercase tracking-widest hover:bg-black hover:text-white transition-colors rounded-sm">
             Archive
         </a>
         <a href="#contact" class="taskbar-link flex-1 px-2 py-3 md:px-4 bg-highlight text-white text-center text-[10px] md:text-xs font-bold uppercase tracking-widest hover:bg-black transition-colors flex items-center justify-center gap-1 md:gap-2 rounded-sm">
@@ -196,21 +228,19 @@
     </div>
 
     <!-- HERO SECTION -->
-    <section class="relative w-full min-h-[100dvh] pt-24 pb-8 flex flex-col items-center justify-center overflow-hidden px-4 md:px-8">
+    <section id="hero" class="relative w-full min-h-[100dvh] pt-24 pb-8 flex flex-col items-center justify-center overflow-hidden px-4 md:px-8 reveal-group">
         
         <!-- Teks Latar Belakang (Outline Besar) -->
         <div class="absolute w-full text-center z-0 pointer-events-none opacity-40 md:opacity-100 flex flex-col gap-0 leading-none">
-            <span class="text-impact hero-title text-outline break-words">EXPLORE</span>
-            <span class="text-impact hero-title text-outline break-words">CREATE</span>
-            <span class="text-impact hero-title text-outline break-words">INNOVATE</span>
+            <span class="text-impact hero-title text-outline break-words anim-reveal">EXPLORE</span>
+            <span class="text-impact hero-title text-outline break-words anim-reveal delay-100">CREATE</span>
+            <span class="text-impact hero-title text-outline break-words anim-reveal delay-200">INNOVATE</span>
         </div>
 
-        <!-- Wadah Utama Tengah -->
         <div class="relative z-20 w-full max-w-[1200px] mx-auto flex flex-col items-center mt-10 md:mt-20">
             
-            <!-- Foto Utama dengan Filter Duotone -->
-            <div class="relative w-[70%] sm:w-[50%] md:w-[40%] max-w-xs md:max-w-md mx-auto mb-[-5%] md:mb-[-5%] z-30 reveal duotone-wrapper">
-                
+            <!-- Foto Utama (Sesuai Permintaan) -->
+            <div class="relative w-[70%] sm:w-[50%] md:w-[40%] max-w-xs md:max-w-md mx-auto mb-[-5%] md:mb-[-5%] z-30 duotone-wrapper anim-reveal delay-100">
                 <div class="duotone-container aspect-[3/4] md:aspect-[4/5] rounded-sm shadow-[0_20px_40px_rgba(0,0,0,0.9)]">
                     <img 
                         src="me.png" 
@@ -218,16 +248,13 @@
                         alt="Rhevaldy Octavian Haris" 
                     >
                 </div>
-
-                <!-- Aksen Script Font -->
-                <div class="absolute bottom-4 -right-4 md:-right-8 rotate-[-10deg] z-40 bg-highlight text-white px-3 py-1 md:px-4 rounded-sm shadow-xl border border-black transition-transform duration-300">
+                <div class="absolute bottom-4 -right-4 md:-right-8 rotate-[-10deg] z-40 bg-highlight text-white px-3 py-1 md:px-4 rounded-sm shadow-xl border border-black transition-transform duration-300 hover:scale-110">
                     <span class="text-script text-xl md:text-3xl">Digital Tinkerer!</span>
                 </div>
             </div>
 
-            <!-- Teks Utama Solid -->
-            <div class="z-40 text-center reveal delay-100 mt-6 md:mt-8 px-2">
-                <!-- Ukuran text disesuaikan: 5xl untuk mobile, 8xl untuk md -->
+            <!-- Teks Utama -->
+            <div class="z-40 text-center mt-6 md:mt-8 px-2 anim-reveal delay-200">
                 <h1 class="text-impact text-5xl sm:text-6xl md:text-8xl lg:text-[9rem] text-white tracking-normal leading-[0.9] mix-blend-difference">
                     RHEVALDY<br>OCTAVIAN
                 </h1>
@@ -252,48 +279,48 @@
     </div>
 
     <!-- Bagian Tentang -->
-    <section id="about" class="py-16 md:py-24 px-4 md:px-6 relative z-20">
+    <section id="about" class="py-16 md:py-24 px-4 md:px-6 relative z-20 reveal-group">
         <div class="max-w-[1400px] mx-auto">
             
-            <div class="grid lg:grid-cols-12 gap-8 md:gap-12 border-b border-borderline pb-12 md:pb-20 reveal">
-                <div class="lg:col-span-5">
-                    <!-- Ukuran disesuaikan untuk mobile -->
+            <div class="grid lg:grid-cols-12 gap-8 md:gap-12 border-b border-borderline pb-12 md:pb-20">
+                <div class="lg:col-span-5 anim-reveal">
                     <h2 class="text-impact text-4xl md:text-7xl leading-none"><br>PROFIL<br><span class="text-highlight">SINGKAT</span></h2>
                 </div>
-                <div class="lg:col-span-7 flex flex-col justify-end mt-4 lg:mt-0">
+                <div class="lg:col-span-7 flex flex-col justify-end mt-4 lg:mt-0 anim-reveal delay-100">
                     <p class="text-lg md:text-2xl font-light leading-relaxed mb-6 md:mb-8 text-gray-200">
                         Halo, saya <strong>Rhevaldy Octavian Haris</strong>. Seorang pembelajar otodidak yang menyukai eksperimen. Saya tidak hanya menulis <span class="text-white font-bold border-b-2 border-highlight">baris kode</span>, tetapi juga merangkai <span class="text-white font-bold border-b-2 border-highlight">sirkuit elektronik</span> di meja kerja saya.
                     </p>
-                    <div class="flex items-center gap-3 border border-borderline p-3 md:p-4 w-max rounded-sm">
+                    <div class="flex items-center gap-3 border border-borderline p-3 md:p-4 w-max rounded-sm hover:border-highlight transition-colors cursor-default">
                         <i data-lucide="map-pin" class="w-4 h-4 md:w-5 md:h-5 text-highlight"></i>
                         <span class="text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase">Jepara, Jawa Tengah</span>
                     </div>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-borderline border-b border-borderline reveal delay-100">
-                <div class="p-6 md:p-12 hover:bg-[#0a0a0a] transition-colors">
+            <div class="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-borderline border-b border-borderline">
+                <div class="p-6 md:p-12 hover:bg-[#0a0a0a] transition-colors anim-reveal">
                     <h3 class="text-impact text-2xl md:text-3xl mb-3 text-white">WEB<br>CODING</h3>
                     <p class="text-xs md:text-sm text-gray-400 font-light leading-relaxed">Merancang website modern dengan tata letak geometris dan transisi yang halus layaknya standar industri kreatif.</p>
                 </div>
-                <div class="p-6 md:p-12 hover:bg-[#0a0a0a] transition-colors">
+                <div class="p-6 md:p-12 hover:bg-[#0a0a0a] transition-colors anim-reveal delay-100">
                     <h3 class="text-impact text-2xl md:text-3xl mb-3 text-white">HARDWARE<br>OPREK</h3>
                     <p class="text-xs md:text-sm text-gray-400 font-light leading-relaxed">Bereksperimen dengan mikrokontroler (Arduino/ESP) untuk menciptakan perangkat keras interaktif (IoT).</p>
                 </div>
-                <div class="p-6 md:p-12 hover:bg-[#0a0a0a] transition-colors">
+                <div class="p-6 md:p-12 hover:bg-[#0a0a0a] transition-colors anim-reveal delay-200">
                     <h3 class="text-impact text-2xl md:text-3xl mb-3 text-white">SOFTWARE<br>DIGITAL</h3>
-                    <p class="text-xs md:text-sm text-gray-400 font-light leading-relaxed">Fokus pada pengalaman pengguna (UX) melalui *micro-interactions* dan pergerakan objek web yang natural.</p>
+                    <p class="text-xs md:text-sm text-gray-400 font-light leading-relaxed">Fokus pada pengalaman pengguna (UX) melalui micro-interactions dan pergerakan objek web yang natural.</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Pendidikan -->
-    <section id="education" class="py-16 md:py-24 px-4 md:px-6 relative z-20">
-        <div class="max-w-[1400px] mx-auto reveal">
-            <h2 class="text-impact text-4xl md:text-7xl mb-8 md:mb-12">RIWAYAT<br>PENDIDIKAN</h2>
+    <section id="education" class="py-16 md:py-24 px-4 md:px-6 relative z-20 reveal-group">
+        <div class="max-w-[1400px] mx-auto">
+            <h2 class="text-impact text-4xl md:text-7xl mb-8 md:mb-12 anim-reveal">RIWAYAT<br>PENDIDIKAN</h2>
 
-            <a href="https://smkn1kalinyamatan.sch.id/" target="_blank" rel="noopener noreferrer" class="block edu-row border-y border-borderline hover:bg-white transition-colors duration-500 group">
+            <!-- Tautan SMKN 1 Kalinyamatan (Tidak diubah) -->
+            <a href="https://smkn1kalinyamatan.sch.id/" target="_blank" rel="noopener noreferrer" class="block edu-row border-y border-borderline hover:bg-white transition-colors duration-500 group anim-reveal delay-100">
                 <div class="py-6 md:py-10 px-4 md:px-8 flex flex-col md:flex-row justify-between md:items-center gap-4 md:gap-6">
                     
                     <div class="flex-1">
@@ -318,16 +345,45 @@
         </div>
     </section>
 
+    <!-- ARCHIVE SECTION (Penggabungan dari archive.html) -->
+    <section id="archive" class="pt-16 md:pt-24 pb-12 md:pb-16 px-4 md:px-6 relative z-20 reveal-group bg-[#030303] border-t border-borderline">
+        <div class="max-w-[1400px] mx-auto">
+            
+            <header class="mb-12 md:mb-20 anim-reveal">
+                <h1 class="text-impact text-[13vw] md:text-[8rem] lg:text-[10rem] leading-[0.8] text-white tracking-normal mb-6 uppercase break-words select-all">
+                    PROJECT<br><span class="text-highlight">ARCHIVE.</span>
+                </h1>
+                <p class="text-[10px] md:text-xs font-bold uppercase tracking-[0.3em] text-gray-400 max-w-lg border-t border-borderline pt-6">
+                    Arsip seluruh riwayat eksperimen, koding, dan dokumentasi project saya.
+                </p>
+            </header>
+
+            <!-- Loading State Archive -->
+            <div id="loading" class="text-center py-20 anim-reveal delay-100">
+                <div class="inline-block border border-borderline px-6 py-3 text-highlight uppercase tracking-[0.3em] text-xs font-bold animate-pulse">
+                    Memuat Data Arsip...
+                </div>
+            </div>
+            
+            <!-- Wadah Archive Dinamis -->
+            <div id="archive-container" class="border-t-2 border-borderline hidden anim-reveal delay-200">
+                <!-- Konten digenerate dari archive.json via JS -->
+            </div>
+
+        </div>
+    </section>
+
     <!-- Kontak & Footer -->
-    <section id="contact" class="pt-24 pb-8 md:pt-32 md:pb-12 px-4 md:px-6 relative z-20 overflow-hidden bg-highlight text-black mt-10 md:mt-20">
-        <div class="max-w-[1400px] mx-auto text-center reveal relative z-10">
-            <p class="text-[10px] md:text-xs font-bold tracking-[0.3em] uppercase mb-4">Mari Berkolaborasi</p>
-            <!-- Responsif Text Besar -->
-            <h2 class="text-impact text-[20vw] md:text-[10rem] leading-[0.8] mb-10 md:mb-12 select-all break-words">
+    <section id="contact" class="pt-24 pb-8 md:pt-32 md:pb-12 px-4 md:px-6 relative z-20 overflow-hidden bg-highlight text-black reveal-group">
+        <div class="max-w-[1400px] mx-auto text-center relative z-10">
+            <p class="text-[10px] md:text-xs font-bold tracking-[0.3em] uppercase mb-4 anim-reveal">Mari Berkolaborasi</p>
+            
+            <h2 class="text-impact text-[20vw] md:text-[10rem] leading-[0.8] mb-10 md:mb-12 select-all break-words anim-reveal delay-100">
                 CONTACT
             </h2>
             
-            <div class="flex flex-col sm:flex-row justify-center gap-3 md:gap-8 mb-16 md:mb-20">
+            <div class="flex flex-col sm:flex-row justify-center gap-3 md:gap-8 mb-16 md:mb-20 anim-reveal delay-200">
+                <!-- Tautan Email dan Telegram (Tidak diubah) -->
                 <a href="mailto:me@rhevaldy.my.id" class="flex items-center justify-center gap-2 md:gap-3 bg-black text-white py-3 px-6 md:py-4 md:px-8 font-bold text-[10px] md:text-sm uppercase tracking-widest hover:scale-105 transition-transform rounded-sm">
                     <i data-lucide="mail" class="w-4 h-4 md:w-5 md:h-5"></i>
                     me@rhevaldy.my.id
@@ -339,7 +395,7 @@
                 </a>
             </div>
             
-            <div class="pt-6 md:pt-8 border-t border-black/20 flex flex-col md:flex-row justify-between items-center text-[9px] md:text-xs font-bold uppercase tracking-[0.2em] text-black/70">
+            <div class="pt-6 md:pt-8 border-t border-black/20 flex flex-col md:flex-row justify-between items-center text-[9px] md:text-xs font-bold uppercase tracking-[0.2em] text-black/70 anim-reveal delay-300">
                 <p>&copy; 2026 RHEVALDY OCTAVIAN HARIS.</p>
                 <p class="mt-3 md:mt-0 flex items-center gap-2">JEPARA, ID</p>
             </div>
@@ -347,9 +403,10 @@
     </section>
 
     <script>
+        // 1. Inisialisasi Ikon
         lucide.createIcons();
 
-        // Logika Taskbar Menu
+        // 2. Logika Taskbar Menu
         const menuBtn = document.getElementById('menu-btn');
         const menuIconContainer = document.getElementById('menu-icon-container');
         const floatingTaskbar = document.getElementById('floating-taskbar');
@@ -361,12 +418,11 @@
             if (isMenuOpen) {
                 floatingTaskbar.classList.add('active');
                 menuIconContainer.innerHTML = '<i data-lucide="x" class="w-4 h-4 md:w-5 md:h-5"></i>';
-                lucide.createIcons();
             } else {
                 floatingTaskbar.classList.remove('active');
                 menuIconContainer.innerHTML = '<i data-lucide="grid" class="w-4 h-4 md:w-5 md:h-5"></i>';
-                lucide.createIcons();
             }
+            lucide.createIcons();
         };
 
         menuBtn.addEventListener('click', toggleMenu);
@@ -377,35 +433,200 @@
             });
         });
 
-        // Scroll Reveal Animation 
+        // 3. LOGIKA ANIMASI SCROLL (Mulus & Bisa Berulang/Repeatable)
         document.addEventListener("DOMContentLoaded", () => {
-            const reveals = document.querySelectorAll(".reveal");
+            const animElements = document.querySelectorAll(".anim-reveal");
 
-            const revealOnScroll = new IntersectionObserver((entries) => {
+            const scrollObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add("active");
+                    } else {
+                        entry.target.classList.remove("active");
                     }
                 });
             }, {
                 root: null,
-                threshold: 0.1,
-                rootMargin: "0px 0px -20px 0px"
+                rootMargin: "0px 0px -50px 0px", 
+                threshold: 0.1 
             });
 
-            reveals.forEach(reveal => {
-                revealOnScroll.observe(reveal);
-            });
+            animElements.forEach(el => scrollObserver.observe(el));
             
             setTimeout(() => {
-                reveals.forEach(reveal => {
-                    const rect = reveal.getBoundingClientRect();
-                    if(rect.top < window.innerHeight) {
-                        reveal.classList.add("active");
+                animElements.forEach(el => {
+                    const rect = el.getBoundingClientRect();
+                    if(rect.top < window.innerHeight && rect.bottom > 0) {
+                        el.classList.add("active");
                     }
                 });
             }, 100);
         });
+
+        // 4. LOGIKA PENGAMBILAN DATA ARCHIVE (Dengan Fallback Offline)
+        document.addEventListener("DOMContentLoaded", () => {
+            // Data cadangan jika archive.json gagal dimuat (karena dibuka via file:///)
+            const fallbackData = [
+                {
+                    id: "web-dev",
+                    title: "WEB DEVELOPMENT",
+                    folderName: "web",
+                    projects: [
+                        {
+                            title: "Portfolio V1",
+                            description: "Desain awal portfolio menggunakan HTML, CSS, dan JS murni dengan sentuhan brutalism dan micro-interactions.",
+                            images: ["web1.jpg", "web2.jpg"]
+                        },
+                        {
+                            title: "E-Commerce Mockup",
+                            description: "Eksperimen tata letak toko online modern dengan animasi transisi yang mulus.",
+                            images: ["web3.jpg"]
+                        }
+                    ]
+                },
+                {
+                    id: "hardware",
+                    title: "HARDWARE & IOT",
+                    folderName: "hardware",
+                    projects: [
+                        {
+                            title: "Smart Home Node",
+                            description: "Eksperimen menggunakan NodeMCU ESP8266 untuk mengontrol relay dan lampu ruangan via jaringan WiFi lokal.",
+                            images: ["iot1.jpg"]
+                        }
+                    ]
+                }
+            ];
+
+            fetch('archive.json')
+                .then(response => {
+                    if (!response.ok) throw new Error("Gagal memuat archive.json");
+                    return response.json();
+                })
+                .then(data => renderArchive(data))
+                .catch(error => {
+                    console.warn("Membuka via file:// mendeteksi pemblokiran fetch. Beralih ke Data Cadangan.", error);
+                    
+                    // Render menggunakan fallback data
+                    renderArchive(fallbackData);
+                    
+                    // Beri tahu user bahwa ini adalah mode offline
+                    const loadingEl = document.getElementById('loading');
+                    loadingEl.classList.remove('hidden');
+                    loadingEl.innerHTML = `
+                        <div class="inline-block border border-highlight bg-highlight/10 px-6 py-3 text-highlight uppercase tracking-[0.3em] text-[10px] font-bold">
+                            Mode Offline Aktif (Membaca Data Bawaan)
+                        </div>
+                    `;
+                    // Sembunyikan notifikasi setelah 3 detik
+                    setTimeout(() => {
+                        loadingEl.classList.add('hidden');
+                    }, 3000);
+                });
+        });
+
+        function renderArchive(archiveData) {
+            const container = document.getElementById('archive-container');
+            const loading = document.getElementById('loading');
+            const fallbackFn = "this.onerror=null; this.outerHTML='<div class=\\'w-full aspect-video flex flex-col items-center justify-center bg-[#0a0a0a] border border-dashed border-[#333] text-[#555] p-4 text-center\\'><i data-lucide=\\'image-off\\' class=\\'w-8 h-8 mb-2\\'></i><span class=\\'text-[9px] font-bold uppercase tracking-widest break-all\\'>'+this.getAttribute('data-filename')+' Missing</span></div>'; setTimeout(() => lucide.createIcons(), 100);";
+
+            let htmlContent = '';
+
+            archiveData.forEach((category) => {
+                let projectsHtml = '';
+                
+                category.projects.forEach((project, projIndex) => {
+                    let imagesHtml = '';
+                    project.images.forEach(imgName => {
+                        const imgPath = `upload/${category.folderName}/${imgName}`;
+                        imagesHtml += `
+                            <div class="mb-4 overflow-hidden border border-borderline">
+                                <img src="${imgPath}" data-filename="${imgName}" onerror="${fallbackFn}" alt="${project.title}" class="w-full object-cover bg-dark hover:scale-105 transition-transform duration-500">
+                            </div>
+                        `;
+                    });
+
+                    const formattedNum = String(projIndex + 1).padStart(2, '0');
+
+                    projectsHtml += `
+                        <div class="mb-20 last:mb-0 md:grid md:grid-cols-12 md:gap-12 pt-10 border-t border-borderline first:border-t-0 first:pt-0 group relative">
+                            <div class="hidden md:block absolute -top-16 -left-8 text-[12rem] font-impact text-outline-archive z-0 pointer-events-none group-hover:text-highlight group-hover:opacity-10 transition-colors duration-500 select-none">
+                                ${formattedNum}
+                            </div>
+                            <div class="md:col-span-5 mb-8 md:mb-0 relative z-10">
+                                <div class="flex items-end gap-4 mb-4">
+                                    <span class="md:hidden text-impact text-5xl text-highlight leading-none">${formattedNum}</span>
+                                    <h4 class="text-impact text-3xl md:text-4xl text-white leading-[0.9] group-hover:text-highlight transition-colors">
+                                        ${project.title}
+                                    </h4>
+                                </div>
+                                <div class="inline-block bg-white text-black px-3 py-1.5 text-[9px] font-bold uppercase tracking-[0.2em] mb-6">
+                                    Project Detail
+                                </div>
+                                <p class="text-xs md:text-sm text-gray-400 leading-relaxed font-medium">
+                                    ${project.description}
+                                </p>
+                            </div>
+                            <div class="md:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4 relative z-10">
+                                ${imagesHtml}
+                            </div>
+                        </div>
+                    `;
+                });
+
+                htmlContent += `
+                    <div class="border-b-2 border-borderline">
+                        <button class="w-full flex items-center justify-between py-8 md:py-12 text-left focus:outline-none group hover:bg-[#111111] transition-colors px-2 md:px-6" onclick="toggleAccordion('content-${category.id}', 'icon-${category.id}')">
+                            <div class="flex flex-col md:flex-row md:items-end gap-2 md:gap-6">
+                                <h3 class="text-impact text-4xl md:text-6xl text-white group-hover:text-highlight transition-colors leading-none tracking-wide">
+                                    ${category.title}
+                                </h3>
+                                <p class="text-[10px] font-bold uppercase tracking-[0.3em] text-gray-500 mb-1 md:mb-2">
+                                    [ ${category.projects.length} PROJECTS ]
+                                </p>
+                            </div>
+                            <div id="icon-${category.id}" class="icon-rotate w-10 h-10 md:w-14 md:h-14 rounded-full border-2 border-borderline flex items-center justify-center text-white group-hover:border-highlight group-hover:text-highlight transition-all flex-shrink-0">
+                                <i data-lucide="plus" class="w-5 h-5 md:w-7 md:h-7"></i>
+                            </div>
+                        </button>
+                        
+                        <div id="content-${category.id}" class="accordion-content px-2 md:px-6">
+                            <div class="pb-12 pt-10">
+                                ${projectsHtml}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = htmlContent;
+            loading.classList.add('hidden');
+            container.classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function toggleAccordion(contentId, iconId) {
+            const content = document.getElementById(contentId);
+            const icon = document.getElementById(iconId);
+            
+            if (content.style.maxHeight) {
+                content.style.maxHeight = null;
+                content.style.opacity = 0;
+                icon.style.transform = 'rotate(0deg)';
+                setTimeout(() => {
+                    icon.innerHTML = '<i data-lucide="plus" class="w-5 h-5 md:w-7 md:h-7"></i>';
+                    lucide.createIcons();
+                }, 150);
+            } else {
+                content.style.maxHeight = content.scrollHeight + "px";
+                content.style.opacity = 1;
+                icon.style.transform = 'rotate(45deg)'; 
+                setTimeout(() => {
+                    icon.innerHTML = '<i data-lucide="x" class="w-5 h-5 md:w-7 md:h-7"></i>';
+                    lucide.createIcons();
+                }, 150);
+            }
+        }
     </script>
 </body>
 </html>
