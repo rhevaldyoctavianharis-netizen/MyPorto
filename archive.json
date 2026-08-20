@@ -22,8 +22,8 @@
         "images": ["1.png"]
       },
       {
-        "title": "Custom Led Matrix Display",
-        "description": "Pembuatan animasi teks berjalan (running text) kustom menggunakan bahasa C++ pada modul sirkuit dot-matrix.",
+        "title": "Custom PCB Design",
+        "description": "Cuma gabut custom desain PCB buat ESP32-C3",
         "images": ["2.png"]
       }
     ]
