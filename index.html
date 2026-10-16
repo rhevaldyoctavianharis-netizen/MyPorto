@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Rhevaldy Octavian Haris | Portfolio & Archive</title>
+    <title>Rhevaldy Octavian | Executive Portfolio</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Google Fonts: Menambahkan Inter untuk nuansa UI/Software premium ala EffectCraft -->
+    <!-- Google Fonts: Inter untuk tampilan Software/Apple-esque yang sangat bersih -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Montserrat:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -21,17 +21,17 @@
             theme: {
                 extend: {
                     fontFamily: {
-                        // Mengganti Impact dengan Inter/Montserrat Bold agar lebih bersih ala EffectCraft
                         impact: ['Inter', 'sans-serif'], 
                         body: ['Inter', 'sans-serif'],
                         accent: ['Caveat', 'cursive'],
                         mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
                     },
                     colors: {
-                        dark: '#050505',
-                        borderline: '#2a2a2a', // Sedikit diterangkan agar garis grid terlihat jelas
+                        dark: '#030303',
+                        borderline: '#1f1f1f', 
                         highlight: '#FF4500', 
-                        muted: '#888888'
+                        muted: '#888888',
+                        surface: '#0a0a0a'
                     }
                 }
             }
@@ -40,41 +40,38 @@
 
     <style>
         html, body {
-            background-color: #050505;
+            background-color: #030303;
             color: #ffffff;
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
             width: 100%;
             -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
-        /* Tipografi Teknis (Diubah dari Brutalism ke Clean Software UI) */
+        ::selection {
+            background-color: #FF4500;
+            color: #ffffff;
+        }
+
+        /* Tipografi Teknis Tingkat Lanjut */
         .text-impact {
             font-family: 'Inter', sans-serif;
             font-weight: 700;
-            letter-spacing: -0.02em;
-        }
-
-        .text-script {
-            font-family: 'Caveat', cursive;
-            text-transform: none;
+            letter-spacing: -0.03em;
         }
 
         .hero-title {
-            font-size: clamp(2.5rem, 10vw, 10rem);
+            font-size: clamp(3rem, 10vw, 10rem);
             font-weight: 800;
             letter-spacing: -0.04em;
         }
 
-        /* Teks Outline (Diperhalus) */
+        /* Teks Outline Subtil */
         .text-outline {
             color: transparent;
-            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.15);
+            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.1);
             transition: all 0.5s ease;
-        }
-        .text-outline:hover {
-            color: rgba(255,255,255,0.05);
-            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3);
         }
 
         .text-outline-archive {
@@ -82,28 +79,24 @@
             -webkit-text-stroke: 1px rgba(255, 255, 255, 0.05);
         }
 
-        /* Efek Grain Latar Belakang (Tetap dipertahankan) */
+        /* Efek Grain Latar Belakang */
         .noise-bg {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
             pointer-events: none;
             z-index: 50;
-            opacity: 0.04;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
 
         /* ==========================================================
-           ANIMASI SCROLL (Diubah ke gaya EffectCraft: Fade & Slide lembut)
+           ANIMASI SCROLL & REVEAL (Gaya Apple/Premium)
         ========================================================== */
-        .reveal-group {
-            perspective: 1000px;
-        }
+        .reveal-group { perspective: 1000px; }
 
         .anim-reveal {
             opacity: 0;
-            /* Dihaluskan: Hanya slide up tanpa scale dan rotate berlebihan */
-            transform: translateY(30px);
-            /* Kurva transisi premium khas software modern */
+            transform: translateY(20px);
             transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), 
                         transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
             will-change: transform, opacity;
@@ -118,16 +111,59 @@
         .delay-200 { transition-delay: 200ms; }
         .delay-300 { transition-delay: 300ms; }
 
-        /* ========================================================== */
+        /* Animasi Khusus Teks Terpotong (Text Split Reveal) */
+        .text-reveal-wrapper {
+            overflow: hidden;
+            display: inline-flex;
+        }
+        .text-reveal-inner {
+            transform: translateY(100%);
+            opacity: 0;
+            transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1), opacity 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .anim-reveal.active .text-reveal-inner {
+            transform: translateY(0);
+            opacity: 1;
+        }
 
-        /* Floating Taskbar */
+        /* ==========================================================
+           EFEK HOVER SPOTLIGHT (Ala Linear/Vercel)
+        ========================================================== */
+        .spotlight-card {
+            position: relative;
+            overflow: hidden;
+        }
+        .spotlight-card::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(
+                600px circle at var(--mouse-x, -500px) var(--mouse-y, -500px),
+                rgba(255, 69, 0, 0.08), /* Warna highlight transparan */
+                transparent 40%
+            );
+            z-index: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            opacity: 0;
+        }
+        .spotlight-card:hover::before {
+            opacity: 1;
+        }
+        .spotlight-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Taskbar */
         #floating-taskbar {
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
             will-change: transform, opacity;
-            background: rgba(20, 20, 20, 0.8);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255,255,255,0.1);
-            color: white;
+            background: rgba(10, 10, 10, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255,255,255,0.08);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
         }
         #floating-taskbar.active {
             opacity: 1;
@@ -135,65 +171,20 @@
             transform: translateX(-50%) translateY(0);
         }
 
-        /* EFEK DUOTONE (Lebih clean dengan border tipis) */
-        .duotone-wrapper {
-            position: relative;
-            cursor: pointer;
-        }
-        .duotone-container {
-            position: relative;
-            background-color: #FF4500; 
+        /* Avatar Terbang (Lerp) */
+        #flying-avatar {
+            position: fixed;
+            top: 0; left: 0;
+            z-index: 100;
+            pointer-events: none; /* Agar tidak menghalangi klik */
+            opacity: 0; /* Disembunyikan sampai inisialisasi JS selesai */
+            transform-origin: top left;
+            /* Kita menggunakan will-change karena ini akan di-update oleh JS setiap frame (Lerp) */
+            will-change: transform, width, height, border-radius;
             overflow: hidden;
-            transition: background-color 0.5s ease;
-            border: 1px solid var(--borderline);
-            border-radius: 4px;
-        }
-        .duotone-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center;
-            filter: grayscale(100%) contrast(1.1) brightness(0.95);
-            mix-blend-mode: multiply;
-            transition: all 0.5s ease;
-        }
-        .duotone-container::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-color: #050505; 
-            mix-blend-mode: lighten;
-            pointer-events: none;
-            transition: all 0.5s ease;
-        }
-        .duotone-wrapper:hover .duotone-container,
-        .duotone-wrapper:active .duotone-container {
-            background-color: transparent;
-        }
-        .duotone-wrapper:hover .duotone-container img,
-        .duotone-wrapper:active .duotone-container img {
-            filter: grayscale(0%) contrast(1) brightness(1);
-            mix-blend-mode: normal;
-        }
-        .duotone-wrapper:hover .duotone-container::after,
-        .duotone-wrapper:active .duotone-container::after {
-            opacity: 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        /* Hover Khusus Row Pendidikan ala Table List */
-        .edu-row {
-            transition: all 0.3s ease;
-        }
-        .edu-row:hover {
-            background-color: rgba(255,255,255,0.03);
-        }
-        .edu-row:hover .edu-arrow {
-            transform: translateX(4px);
-            color: #FF4500;
-            border-color: #FF4500;
-        }
-
-        /* Animasi Accordion */
         .accordion-content {
             max-height: 0;
             overflow: hidden;
@@ -203,103 +194,115 @@
         .icon-rotate {
             transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        
-        /* Utility Garis Vertikal ala Desain Grid */
-        .grid-borders > div {
-            border-color: #2a2a2a;
-        }
     </style>
 </head>
-<body class="selection:bg-highlight selection:text-white flex flex-col min-h-screen relative">
+<body class="flex flex-col min-h-screen relative">
 
     <div class="noise-bg"></div>
 
-    <!-- Navigasi Atas (Lebih Clean & Terstruktur) -->
-    <nav class="fixed w-full top-0 z-[60] bg-[#050505]/80 backdrop-blur-md border-b border-borderline px-4 md:px-6 py-3 md:py-4 transition-all">
+    <!-- NAVIGASI ATAS -->
+    <nav class="fixed w-full top-0 z-[60] bg-[#030303]/70 backdrop-blur-xl border-b border-borderline px-4 md:px-6 py-3 md:py-4 transition-all">
         <div class="max-w-[1400px] mx-auto flex justify-between items-center">
-            <div class="flex items-center gap-4">
+            
+            <div class="flex items-center gap-3">
+                <!-- TEMPAT TUJUAN AVATAR SAAT DI-SCROLL -->
+                <div id="nav-target" class="w-8 h-8 rounded-full shrink-0 flex items-center justify-center">
+                    <!-- Ukuran ini akan ditiru oleh #flying-avatar -->
+                </div>
                 <a href="#hero" class="font-impact text-lg md:text-xl font-bold tracking-tight text-white hover:text-highlight transition-colors flex items-center gap-2">
-                    <div class="w-2 h-2 rounded-full bg-highlight"></div>
                     RHEVALDY.
                 </a>
             </div>
             
             <button id="menu-btn" class="text-white hover:text-highlight transition-colors flex items-center gap-3 group">
-                <span class="hidden md:block font-mono text-[11px] uppercase tracking-widest text-muted group-hover:text-highlight transition-colors">Menu</span>
-                <div id="menu-icon-container" class="border border-borderline p-1.5 rounded bg-[#0a0a0a] group-hover:border-highlight transition-colors">
-                    <i data-lucide="grid" class="w-4 h-4 md:w-5 md:h-5"></i>
+                <span class="hidden md:block font-mono text-[11px] uppercase tracking-widest text-muted group-hover:text-highlight transition-colors">Command Menu</span>
+                <div id="menu-icon-container" class="border border-borderline p-1.5 rounded bg-surface group-hover:border-highlight transition-colors">
+                    <i data-lucide="command" class="w-4 h-4 md:w-5 md:h-5"></i>
                 </div>
             </button>
         </div>
     </nav>
 
     <!-- FLOATING TASKBAR -->
-    <div id="floating-taskbar" class="fixed top-24 left-1/2 transform -translate-x-1/2 -translate-y-10 z-[70] opacity-0 pointer-events-none p-1 md:p-1.5 w-[92%] max-w-sm md:max-w-md rounded-lg flex flex-row gap-1">
-        <a href="#about" class="taskbar-link flex-1 px-2 py-2.5 md:px-4 text-center font-mono text-[10px] md:text-xs tracking-wider hover:bg-white/10 text-gray-300 hover:text-white transition-all rounded-md">
-            Profil
+    <div id="floating-taskbar" class="fixed top-24 left-1/2 transform -translate-x-1/2 -translate-y-8 z-[70] opacity-0 pointer-events-none p-1.5 w-[92%] max-w-md rounded-xl flex flex-row gap-1">
+        <a href="#about" class="taskbar-link flex-1 px-2 py-3 text-center font-mono text-[10px] md:text-xs tracking-wider hover:bg-white/10 text-gray-300 hover:text-white transition-all rounded-lg">
+            Profile
         </a>
-        <a href="#education" class="taskbar-link flex-1 px-2 py-2.5 md:px-4 text-center font-mono text-[10px] md:text-xs tracking-wider hover:bg-white/10 text-gray-300 hover:text-white transition-all rounded-md">
-            Riwayat
+        <a href="#education" class="taskbar-link flex-1 px-2 py-3 text-center font-mono text-[10px] md:text-xs tracking-wider hover:bg-white/10 text-gray-300 hover:text-white transition-all rounded-lg">
+            Background
         </a>
-        <a href="#archive" class="taskbar-link flex-1 px-2 py-2.5 md:px-4 text-center font-mono text-[10px] md:text-xs tracking-wider hover:bg-white/10 text-gray-300 hover:text-white transition-all rounded-md">
+        <a href="#archive" class="taskbar-link flex-1 px-2 py-3 text-center font-mono text-[10px] md:text-xs tracking-wider hover:bg-white/10 text-gray-300 hover:text-white transition-all rounded-lg">
             Archive
         </a>
-        <a href="#contact" class="taskbar-link flex-1 px-2 py-2.5 md:px-4 bg-white text-black text-center font-mono text-[10px] md:text-xs tracking-wider hover:bg-highlight hover:text-white transition-all flex items-center justify-center gap-1.5 rounded-md font-semibold">
-            <i data-lucide="mail" class="w-3 h-3 md:w-3.5 md:h-3.5"></i> Kontak
+        <a href="#contact" class="taskbar-link flex-1 px-2 py-3 bg-white text-black text-center font-mono text-[10px] md:text-xs tracking-wider hover:bg-highlight hover:text-white transition-all flex items-center justify-center gap-1.5 rounded-lg font-semibold">
+            <i data-lucide="mail" class="w-3.5 h-3.5"></i> Connect
         </a>
     </div>
 
-    <!-- HERO SECTION (Gaya Landing Page Software) -->
+    <!-- AVATAR TERBANG (Objek Fisik untuk Animasi Lerp) -->
+    <!-- Elemen ini akan bergerak mulus menggunakan JS dari Hero ke Navbar -->
+    <div id="flying-avatar">
+        <img 
+            src="me.png" 
+            onerror="this.src='https://api.dicebear.com/7.x/notionists/svg?seed=Rhevaldy&backgroundColor=transparent'"
+            alt="Rhevaldy" 
+            class="w-full h-full object-cover filter grayscale contrast-125 transition-all duration-300"
+            id="flying-img"
+        >
+        <!-- Overlay Duotone Subtil -->
+        <div class="absolute inset-0 bg-highlight mix-blend-multiply opacity-40 transition-opacity duration-300" id="flying-overlay"></div>
+    </div>
+
+    <!-- HERO SECTION -->
     <section id="hero" class="relative w-full min-h-[100dvh] pt-32 pb-16 flex flex-col items-center justify-center overflow-hidden px-4 md:px-8 reveal-group">
         
-        <!-- Teks Latar Belakang Subtil -->
-        <div class="absolute w-full text-center z-0 pointer-events-none flex flex-col gap-2 leading-none opacity-60">
-            <span class="text-impact hero-title text-outline break-words anim-reveal">EXPLORE</span>
-            <span class="text-impact hero-title text-outline break-words anim-reveal delay-100">CREATE</span>
+        <!-- Teks Latar Belakang (Lebih redup & teknis) -->
+        <div class="absolute w-full text-center z-0 pointer-events-none flex flex-col gap-2 leading-none opacity-40 select-none">
+            <span class="text-impact hero-title text-outline break-words anim-reveal">ARCHITECT</span>
+            <span class="text-impact hero-title text-outline break-words anim-reveal delay-100">ENGINEER</span>
             <span class="text-impact hero-title text-outline break-words anim-reveal delay-200">INNOVATE</span>
         </div>
 
         <div class="relative z-20 w-full max-w-[1200px] mx-auto flex flex-col items-center mt-4">
             
-            <!-- Label Kategori ala EffectCraft -->
-            <div class="anim-reveal mb-6 md:mb-10 flex items-center gap-3">
-                <span class="font-mono text-muted text-[10px] md:text-xs tracking-widest uppercase">01 / Portfolio</span>
+            <div class="anim-reveal mb-8 md:mb-12 flex items-center gap-3">
+                <span class="font-mono text-muted text-[10px] md:text-xs tracking-widest uppercase">01 / Index</span>
                 <span class="w-1 h-1 rounded-full bg-borderline"></span>
-                <span class="font-mono text-muted text-[10px] md:text-xs tracking-widest uppercase text-highlight flex items-center gap-1.5">
-                    <span class="w-1.5 h-1.5 rounded-full bg-highlight animate-pulse"></span> In Development
+                <span class="font-mono text-[10px] md:text-xs tracking-widest uppercase text-highlight flex items-center gap-2 bg-highlight/10 px-3 py-1 rounded-full border border-highlight/20">
+                    <span class="w-1.5 h-1.5 rounded-full bg-highlight animate-pulse"></span> System Active
                 </span>
             </div>
 
-            <!-- Foto Utama -->
-            <div class="relative w-[60%] sm:w-[45%] md:w-[35%] max-w-xs mx-auto mb-6 z-30 duotone-wrapper anim-reveal delay-100">
-                <div class="duotone-container aspect-[4/5]">
-                    <img 
-                        src="me.png" 
-                        onerror="this.src='https://api.dicebear.com/7.x/notionists/svg?seed=Rhevaldy&backgroundColor=transparent'"
-                        alt="Rhevaldy Octavian Haris" 
-                    >
+            <!-- TEMPAT AWAL FOTO (Placeholder) -->
+            <div class="relative w-[50%] sm:w-[35%] md:w-[25%] max-w-[200px] mx-auto mb-8 z-30 anim-reveal delay-100 group">
+                <div id="hero-target" class="aspect-[4/5] rounded-xl border border-transparent">
+                    <!-- Area transparan, wujud aslinya adalah #flying-avatar yang melayang di atasnya -->
                 </div>
-                <div class="absolute -bottom-3 -right-3 md:-right-6 z-40 bg-white text-black px-3 py-1.5 rounded shadow-lg border border-borderline flex items-center gap-2">
-                    <i data-lucide="zap" class="w-3 h-3 text-highlight"></i>
-                    <span class="font-mono text-[10px] font-bold uppercase tracking-wider">Digital Tinkerer</span>
+                
+                <!-- Label yang hanya muncul di hero -->
+                <div id="hero-avatar-badge" class="absolute -bottom-4 -right-6 md:-right-10 z-40 bg-surface text-white px-4 py-2 rounded-lg shadow-2xl border border-borderline flex items-center gap-2 transition-opacity duration-300">
+                    <i data-lucide="cpu" class="w-3 h-3 text-highlight"></i>
+                    <span class="font-mono text-[9px] font-bold uppercase tracking-wider text-gray-300">Tech Lead</span>
                 </div>
             </div>
 
-            <!-- Teks Utama -->
+            <!-- Teks Utama dengan Animasi Split Reveal -->
             <div class="z-40 text-center mt-4 px-2 anim-reveal delay-200 w-full">
-                <h1 class="text-impact text-5xl sm:text-6xl md:text-7xl lg:text-[7.5rem] text-white tracking-tight leading-[1] max-w-4xl mx-auto">
-                    RHEVALDY<br>OCTAVIAN
+                <h1 class="text-impact text-5xl sm:text-6xl md:text-7xl lg:text-[7rem] text-white tracking-tight leading-[1] max-w-4xl mx-auto flex flex-col">
+                    <span class="text-reveal-wrapper"><span class="text-reveal-inner">RHEVALDY</span></span>
+                    <span class="text-reveal-wrapper"><span class="text-reveal-inner text-gray-400">OCTAVIAN</span></span>
                 </h1>
-                <p class="mt-8 font-mono text-[11px] md:text-sm text-gray-400 max-w-xl mx-auto leading-relaxed border-t border-borderline pt-6">
-                    Mengeksplorasi batas teknologi melalui Kode, Elektronika, dan Komputasi.
+                
+                <p class="mt-8 font-mono text-[11px] md:text-sm text-gray-400 max-w-2xl mx-auto leading-relaxed border-t border-borderline pt-6">
+                    Merancang ekosistem digital dan fisik melalui <strong class="text-white font-medium">Rekayasa Perangkat Lunak</strong>, <strong class="text-white font-medium">Arsitektur Sistem</strong>, dan <strong class="text-white font-medium">Integrasi IoT</strong> tingkat lanjut.
                 </p>
                 
-                <div class="mt-8 flex items-center justify-center gap-4">
-                    <a href="#archive" class="bg-white text-black font-mono text-[11px] md:text-xs font-bold uppercase tracking-widest px-6 py-3 rounded flex items-center gap-2 hover:bg-gray-200 transition-colors">
-                        View Archive <i data-lucide="arrow-down" class="w-3 h-3"></i>
+                <div class="mt-10 flex items-center justify-center gap-4 flex-wrap">
+                    <a href="#archive" class="bg-white text-black font-mono text-[10px] md:text-xs font-bold uppercase tracking-widest px-8 py-3.5 rounded-lg flex items-center gap-2 hover:scale-105 transition-transform">
+                        Explore Archive <i data-lucide="arrow-down-right" class="w-4 h-4"></i>
                     </a>
-                    <a href="https://github.com/rapaldy" target="_blank" class="border border-borderline bg-[#0a0a0a] text-white font-mono text-[11px] md:text-xs font-bold uppercase tracking-widest px-6 py-3 rounded flex items-center gap-2 hover:border-highlight transition-colors">
-                        <i data-lucide="github" class="w-3 h-3"></i> GitHub
+                    <a href="https://github.com/rhevaldyoctavianharis-netizen" target="_blank" class="border border-borderline bg-surface text-white font-mono text-[10px] md:text-xs font-bold uppercase tracking-widest px-8 py-3.5 rounded-lg flex items-center gap-2 hover:border-highlight transition-colors">
+                        <i data-lucide="github" class="w-4 h-4"></i> GitHub Profile
                     </a>
                 </div>
             </div>
@@ -307,78 +310,96 @@
         </div>
     </section>
 
-    <!-- Teks Marquee Berjalan (Diperhalus) -->
-    <div class="w-full border-y border-borderline bg-[#0a0a0a] text-muted py-3 md:py-4 overflow-hidden flex whitespace-nowrap z-20">
-        <div class="animate-marquee font-mono text-xs md:text-sm tracking-[0.3em] uppercase inline-block">
-            <span class="mx-4">GUE UDAH PUNYA WEBSITE SENDIRI LOE KAPAN?</span>
-            <span class="mx-4 text-borderline">///</span>
-            <span class="mx-4">GUE UDAH PUNYA WEBSITE SENDIRI LOE KAPAN?</span>
-            <span class="mx-4 text-borderline">///</span>
-            <span class="mx-4">GUE UDAH PUNYA WEBSITE SENDIRI LOE KAPAN?</span>
-            <span class="mx-4 text-borderline">///</span>
+    <!-- Teks Marquee Berjalan (Kata-kata Profesional) -->
+    <div class="w-full border-y border-borderline bg-[#080808] text-muted py-3.5 md:py-5 overflow-hidden flex whitespace-nowrap z-20">
+        <div class="animate-marquee font-mono text-[10px] md:text-xs tracking-[0.3em] uppercase inline-block">
+            <span class="mx-4 text-gray-400">ARCHITECTING ROBUST DIGITAL EXPERIENCES</span>
+            <span class="mx-4 text-highlight">///</span>
+            <span class="mx-4 text-gray-400">ENGINEERING THE FUTURE OF WEB & HARDWARE</span>
+            <span class="mx-4 text-highlight">///</span>
+            <span class="mx-4 text-gray-400">ARCHITECTING ROBUST DIGITAL EXPERIENCES</span>
+            <span class="mx-4 text-highlight">///</span>
+            <span class="mx-4 text-gray-400">ENGINEERING THE FUTURE OF WEB & HARDWARE</span>
+            <span class="mx-4 text-highlight">///</span>
         </div>
         <style>
-            .animate-marquee { animation: marquee 20s linear infinite; }
+            .animate-marquee { animation: marquee 25s linear infinite; }
             @keyframes marquee { 0% { transform: translateX(0%); } 100% { transform: translateX(-50%); } }
         </style>
     </div>
 
-    <!-- Bagian Tentang (Gaya Fitur/Highlights) -->
-    <section id="about" class="py-20 md:py-32 px-4 md:px-6 relative z-20 reveal-group">
+    <!-- EXECUTIVE PROFILE -->
+    <section id="about" class="py-24 md:py-32 px-4 md:px-6 relative z-20 reveal-group">
         <div class="max-w-[1400px] mx-auto">
             
             <div class="grid lg:grid-cols-12 gap-8 md:gap-12 border-b border-borderline pb-16 md:pb-24">
                 <div class="lg:col-span-5 anim-reveal flex flex-col justify-between">
-                    <span class="font-mono text-muted text-xs tracking-widest uppercase mb-4 block">02 / Highlights</span>
-                    <h2 class="text-impact text-4xl md:text-6xl leading-tight tracking-tight">PROFIL<br><span class="text-gray-500">SINGKAT.</span></h2>
+                    <span class="font-mono text-muted text-xs tracking-widest uppercase mb-4 block">02 / Abstract</span>
+                    <h2 class="text-impact text-4xl md:text-6xl leading-tight tracking-tight">EXECUTIVE<br><span class="text-gray-500">PROFILE.</span></h2>
                 </div>
                 <div class="lg:col-span-7 flex flex-col justify-end mt-4 lg:mt-0 anim-reveal delay-100 border-l border-borderline pl-0 lg:pl-12">
-                    <p class="text-lg md:text-xl font-normal leading-relaxed mb-8 text-gray-300">
-                        Halo, saya <strong class="text-white font-medium">Rhevaldy Octavian Haris</strong>. Seorang pembelajar otodidak yang menyukai eksperimen. Saya tidak hanya menulis <span class="text-white border-b border-highlight pb-0.5">baris kode</span>, tetapi juga merangkai <span class="text-white border-b border-highlight pb-0.5">sirkuit elektronik</span> di meja kerja saya.
+                    <p class="text-lg md:text-xl font-normal leading-relaxed mb-8 text-gray-400">
+                        Saya adalah seorang <strong class="text-white font-medium">Tech Enthusiast</strong> dan <strong class="text-white font-medium">Pengembang Sistem</strong>. Saya tidak sekadar menulis <span class="text-white border-b border-highlight pb-1 cursor-text">arsitektur kode</span>, tetapi juga merancang <span class="text-white border-b border-highlight pb-1 cursor-text">integrasi perangkat keras</span> yang kompleks untuk menciptakan solusi komprehensif.
                     </p>
-                    <div class="flex items-center gap-3 border border-borderline bg-[#0a0a0a] p-3 md:p-4 rounded w-max hover:border-gray-500 transition-colors cursor-default">
-                        <i data-lucide="map-pin" class="w-4 h-4 md:w-5 md:h-5 text-gray-400"></i>
-                        <span class="font-mono text-[10px] md:text-xs tracking-widest uppercase text-gray-300">Jepara, Jawa Tengah</span>
+                    <div class="flex items-center gap-3 border border-borderline bg-surface px-4 py-3 rounded-lg w-max hover:border-gray-600 transition-colors cursor-default">
+                        <i data-lucide="map-pin" class="w-4 h-4 md:w-5 md:h-5 text-highlight"></i>
+                        <span class="font-mono text-[10px] md:text-xs tracking-widest uppercase text-gray-300">Base: Jepara, ID</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Grid Keahlian -->
-            <div class="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x grid-borders border-b border-borderline">
-                <div class="p-8 md:p-12 hover:bg-[#0a0a0a] transition-colors anim-reveal group">
-                    <span class="font-mono text-muted text-xs tracking-widest uppercase mb-6 block group-hover:text-highlight transition-colors">01</span>
-                    <h3 class="text-impact text-xl md:text-2xl mb-4 text-white">WEB<br>CODING</h3>
-                    <p class="text-sm text-gray-400 font-light leading-relaxed">Merancang website modern dengan tata letak geometris dan transisi yang halus layaknya standar industri kreatif.</p>
+            <!-- Grid Keahlian dengan Efek Mouse Spotlight -->
+            <div class="grid grid-cols-1 md:grid-cols-3 border-b border-borderline border-x">
+                <div class="spotlight-card p-8 md:p-12 border-b md:border-b-0 md:border-r border-borderline anim-reveal">
+                    <div class="spotlight-content">
+                        <div class="flex items-center justify-between mb-8">
+                            <span class="font-mono text-muted text-xs tracking-widest uppercase block">Sys. 01</span>
+                            <i data-lucide="layout-template" class="w-6 h-6 text-gray-600"></i>
+                        </div>
+                        <h3 class="text-impact text-xl md:text-2xl mb-4 text-white">FRONTEND<br>ARCHITECTURE</h3>
+                        <p class="text-sm text-gray-400 font-light leading-relaxed">Membangun antarmuka web dengan performa tinggi, berfokus pada skalabilitas kode, presisi geometris, dan standar industri modern.</p>
+                    </div>
                 </div>
-                <div class="p-8 md:p-12 hover:bg-[#0a0a0a] transition-colors anim-reveal delay-100 group">
-                    <span class="font-mono text-muted text-xs tracking-widest uppercase mb-6 block group-hover:text-highlight transition-colors">02</span>
-                    <h3 class="text-impact text-xl md:text-2xl mb-4 text-white">HARDWARE<br>OPREK</h3>
-                    <p class="text-sm text-gray-400 font-light leading-relaxed">Bereksperimen dengan mikrokontroler (Arduino/ESP) untuk menciptakan perangkat keras interaktif (IoT).</p>
+                
+                <div class="spotlight-card p-8 md:p-12 border-b md:border-b-0 md:border-r border-borderline anim-reveal delay-100">
+                    <div class="spotlight-content">
+                        <div class="flex items-center justify-between mb-8">
+                            <span class="font-mono text-muted text-xs tracking-widest uppercase block">Sys. 02</span>
+                            <i data-lucide="cpu" class="w-6 h-6 text-gray-600"></i>
+                        </div>
+                        <h3 class="text-impact text-xl md:text-2xl mb-4 text-white">IoT & SYSTEMS<br>ENGINEERING</h3>
+                        <p class="text-sm text-gray-400 font-light leading-relaxed">Mengembangkan solusi Internet of Things (IoT) dan integrasi mikrokontroler tingkat lanjut untuk menjembatani sistem digital dan fisik.</p>
+                    </div>
                 </div>
-                <div class="p-8 md:p-12 hover:bg-[#0a0a0a] transition-colors anim-reveal delay-200 group">
-                    <span class="font-mono text-muted text-xs tracking-widest uppercase mb-6 block group-hover:text-highlight transition-colors">03</span>
-                    <h3 class="text-impact text-xl md:text-2xl mb-4 text-white">SOFTWARE<br>DIGITAL</h3>
-                    <p class="text-sm text-gray-400 font-light leading-relaxed">Fokus pada pengalaman pengguna (UX) melalui micro-interactions dan pergerakan objek web yang natural.</p>
+                
+                <div class="spotlight-card p-8 md:p-12 anim-reveal delay-200">
+                    <div class="spotlight-content">
+                        <div class="flex items-center justify-between mb-8">
+                            <span class="font-mono text-muted text-xs tracking-widest uppercase block">Sys. 03</span>
+                            <i data-lucide="sparkles" class="w-6 h-6 text-gray-600"></i>
+                        </div>
+                        <h3 class="text-impact text-xl md:text-2xl mb-4 text-white">INTERACTIVE<br>UX DESIGN</h3>
+                        <p class="text-sm text-gray-400 font-light leading-relaxed">Merancang pengalaman yang imersif melalui implementasi micro-interactions presisi dan animasi berbasis fisika yang mulus.</p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Pendidikan (Gaya Tabel Data) -->
-    <section id="education" class="py-10 md:py-16 px-4 md:px-6 relative z-20 reveal-group">
+    <!-- BACKGROUND / EDUCATION -->
+    <section id="education" class="py-12 md:py-20 px-4 md:px-6 relative z-20 reveal-group">
         <div class="max-w-[1400px] mx-auto">
-            <div class="anim-reveal mb-8 md:mb-12">
-                <span class="font-mono text-muted text-xs tracking-widest uppercase mb-4 block">03 / Background</span>
-                <h2 class="text-impact text-3xl md:text-5xl tracking-tight">RIWAYAT<br>PENDIDIKAN.</h2>
+            <div class="anim-reveal mb-10 md:mb-16">
+                <span class="font-mono text-muted text-xs tracking-widest uppercase mb-4 block">03 / History</span>
+                <h2 class="text-impact text-3xl md:text-5xl tracking-tight">ACADEMIC<br>BACKGROUND.</h2>
             </div>
 
-            <!-- Tautan SMKN 1 Kalinyamatan -->
-            <div class="border-t border-borderline">
-                <a href="https://smkn1kalinyamatan.sch.id/" target="_blank" rel="noopener noreferrer" class="block edu-row border-b border-borderline py-6 md:py-8 px-4 md:px-6 flex flex-col md:flex-row justify-between md:items-center gap-4 md:gap-6 group anim-reveal delay-100">
+            <div class="border-y border-borderline">
+                <a href="https://smkn1kalinyamatan.sch.id/" target="_blank" rel="noopener noreferrer" class="block py-8 md:py-10 px-4 md:px-8 flex flex-col md:flex-row justify-between md:items-center gap-4 group hover:bg-surface transition-colors anim-reveal delay-100">
                     
                     <div class="flex-1">
-                        <p class="font-mono text-[10px] tracking-widest uppercase text-muted mb-2">Sekolah Menengah Kejuruan</p>
-                        <h3 class="text-impact text-xl md:text-2xl text-white group-hover:text-highlight transition-colors">
+                        <p class="font-mono text-[10px] tracking-widest uppercase text-highlight mb-3">Vocational High School</p>
+                        <h3 class="text-impact text-2xl md:text-3xl text-white group-hover:pl-2 transition-all duration-300">
                             SMKN 1 KALINYAMATAN
                         </h3>
                     </div>
@@ -387,10 +408,10 @@
                         Jepara, ID
                     </div>
                     
-                    <div class="flex items-center justify-between md:justify-end gap-6 mt-2 md:mt-0">
-                        <span class="font-mono text-[10px] md:text-xs uppercase tracking-widest text-gray-300 group-hover:text-white transition-colors">Kunjungi Web</span>
-                        <div class="w-8 h-8 md:w-10 md:h-10 rounded border border-borderline flex items-center justify-center transition-all edu-arrow text-gray-400 group-hover:text-white bg-[#0a0a0a]">
-                            <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+                    <div class="flex items-center justify-between md:justify-end gap-6 mt-4 md:mt-0">
+                        <span class="font-mono text-[10px] uppercase tracking-widest text-gray-400 group-hover:text-white transition-colors">View Institutional Site</span>
+                        <div class="w-10 h-10 rounded-full border border-borderline flex items-center justify-center transition-all text-gray-400 group-hover:text-black group-hover:bg-white group-hover:border-white group-hover:-rotate-45">
+                            <i data-lucide="arrow-right" class="w-4 h-4"></i>
                         </div>
                     </div>
                 </a>
@@ -398,74 +419,84 @@
         </div>
     </section>
 
-    <!-- ARCHIVE SECTION (Clean UI Accordion) -->
-    <section id="archive" class="pt-20 md:pt-32 pb-16 md:pb-24 px-4 md:px-6 relative z-20 reveal-group bg-[#030303] border-t border-borderline">
+    <!-- ARCHIVE SECTION -->
+    <section id="archive" class="pt-24 md:pt-32 pb-16 md:pb-24 px-4 md:px-6 relative z-20 reveal-group bg-[#020202] border-t border-borderline">
         <div class="max-w-[1400px] mx-auto">
             
             <header class="mb-16 md:mb-24 anim-reveal">
-                <span class="font-mono text-muted text-xs tracking-widest uppercase mb-6 block">04 / Directory</span>
-                <h1 class="text-impact text-[10vw] md:text-[6rem] lg:text-[8rem] leading-[0.9] text-white tracking-tight mb-8 uppercase break-words">
-                    PROJECT<br><span class="text-gray-600">ARCHIVE.</span>
+                <span class="font-mono text-muted text-xs tracking-widest uppercase mb-6 block">04 / Database</span>
+                <h1 class="text-impact text-[10vw] md:text-[7rem] lg:text-[9rem] leading-[0.9] text-white tracking-tight mb-8 uppercase break-words">
+                    PROJECT<br><span class="text-gray-700">DIRECTORY.</span>
                 </h1>
                 <p class="font-mono text-[10px] md:text-xs uppercase tracking-widest text-muted max-w-lg border-t border-borderline pt-6">
-                    Arsip seluruh riwayat eksperimen, koding, dan dokumentasi project saya.
+                    Repositori terpusat dari seluruh implementasi arsitektur, eksperimen perangkat keras, dan dokumentasi sistem.
                 </p>
             </header>
 
-            <!-- Loading State Archive -->
             <div id="loading" class="text-center py-20 anim-reveal delay-100">
-                <div class="inline-flex items-center gap-3 border border-borderline bg-[#0a0a0a] px-6 py-4 font-mono text-muted uppercase tracking-widest text-xs animate-pulse rounded">
-                    <i data-lucide="loader-2" class="w-4 h-4 animate-spin text-highlight"></i> Memuat Data Arsip...
+                <div class="inline-flex items-center gap-3 border border-borderline bg-surface px-6 py-4 font-mono text-gray-400 uppercase tracking-widest text-[10px] rounded-lg shadow-xl">
+                    <i data-lucide="loader" class="w-4 h-4 animate-spin text-white"></i> Fetching Database Records...
                 </div>
             </div>
             
-            <!-- Wadah Archive Dinamis -->
             <div id="archive-container" class="border-t border-borderline hidden anim-reveal delay-200">
-                <!-- Konten digenerate dari archive.json via JS -->
+                <!-- Konten dinamis -->
             </div>
 
         </div>
     </section>
 
-    <!-- Kontak & Footer (Sleek Minimalist) -->
-    <section id="contact" class="pt-24 pb-8 md:pt-32 md:pb-8 px-4 md:px-6 relative z-20 overflow-hidden bg-[#0a0a0a] border-t border-borderline reveal-group">
+    <!-- CONTACT & FOOTER -->
+    <section id="contact" class="pt-24 pb-8 md:pt-32 md:pb-8 px-4 md:px-6 relative z-20 overflow-hidden bg-surface border-t border-borderline reveal-group">
         <div class="max-w-[1400px] mx-auto relative z-10 flex flex-col">
             
-            <div class="text-center mb-16 md:mb-24">
-                <span class="font-mono text-muted text-xs tracking-widest uppercase mb-4 block anim-reveal">05 / Connect</span>
+            <div class="text-center mb-20 md:mb-32">
+                <span class="font-mono text-highlight text-xs tracking-widest uppercase mb-6 block anim-reveal">05 / Initialize Connection</span>
                 
-                <h2 class="text-impact text-6xl md:text-[8rem] leading-none mb-12 tracking-tight text-white anim-reveal delay-100">
-                    CONTACT.
+                <h2 class="text-impact text-5xl md:text-[7rem] leading-none mb-12 tracking-tight text-white anim-reveal delay-100">
+                    INITIATE CONTACT.
                 </h2>
                 
                 <div class="flex flex-col sm:flex-row justify-center gap-4 md:gap-6 anim-reveal delay-200">
-                    <a href="mailto:me@rhevaldy.my.id" class="flex items-center justify-center gap-3 bg-white text-black py-3.5 px-6 md:py-4 md:px-8 font-mono text-[10px] md:text-xs font-bold uppercase tracking-widest hover:bg-gray-200 transition-colors rounded">
+                    <a href="mailto:me@rhevaldy.my.id" class="flex items-center justify-center gap-3 bg-white text-black py-4 px-8 font-mono text-[10px] md:text-xs font-bold uppercase tracking-widest hover:scale-105 transition-transform rounded-lg shadow-xl">
                         <i data-lucide="mail" class="w-4 h-4"></i>
                         me@rhevaldy.my.id
                     </a>
                     
-                    <a href="https://t.me/rapaldy" target="_blank" class="flex items-center justify-center gap-3 border border-borderline bg-[#111] text-white py-3.5 px-6 md:py-4 md:px-8 font-mono text-[10px] md:text-xs font-bold uppercase tracking-widest hover:border-highlight transition-all rounded">
-                        <i data-lucide="send" class="w-4 h-4 text-muted group-hover:text-white"></i>
-                        @rapaldy
+                    <a href="https://t.me/rapaldy" target="_blank" class="flex items-center justify-center gap-3 border border-borderline bg-[#111] text-white py-4 px-8 font-mono text-[10px] md:text-xs font-bold uppercase tracking-widest hover:border-white transition-all rounded-lg">
+                        <i data-lucide="terminal" class="w-4 h-4 text-gray-400 group-hover:text-white"></i>
+                        Ping @rapaldy
                     </a>
                 </div>
             </div>
             
-            <div class="pt-6 md:pt-8 border-t border-borderline flex flex-col md:flex-row justify-between items-center font-mono text-[10px] uppercase tracking-widest text-muted anim-reveal delay-300">
-                <p>&copy; 2026 RHEVALDY OCTAVIAN HARIS.</p>
+            <div class="pt-6 md:pt-8 border-t border-borderline flex flex-col md:flex-row justify-between items-center font-mono text-[9px] md:text-[10px] uppercase tracking-widest text-muted anim-reveal delay-300">
+                <p>&copy; 2026 RHEVALDY OCTAVIAN HARIS. ALL SYSTEMS NORMAL.</p>
                 <div class="mt-4 md:mt-0 flex items-center gap-6">
-                    <span class="hover:text-white cursor-pointer transition-colors">Made by an Explorer</span>
-                    <span class="flex items-center gap-1.5"><i data-lucide="map-pin" class="w-3 h-3"></i> JEPARA, ID</span>
+                    <a href="https://github.com/rhevaldyoctavianharis-netizen" target="_blank" class="hover:text-white transition-colors flex items-center gap-2">
+                        <i data-lucide="github" class="w-3 h-3"></i> Repository
+                    </a>
+                    <span class="flex items-center gap-1.5 text-gray-500"><i data-lucide="map-pin" class="w-3 h-3"></i> SYSTEM LOCATION: JEPARA</span>
                 </div>
             </div>
         </div>
     </section>
 
     <script>
-        // 1. Inisialisasi Ikon
         lucide.createIcons();
 
-        // 2. Logika Taskbar Menu (Sama persis)
+        // --- MOUSE SPOTLIGHT EFFECT ---
+        document.querySelectorAll('.spotlight-card').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+
+        // --- TASKBAR LOGIC ---
         const menuBtn = document.getElementById('menu-btn');
         const menuIconContainer = document.getElementById('menu-icon-container');
         const floatingTaskbar = document.getElementById('floating-taskbar');
@@ -477,79 +508,142 @@
             if (isMenuOpen) {
                 floatingTaskbar.classList.add('active');
                 menuIconContainer.innerHTML = '<i data-lucide="x" class="w-4 h-4 md:w-5 md:h-5 text-white"></i>';
+                menuIconContainer.classList.add('border-highlight');
             } else {
                 floatingTaskbar.classList.remove('active');
-                menuIconContainer.innerHTML = '<i data-lucide="grid" class="w-4 h-4 md:w-5 md:h-5 text-white"></i>';
+                menuIconContainer.innerHTML = '<i data-lucide="command" class="w-4 h-4 md:w-5 md:h-5 text-white"></i>';
+                menuIconContainer.classList.remove('border-highlight');
             }
             lucide.createIcons();
         };
 
         menuBtn.addEventListener('click', toggleMenu);
+        taskbarLinks.forEach(link => link.addEventListener('click', () => isMenuOpen && toggleMenu()));
 
-        taskbarLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                if(isMenuOpen) toggleMenu();
-            });
-        });
-
-        // 3. LOGIKA ANIMASI SCROLL (Sama persis)
+        // --- SCROLL ANIMATION OBSERVER ---
         document.addEventListener("DOMContentLoaded", () => {
             const animElements = document.querySelectorAll(".anim-reveal");
-
             const scrollObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add("active");
                     } else {
+                        // Hilangkan baris ini jika Anda tidak ingin animasi terulang saat scroll naik
                         entry.target.classList.remove("active");
                     }
                 });
-            }, {
-                root: null,
-                rootMargin: "0px 0px -50px 0px", 
-                threshold: 0.1 
-            });
+            }, { rootMargin: "0px 0px -50px 0px", threshold: 0.1 });
 
             animElements.forEach(el => scrollObserver.observe(el));
             
             setTimeout(() => {
                 animElements.forEach(el => {
                     const rect = el.getBoundingClientRect();
-                    if(rect.top < window.innerHeight && rect.bottom > 0) {
-                        el.classList.add("active");
-                    }
+                    if(rect.top < window.innerHeight && rect.bottom > 0) el.classList.add("active");
                 });
             }, 100);
         });
 
-        // 4. LOGIKA PENGAMBILAN DATA ARCHIVE (Dengan modifikasi string literal HTML untuk gaya UI Clean)
+        // --- SUPER SMOOTH LERP AVATAR (APPLE-LIKE TRANSITION) ---
+        // Logika fisika pergerakan foto dari tengah layar ke pojok menu navigasi
+        
+        let currentX = 0, currentY = 0, currentW = 0, currentH = 0, currentRadius = 12; // 12px for rounded-xl
+        let targetX = 0, targetY = 0, targetW = 0, targetH = 0, targetRadius = 12;
+        let isLerpInitialized = false;
+
+        function animateAvatar() {
+            const heroTarget = document.getElementById('hero-target');
+            const navTarget = document.getElementById('nav-target');
+            const flyingAvatar = document.getElementById('flying-avatar');
+            const heroBadge = document.getElementById('hero-avatar-badge');
+            
+            if (!heroTarget || !navTarget || !flyingAvatar) {
+                requestAnimationFrame(animateAvatar);
+                return;
+            }
+
+            // Kapan kita mengubah targetnya ke Navigation Bar?
+            // Saat user scroll lebih dari 120px
+            const isDocked = window.scrollY > 120;
+            
+            const activeTarget = isDocked ? navTarget : heroTarget;
+            const rect = activeTarget.getBoundingClientRect();
+            
+            targetX = rect.left;
+            targetY = rect.top;
+            targetW = rect.width;
+            targetH = rect.height;
+            targetRadius = isDocked ? 50 : 12; // 50% untuk lingkaran, 12px untuk kotak hero
+
+            // Inisialisasi posisi awal tanpa animasi agar tidak terbang dari 0,0 saat reload
+            if (!isLerpInitialized && rect.width > 0) {
+                currentX = targetX;
+                currentY = targetY;
+                currentW = targetW;
+                currentH = targetH;
+                currentRadius = targetRadius;
+                flyingAvatar.style.opacity = 1; // Tampilkan setelah setup selesai
+                isLerpInitialized = true;
+            }
+
+            // Linear Interpolation (Kecepatan lerp 0.12 memberikan efek buttery smooth)
+            const lerpSpeed = 0.12;
+            currentX += (targetX - currentX) * lerpSpeed;
+            currentY += (targetY - currentY) * lerpSpeed;
+            currentW += (targetW - currentW) * lerpSpeed;
+            currentH += (targetH - currentH) * lerpSpeed;
+            currentRadius += (targetRadius - currentRadius) * lerpSpeed;
+
+            // Terapkan kalkulasi langsung ke style
+            flyingAvatar.style.transform = `translate(${currentX}px, ${currentY}px)`;
+            flyingAvatar.style.width = `${currentW}px`;
+            flyingAvatar.style.height = `${currentH}px`;
+            flyingAvatar.style.borderRadius = isDocked ? `${currentRadius}%` : `${currentRadius}px`;
+
+            // Efek visual tambahan
+            const img = document.getElementById('flying-img');
+            const overlay = document.getElementById('flying-overlay');
+            if (isDocked) {
+                img.style.filter = "grayscale(0%) contrast(100%)";
+                overlay.style.opacity = "0";
+                heroBadge.style.opacity = "0";
+                heroBadge.style.pointerEvents = "none";
+            } else {
+                img.style.filter = "grayscale(100%) contrast(125%)";
+                overlay.style.opacity = "0.4";
+                heroBadge.style.opacity = "1";
+                heroBadge.style.pointerEvents = "auto";
+            }
+
+            requestAnimationFrame(animateAvatar);
+        }
+        
+        // Memulai Loop Fisika
+        requestAnimationFrame(animateAvatar);
+
+        // --- LOGIKA FETCH ARCHIVE JSON ---
         document.addEventListener("DOMContentLoaded", () => {
             const fallbackData = [
                 {
-                    id: "web-dev",
-                    title: "WEB DEVELOPMENT",
+                    id: "sys-web",
+                    title: "FRONTEND SYSTEMS",
                     folderName: "web",
                     projects: [
                         {
-                            title: "Portfolio V1",
-                            description: "Desain awal portfolio menggunakan HTML, CSS, dan JS murni dengan sentuhan brutalism dan micro-interactions.",
+                            title: "Portfolio Architecture V1",
+                            description: "Implementasi awal arsitektur portfolio menggunakan native HTML, CSS, JS dengan integrasi fisika animasi dan layout brutalist.",
                             images: ["web1.jpg", "web2.jpg"]
-                        },
-                        {
-                            title: "E-Commerce Mockup",
-                            description: "Eksperimen tata letak toko online modern dengan animasi transisi yang mulus.",
-                            images: ["web3.jpg"]
                         }
                     ]
                 },
                 {
-                    id: "hardware",
-                    title: "HARDWARE & IOT",
+                    id: "sys-iot",
+                    title: "HARDWARE & IOT INTEGRATION",
                     folderName: "hardware",
                     projects: [
                         {
-                            title: "Smart Home Node",
-                            description: "Eksperimen menggunakan NodeMCU ESP8266 untuk mengontrol relay dan lampu ruangan via jaringan WiFi lokal.",
+                            title: "Smart Environment Node",
+                            description: "Eksperimen kontrol nirkabel menggunakan mikrokontroler ESP8266 untuk otomatisasi relai dan lampu berbasis jaringan terdesentralisasi.",
                             images: ["iot1.jpg"]
                         }
                     ]
@@ -558,23 +652,21 @@
 
             fetch('archive.json')
                 .then(response => {
-                    if (!response.ok) throw new Error("Gagal memuat archive.json");
+                    if (!response.ok) throw new Error("Database fetch failed.");
                     return response.json();
                 })
                 .then(data => renderArchive(data))
                 .catch(error => {
-                    console.warn("Membuka via file:// mendeteksi pemblokiran fetch. Beralih ke Data Cadangan.", error);
+                    console.warn("API Offline / Local File Detection. Falling back to local state.", error);
                     renderArchive(fallbackData);
                     const loadingEl = document.getElementById('loading');
                     loadingEl.classList.remove('hidden');
                     loadingEl.innerHTML = `
-                        <div class="inline-flex items-center gap-2 border border-highlight bg-highlight/10 px-4 py-2 font-mono text-highlight uppercase tracking-widest text-[10px] rounded">
-                            <i data-lucide="wifi-off" class="w-3 h-3"></i> Mode Offline Aktif (Membaca Data Bawaan)
+                        <div class="inline-flex items-center gap-2 border border-highlight bg-highlight/10 px-4 py-2 font-mono text-highlight uppercase tracking-widest text-[10px] rounded-lg shadow-lg">
+                            <i data-lucide="wifi-off" class="w-3 h-3"></i> System Offline: Rendering Cached Data
                         </div>
                     `;
-                    setTimeout(() => {
-                        loadingEl.classList.add('hidden');
-                    }, 4000);
+                    setTimeout(() => { loadingEl.classList.add('hidden'); }, 4000);
                     lucide.createIcons();
                 });
         });
@@ -582,7 +674,7 @@
         function renderArchive(archiveData) {
             const container = document.getElementById('archive-container');
             const loading = document.getElementById('loading');
-            const fallbackFn = "this.onerror=null; this.outerHTML='<div class=\\'w-full aspect-video flex flex-col items-center justify-center bg-[#0a0a0a] border border-dashed border-[#222] text-muted p-4 text-center rounded\\'><i data-lucide=\\'image-off\\' class=\\'w-6 h-6 mb-3\\'></i><span class=\\'font-mono text-[9px] uppercase tracking-widest break-all\\'>'+this.getAttribute('data-filename')+' Missing</span></div>'; setTimeout(() => lucide.createIcons(), 100);";
+            const fallbackFn = "this.onerror=null; this.outerHTML='<div class=\\'w-full aspect-video flex flex-col items-center justify-center bg-surface border border-borderline text-muted p-4 text-center rounded-lg\\'><i data-lucide=\\'file-warning\\' class=\\'w-6 h-6 mb-3\\'></i><span class=\\'font-mono text-[9px] uppercase tracking-widest break-all\\'>Asset '+this.getAttribute('data-filename')+' Missing</span></div>'; setTimeout(() => lucide.createIcons(), 100);";
 
             let htmlContent = '';
 
@@ -595,8 +687,11 @@
                     project.images.forEach(imgName => {
                         const imgPath = `upload/${category.folderName}/${imgName}`;
                         imagesHtml += `
-                            <div class="mb-4 overflow-hidden border border-borderline rounded bg-[#0a0a0a]">
-                                <img src="${imgPath}" data-filename="${imgName}" onerror="${fallbackFn}" alt="${project.title}" class="w-full object-cover hover:opacity-80 transition-opacity duration-300">
+                            <div class="mb-4 overflow-hidden border border-borderline rounded-lg bg-surface relative group/img">
+                                <img src="${imgPath}" data-filename="${imgName}" onerror="${fallbackFn}" alt="${project.title}" class="w-full object-cover transition-transform duration-700 group-hover/img:scale-105">
+                                <div class="absolute inset-0 bg-black/50 opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-sm">
+                                    <span class="font-mono text-white text-[10px] uppercase tracking-widest border border-white/30 px-3 py-1 rounded">Preview</span>
+                                </div>
                             </div>
                         `;
                     });
@@ -605,9 +700,9 @@
 
                     projectsHtml += `
                         <div class="mb-16 last:mb-0 md:grid md:grid-cols-12 md:gap-12 pt-8 border-t border-borderline first:border-t-0 first:pt-0 group relative">
-                            <div class="md:col-span-4 mb-6 md:mb-0 relative z-10 flex flex-col border-l border-borderline pl-4 md:pl-6 ml-2 md:ml-0">
-                                <span class="font-mono text-[10px] tracking-widest uppercase text-muted mb-3 flex items-center gap-2">
-                                    Item ${formattedNum} <span class="w-4 h-[1px] bg-borderline"></span>
+                            <div class="md:col-span-5 mb-8 md:mb-0 relative z-10 flex flex-col border-l-2 border-borderline pl-4 md:pl-6 ml-2 md:ml-0 group-hover:border-highlight transition-colors">
+                                <span class="font-mono text-[10px] tracking-widest uppercase text-muted mb-4 flex items-center gap-2">
+                                    Record ${formattedNum} 
                                 </span>
                                 <h4 class="text-impact text-2xl md:text-3xl text-white leading-tight mb-4 group-hover:text-highlight transition-colors">
                                     ${project.title}
@@ -616,7 +711,7 @@
                                     ${project.description}
                                 </p>
                             </div>
-                            <div class="md:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-4 relative z-10">
+                            <div class="md:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 relative z-10">
                                 ${imagesHtml}
                             </div>
                         </div>
@@ -625,23 +720,24 @@
 
                 htmlContent += `
                     <div class="border-b border-borderline">
-                        <button class="w-full flex items-center justify-between py-8 md:py-10 text-left focus:outline-none group hover:bg-[#080808] transition-colors px-2 md:px-6" onclick="toggleAccordion('content-${category.id}', 'icon-${category.id}')">
+                        <button class="w-full flex items-center justify-between py-10 md:py-12 text-left focus:outline-none group hover:bg-[#060606] transition-colors px-2 md:px-6" onclick="toggleAccordion('content-${category.id}', 'icon-${category.id}')">
                             <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-8">
-                                <div class="font-mono text-muted text-xs tracking-widest uppercase w-12 hidden md:block">${catNum}</div>
-                                <h3 class="text-impact text-3xl md:text-4xl text-white group-hover:text-highlight transition-colors tracking-tight">
+                                <div class="font-mono text-muted text-xs tracking-widest uppercase w-12 hidden md:block group-hover:text-highlight transition-colors">${catNum}</div>
+                                <h3 class="text-impact text-3xl md:text-5xl text-white group-hover:text-white transition-colors tracking-tight">
                                     ${category.title}
                                 </h3>
-                                <div class="font-mono text-[10px] uppercase tracking-widest bg-[#111] border border-borderline px-3 py-1 rounded text-gray-400 md:ml-4">
-                                    ${category.projects.length} Projects
+                                <div class="font-mono text-[10px] uppercase tracking-widest bg-surface border border-borderline px-3 py-1.5 rounded-lg text-gray-400 md:ml-4 flex items-center gap-2 group-hover:border-gray-600 transition-colors">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-highlight"></span>
+                                    ${category.projects.length} Records
                                 </div>
                             </div>
-                            <div id="icon-${category.id}" class="icon-rotate w-8 h-8 md:w-10 md:h-10 rounded border border-borderline flex items-center justify-center text-muted group-hover:border-highlight group-hover:text-highlight transition-all flex-shrink-0 bg-[#0a0a0a]">
+                            <div id="icon-${category.id}" class="icon-rotate w-10 h-10 md:w-12 md:h-12 rounded-full border border-borderline flex items-center justify-center text-muted group-hover:border-white group-hover:text-white transition-all flex-shrink-0 bg-surface">
                                 <i data-lucide="plus" class="w-4 h-4 md:w-5 md:h-5"></i>
                             </div>
                         </button>
                         
                         <div id="content-${category.id}" class="accordion-content px-2 md:px-6 md:ml-12">
-                            <div class="pb-10 pt-6">
+                            <div class="pb-12 pt-8">
                                 ${projectsHtml}
                             </div>
                         </div>
