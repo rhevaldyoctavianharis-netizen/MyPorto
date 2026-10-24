@@ -2,37 +2,27 @@
 <html lang="id" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Rhevaldy Octavian | Executive Portfolio</title>
-    
-    <!-- Tailwind CSS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Portfolio Rhevaldy Octavian — programmer, IoT tinkerer, dan penyuka otomotif.">
+    <meta name="theme-color" content="#030303">
+    <title>Rhevaldy Octavian | Code · Circuits · Combustion</title>
+
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Google Fonts: Inter untuk tampilan Software/Apple-esque yang sangat bersih -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Versi dipatok agar ikon brand (github) tetap ada -->
+    <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
 
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
-                        impact: ['Inter', 'sans-serif'], 
-                        body: ['Inter', 'sans-serif'],
-                        accent: ['Caveat', 'cursive'],
-                        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+                        impact: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
                     },
-                    colors: {
-                        dark: '#030303',
-                        borderline: '#1f1f1f', 
-                        highlight: '#FF4500', 
-                        muted: '#888888',
-                        surface: '#0a0a0a'
-                    }
+                    colors: { dark: '#030303', borderline: '#1f1f1f', highlight: '#FF4500', muted: '#888888', surface: '#0a0a0a' }
                 }
             }
         }
@@ -40,739 +30,1243 @@
 
     <style>
         html, body {
-            background-color: #030303;
-            color: #ffffff;
-            font-family: 'Inter', sans-serif;
-            overflow-x: hidden;
-            width: 100%;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
+            background: #030303; color: #fff; font-family: 'Inter', sans-serif;
+            overflow-x: hidden; width: 100%;
+            -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
         }
+        section { scroll-margin-top: 64px; }
+        ::selection { background: #FF4500; color: #fff; }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #030303; }
+        ::-webkit-scrollbar-thumb { background: #222; border-radius: 99px; }
+        ::-webkit-scrollbar-thumb:hover { background: #FF4500; }
+        :focus-visible { outline: 2px solid #FF4500; outline-offset: 3px; border-radius: 6px; }
 
-        ::selection {
-            background-color: #FF4500;
-            color: #ffffff;
+        .text-impact { font-weight: 700; letter-spacing: -0.03em; }
+        .text-outline { color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,.12); }
+        .text-shimmer {
+            background: linear-gradient(90deg, #9ca3af 0%, #fff 25%, #FF4500 50%, #fff 75%, #9ca3af 100%);
+            background-size: 250% auto; -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent; animation: shimmer 6s linear infinite;
         }
+        @keyframes shimmer { to { background-position: 250% center; } }
 
-        /* Tipografi Teknis Tingkat Lanjut */
-        .text-impact {
-            font-family: 'Inter', sans-serif;
-            font-weight: 700;
-            letter-spacing: -0.03em;
-        }
-
-        .hero-title {
-            font-size: clamp(3rem, 10vw, 10rem);
-            font-weight: 800;
-            letter-spacing: -0.04em;
-        }
-
-        /* Teks Outline Subtil */
-        .text-outline {
-            color: transparent;
-            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.1);
-            transition: all 0.5s ease;
-        }
-
-        .text-outline-archive {
-            color: transparent;
-            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.05);
-        }
-
-        /* Efek Grain Latar Belakang */
         .noise-bg {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            pointer-events: none;
-            z-index: 50;
-            opacity: 0.03;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            position: fixed; inset: 0; pointer-events: none; z-index: 50; opacity: .03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        }
+        #circuit { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+        .layer { position: relative; z-index: 10; }
+
+        #scroll-progress {
+            position: fixed; top: 0; left: 0; height: 2px; width: 100%; z-index: 90;
+            background: linear-gradient(90deg, #FF4500, #ffb27a); transform-origin: left; transform: scaleX(0);
+            box-shadow: 0 0 12px rgba(255,69,0,.7);
         }
 
-        /* ==========================================================
-           ANIMASI SCROLL & REVEAL (Gaya Apple/Premium)
-        ========================================================== */
-        .reveal-group { perspective: 1000px; }
-
+        /* Reveal */
         .anim-reveal {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), 
-                        transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
-            will-change: transform, opacity;
+            opacity: 0; transform: translateY(24px);
+            transition: opacity .9s cubic-bezier(.22,1,.36,1), transform .9s cubic-bezier(.22,1,.36,1);
         }
+        .anim-reveal.active { opacity: 1; transform: none; }
+        .delay-100 { transition-delay: 100ms; } .delay-200 { transition-delay: 200ms; } .delay-300 { transition-delay: 300ms; }
+        .text-reveal-wrapper { overflow: hidden; display: inline-flex; }
+        .text-reveal-inner { transform: translateY(105%); opacity: 0; transition: transform 1.1s cubic-bezier(.16,1,.3,1), opacity 1.1s cubic-bezier(.16,1,.3,1); }
+        .anim-reveal.active .text-reveal-inner { transform: none; opacity: 1; }
+        .anim-reveal.active .text-reveal-wrapper:nth-child(2) .text-reveal-inner { transition-delay: .12s; }
 
-        .anim-reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .delay-100 { transition-delay: 100ms; }
-        .delay-200 { transition-delay: 200ms; }
-        .delay-300 { transition-delay: 300ms; }
-
-        /* Animasi Khusus Teks Terpotong (Text Split Reveal) */
-        .text-reveal-wrapper {
-            overflow: hidden;
-            display: inline-flex;
-        }
-        .text-reveal-inner {
-            transform: translateY(100%);
-            opacity: 0;
-            transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1), opacity 1s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .anim-reveal.active .text-reveal-inner {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        /* ==========================================================
-           EFEK HOVER SPOTLIGHT (Ala Linear/Vercel)
-        ========================================================== */
-        .spotlight-card {
-            position: relative;
-            overflow: hidden;
-        }
+        /* Spotlight + tilt */
+        .spotlight-card { position: relative; overflow: hidden; transition: transform .25s ease; }
         .spotlight-card::before {
-            content: "";
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(
-                600px circle at var(--mouse-x, -500px) var(--mouse-y, -500px),
-                rgba(255, 69, 0, 0.08), /* Warna highlight transparan */
-                transparent 40%
-            );
-            z-index: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-            opacity: 0;
+            content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .3s;
+            background: radial-gradient(600px circle at var(--mouse-x,-500px) var(--mouse-y,-500px), rgba(255,69,0,.10), transparent 40%);
         }
-        .spotlight-card:hover::before {
-            opacity: 1;
+        .spotlight-card:hover::before { opacity: 1; }
+        .spotlight-content { position: relative; z-index: 1; }
+        .chip {
+            font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .08em; text-transform: uppercase;
+            padding: 4px 10px; border-radius: 999px; color: #9ca3af; border: 1px solid #1f1f1f; background: #0a0a0a; transition: all .25s;
         }
-        .spotlight-content {
-            position: relative;
-            z-index: 1;
-        }
+        .spotlight-card:hover .chip { border-color: rgba(255,69,0,.4); color: #fff; }
+        [data-magnetic] { transition: transform .25s cubic-bezier(.22,1,.36,1), background-color .3s, color .3s, border-color .3s; will-change: transform; }
 
-        /* Taskbar */
-        #floating-taskbar {
-            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-            will-change: transform, opacity;
-            background: rgba(10, 10, 10, 0.6);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255,255,255,0.08);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        /* ---------- Ignition overlay ---------- */
+        #ignition {
+            position: fixed; inset: 0; z-index: 150; background: #020202;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px;
+            transition: opacity .9s ease, visibility 0s linear .9s;
         }
-        #floating-taskbar.active {
-            opacity: 1;
-            pointer-events: auto;
-            transform: translateX(-50%) translateY(0);
+        #ignition.done { opacity: 0; visibility: hidden; pointer-events: none; }
+        .start-btn {
+            position: relative; width: 168px; height: 168px; border-radius: 50%;
+            background: radial-gradient(circle at 35% 30%, #222, #070707 70%);
+            border: 2px solid #2a2a2a; color: #ff3a14; cursor: pointer;
+            font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 12px; letter-spacing: .25em; line-height: 1.7;
+            box-shadow: inset 0 0 30px rgba(0,0,0,.9), 0 0 0 8px #0b0b0b, 0 0 0 9px #1c1c1c;
+            transition: transform .15s ease, box-shadow .4s ease, color .3s;
         }
+        .start-btn::before, .start-btn::after {
+            content: ""; position: absolute; inset: -14px; border-radius: 50%; border: 1px solid rgba(255,69,0,.5);
+            animation: ring 2.2s ease-out infinite; pointer-events: none;
+        }
+        .start-btn::after { animation-delay: 1.1s; }
+        @keyframes ring { from { transform: scale(.92); opacity: .9; } to { transform: scale(1.35); opacity: 0; } }
+        .start-btn:hover { transform: scale(1.04); box-shadow: inset 0 0 30px rgba(0,0,0,.9), 0 0 0 8px #0b0b0b, 0 0 0 9px #FF4500, 0 0 60px rgba(255,69,0,.4); }
+        .start-btn:active { transform: scale(.95); }
+        .start-btn.on { color: #fff; box-shadow: inset 0 0 30px rgba(255,69,0,.5), 0 0 0 8px #0b0b0b, 0 0 0 9px #FF4500, 0 0 90px rgba(255,69,0,.7); }
+        .start-btn.on::before, .start-btn.on::after { animation: none; opacity: 0; }
+        #boot-log { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #777; min-height: 110px; width: min(88vw, 360px); line-height: 1.8; }
+        #boot-log .ok { color: #3ddc84; }
 
-        /* Avatar Terbang (Lerp) */
+        /* ---------- Hero / cluster ---------- */
+        .hero-grid {
+            position: absolute; inset: 0; z-index: 0; pointer-events: none;
+            background-image: linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+            background-size: 56px 56px;
+            -webkit-mask-image: radial-gradient(ellipse 75% 65% at 50% 50%, #000 15%, transparent 75%);
+                    mask-image: radial-gradient(ellipse 75% 65% at 50% 50%, #000 15%, transparent 75%);
+        }
+        .blob { position: absolute; border-radius: 50%; filter: blur(100px); pointer-events: none; background: #FF4500; opacity: .11; animation: floaty 14s ease-in-out infinite; }
+        @keyframes floaty { 0%,100% { transform: translate(0,0) scale(1); } 33% { transform: translate(40px,-30px) scale(1.1); } 66% { transform: translate(-30px,30px) scale(.95); } }
+
+        #cluster { transition: transform .3s ease-out; transform-style: preserve-3d; }
+        .gauge-box { position: relative; touch-action: none; user-select: none; -webkit-user-select: none; cursor: pointer; }
+        .gauge-svg { width: 100%; height: auto; display: block; filter: drop-shadow(0 0 22px rgba(255,69,0,.12)); }
+        .gauge-box .g-label { position: absolute; left: 0; right: 0; bottom: -4px; text-align: center; font: 500 10px 'JetBrains Mono', monospace; letter-spacing: .3em; text-transform: uppercase; color: #666; }
+        #cluster.redline .gauge-svg { animation: shake .09s linear infinite; filter: drop-shadow(0 0 28px rgba(255,30,0,.55)); }
+        @keyframes shake { 0% { transform: translate(0,0); } 25% { transform: translate(1px,-1px); } 50% { transform: translate(-1px,1px); } 75% { transform: translate(1px,1px); } 100% { transform: translate(0,0); } }
+
+        #shift { display: flex; gap: 6px; }
+        .led { width: 22px; height: 10px; border-radius: 3px; background: #141414; border: 1px solid #202020; transition: background .06s, box-shadow .06s; }
+        @media (min-width: 768px) { .led { width: 34px; height: 12px; } #shift { gap: 8px; } }
+        .led.on.g { background: #2dff7a; box-shadow: 0 0 12px #2dff7a; }
+        .led.on.a { background: #ffb000; box-shadow: 0 0 12px #ffb000; }
+        .led.on.r { background: #ff2a00; box-shadow: 0 0 14px #ff2a00; }
+
+        #rev-btn {
+            touch-action: none; user-select: none; -webkit-user-select: none;
+            background: linear-gradient(180deg, #1c1c1c, #0b0b0b); border: 1px solid #2a2a2a;
+            transition: transform .08s, border-color .2s, box-shadow .2s;
+        }
+        #rev-btn:hover { border-color: #FF4500; }
+        #rev-btn.held { transform: translateY(3px) scale(.98); border-color: #FF4500; box-shadow: 0 0 40px rgba(255,69,0,.45); }
+
+        .gear-box { font-family: 'JetBrains Mono', monospace; }
+        #gear-badge { transition: transform .25s cubic-bezier(.34,1.56,.64,1); }
+        #gear-badge.pop { transform: scale(1.35); }
+
+        .marquee-track { display: flex; width: max-content; animation: marquee 32s linear infinite; }
+        .marquee-wrap:hover .marquee-track { animation-play-state: paused; }
+        @keyframes marquee { to { transform: translateX(-50%); } }
+
+        .caret { display: inline-block; width: 2px; height: 1em; background: #FF4500; margin-left: 3px; vertical-align: -2px; animation: blink 1s steps(1) infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+
         #flying-avatar {
-            position: fixed;
-            top: 0; left: 0;
-            z-index: 100;
-            pointer-events: none; /* Agar tidak menghalangi klik */
-            opacity: 0; /* Disembunyikan sampai inisialisasi JS selesai */
-            transform-origin: top left;
-            /* Kita menggunakan will-change karena ini akan di-update oleh JS setiap frame (Lerp) */
-            will-change: transform, width, height, border-radius;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            position: fixed; top: 0; left: 0; z-index: 100; pointer-events: none; opacity: 0;
+            will-change: transform, width, height, border-radius; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,.5);
         }
 
-        .accordion-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease;
-            opacity: 0;
+        /* Spec sheet */
+        .spec-row { display: flex; justify-content: space-between; gap: 16px; padding: 14px 0; border-bottom: 1px dashed #1f1f1f; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; }
+        .spec-row dt { color: #666; } .spec-row dd { color: #e5e5e5; text-align: right; }
+        .passion { transition: transform .4s cubic-bezier(.16,1,.3,1), border-color .3s, background .3s; }
+        .passion:hover { transform: translateY(-6px); border-color: #FF4500; background: #0d0d0d; }
+        .passion i, .passion svg { transition: transform .6s cubic-bezier(.16,1,.3,1); }
+        .passion:hover svg { transform: rotate(-12deg) scale(1.2); }
+
+        /* ---------- Terminal ---------- */
+        #term-out { height: 360px; overflow-y: auto; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.7; color: #cfcfcf; padding: 16px; scroll-behavior: smooth; }
+        .term-line { white-space: pre-wrap; word-break: break-word; }
+        .term-line a { color: #FF4500; text-decoration: underline; text-underline-offset: 3px; }
+        .term-line b { color: #fff; font-weight: 600; }
+        .term-chip { font: 500 10px 'JetBrains Mono', monospace; letter-spacing: .08em; padding: 6px 12px; border: 1px solid #1f1f1f; border-radius: 999px; background: #0a0a0a; color: #aaa; transition: all .2s; }
+        .term-chip:hover { border-color: #FF4500; color: #fff; transform: translateY(-2px); }
+
+        /* ---------- IoT sandbox ---------- */
+        #car-svg .beam { opacity: 0; transition: opacity .4s; }
+        #car-svg.lights-on .beam { opacity: 1; }
+        #car-svg .hl { fill: #333; transition: fill .3s; }
+        #car-svg.lights-on .hl { fill: #fff; filter: drop-shadow(0 0 8px #fff); }
+        #car-svg .hz { fill: #ffb000; opacity: .12; }
+        #car-svg.hazard-on .hz { animation: hz .8s steps(1) infinite; filter: drop-shadow(0 0 8px #ffb000); }
+        @keyframes hz { 0%, 49% { opacity: 1; } 50%, 100% { opacity: .1; } }
+        #car-svg .underglow { opacity: 0; transition: opacity .5s; }
+        #car-svg.glow-on .underglow { opacity: 1; }
+        #car-svg .tail { fill: #3a0a0a; transition: fill .3s; }
+        #car-svg.lights-on .tail { fill: #ff2a2a; filter: drop-shadow(0 0 8px #ff2a2a); }
+        #car-svg .rim { transform-box: fill-box; transform-origin: center; animation: spin var(--spin, 1s) linear infinite; animation-play-state: paused; }
+        #car-svg.drive-on .rim { animation-play-state: running; }
+        #car-svg .road-dash { animation: road var(--road, .5s) linear infinite; animation-play-state: paused; }
+        #car-svg.drive-on .road-dash { animation-play-state: running; }
+        #car-svg .car-body { animation: idle .13s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes road { to { stroke-dashoffset: -70; } }
+        @keyframes idle { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(var(--jit, .4px)); } }
+
+        .relay {
+            width: 100%; display: flex; align-items: center; gap: 12px; padding: 12px 14px; text-align: left;
+            border: 1px solid #1f1f1f; border-radius: 10px; background: #0a0a0a; transition: border-color .2s, background .2s;
+            font: 500 11px 'JetBrains Mono', monospace; letter-spacing: .12em; text-transform: uppercase; color: #aaa;
         }
-        .icon-rotate {
-            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        .relay:hover { border-color: #444; }
+        .relay-led { width: 8px; height: 8px; border-radius: 50%; background: #2a2a2a; transition: all .25s; }
+        .relay-sw { margin-left: auto; width: 38px; height: 20px; border-radius: 99px; background: #1a1a1a; border: 1px solid #2a2a2a; position: relative; transition: all .25s; }
+        .relay-sw::after { content: ""; position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; border-radius: 50%; background: #666; transition: all .3s cubic-bezier(.34,1.56,.64,1); }
+        .relay[aria-pressed="true"] { border-color: rgba(255,69,0,.5); background: #100804; color: #fff; }
+        .relay[aria-pressed="true"] .relay-led { background: #FF4500; box-shadow: 0 0 10px #FF4500; }
+        .relay[aria-pressed="true"] .relay-sw { background: #FF4500; border-color: #FF4500; }
+        .relay[aria-pressed="true"] .relay-sw::after { transform: translateX(18px); background: #fff; }
+        .tele polyline { fill: none; stroke: #FF4500; stroke-width: 1.5; vector-effect: non-scaling-stroke; }
+        #mqtt-log div { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        /* Accordion */
+        .accordion-content { max-height: 0; overflow: hidden; opacity: 0; transition: max-height .7s cubic-bezier(.16,1,.3,1), opacity .6s ease; }
+        .icon-rotate { transition: transform .5s cubic-bezier(.16,1,.3,1); }
+
+        /* Palette */
+        #palette { transition: visibility 0s linear .25s; }
+        #palette.open { transition-delay: 0s; visibility: visible; }
+        #palette .palette-backdrop { opacity: 0; transition: opacity .25s; }
+        #palette .palette-panel { opacity: 0; transform: translateY(-14px) scale(.98); transition: opacity .25s, transform .35s cubic-bezier(.16,1,.3,1); }
+        #palette.open .palette-backdrop { opacity: 1; }
+        #palette.open .palette-panel { opacity: 1; transform: none; }
+        .palette-item.active { background: rgba(255,255,255,.08); }
+        .palette-item.active .palette-arrow { opacity: 1; transform: none; }
+        .palette-arrow { opacity: 0; transform: translateX(-4px); transition: all .2s; }
+
+        /* Lightbox */
+        #lightbox { opacity: 0; visibility: hidden; transition: opacity .3s, visibility 0s linear .3s; }
+        #lightbox.open { opacity: 1; visibility: visible; transition-delay: 0s; }
+        #lightbox img { transition: opacity .25s, transform .35s cubic-bezier(.16,1,.3,1); }
+        #lightbox.swap img { opacity: 0; transform: scale(.97); }
+
+        #toast { position: fixed; left: 50%; bottom: 28px; z-index: 300; transform: translate(-50%, 24px); opacity: 0; pointer-events: none; transition: all .4s cubic-bezier(.16,1,.3,1); }
+        #toast.show { transform: translate(-50%, 0); opacity: 1; }
+        #to-top { opacity: 0; transform: translateY(16px); pointer-events: none; transition: all .4s cubic-bezier(.16,1,.3,1); }
+        #to-top.show { opacity: 1; transform: none; pointer-events: auto; }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+            .anim-reveal, .text-reveal-inner { opacity: 1 !important; transform: none !important; }
         }
     </style>
 </head>
 <body class="flex flex-col min-h-screen relative">
 
+    <canvas id="circuit"></canvas>
+    <div id="scroll-progress"></div>
     <div class="noise-bg"></div>
 
-    <!-- NAVIGASI ATAS -->
-    <nav class="fixed w-full top-0 z-[60] bg-[#030303]/70 backdrop-blur-xl border-b border-borderline px-4 md:px-6 py-3 md:py-4 transition-all">
-        <div class="max-w-[1400px] mx-auto flex justify-between items-center">
-            
+    <!-- IGNITION -->
+    <div id="ignition" role="dialog" aria-label="Start engine">
+        <p class="font-mono text-[10px] md:text-xs uppercase tracking-[0.4em] text-muted">Rhevaldy Octavian · Portfolio ECU</p>
+        <button id="start-btn" class="start-btn" aria-label="Start engine">ENGINE<br>START<br>STOP</button>
+        <div id="boot-log" aria-live="polite"></div>
+        <div id="ign-hint" class="flex flex-col items-center gap-3">
+            <p class="font-mono text-[10px] uppercase tracking-widest text-gray-500">Tekan tombol untuk menyalakan mesin <span class="text-highlight">(dengan suara)</span></p>
+            <button id="start-silent" class="font-mono text-[10px] uppercase tracking-widest text-gray-500 hover:text-white border-b border-borderline hover:border-white transition-colors pb-0.5">Masuk tanpa suara</button>
+        </div>
+    </div>
+
+    <!-- NAV -->
+    <nav class="fixed w-full top-0 z-[60] bg-[#030303]/70 backdrop-blur-xl border-b border-borderline px-4 md:px-6 py-3 md:py-4">
+        <div class="max-w-[1400px] mx-auto flex justify-between items-center gap-4">
             <div class="flex items-center gap-3">
-                <!-- TEMPAT TUJUAN AVATAR SAAT DI-SCROLL -->
-                <div id="nav-target" class="w-8 h-8 rounded-full shrink-0 flex items-center justify-center">
-                    <!-- Ukuran ini akan ditiru oleh #flying-avatar -->
-                </div>
-                <a href="#hero" class="font-impact text-lg md:text-xl font-bold tracking-tight text-white hover:text-highlight transition-colors flex items-center gap-2">
-                    RHEVALDY.
-                </a>
+                <div id="nav-target" class="w-8 h-8 rounded-full shrink-0"></div>
+                <a href="#hero" class="text-impact text-lg md:text-xl font-bold hover:text-highlight transition-colors">RHEVALDY.</a>
             </div>
-            
-            <button id="menu-btn" class="text-white hover:text-highlight transition-colors flex items-center gap-3 group">
-                <span class="hidden md:block font-mono text-[11px] uppercase tracking-widest text-muted group-hover:text-highlight transition-colors">Command Menu</span>
-                <div id="menu-icon-container" class="border border-borderline p-1.5 rounded bg-surface group-hover:border-highlight transition-colors">
-                    <i data-lucide="command" class="w-4 h-4 md:w-5 md:h-5"></i>
-                </div>
-            </button>
+
+            <div class="hidden sm:flex items-center gap-4 font-mono text-[10px] uppercase tracking-widest text-muted border border-borderline bg-surface rounded-lg px-4 py-2">
+                <span>Gear <b id="nav-gear" class="text-highlight text-xs">1</b></span>
+                <span class="w-px h-3 bg-borderline"></span>
+                <span><b id="nav-rpm" class="text-white w-9 inline-block text-right">0</b> rpm</span>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <button id="sound-btn" aria-label="Nyalakan suara mesin" class="border border-borderline p-1.5 rounded bg-surface text-muted hover:text-highlight hover:border-highlight transition-colors">
+                    <i data-lucide="volume-x" class="w-4 h-4 md:w-5 md:h-5"></i>
+                </button>
+                <button id="menu-btn" aria-label="Buka Command Menu" class="text-white hover:text-highlight transition-colors flex items-center gap-3 group">
+                    <span class="hidden lg:flex items-center gap-2 font-mono text-[11px] uppercase tracking-widest text-muted group-hover:text-highlight transition-colors">
+                        Menu <kbd class="border border-borderline rounded px-1.5 py-0.5 text-[10px] bg-surface text-gray-400" id="kbd-hint">Ctrl K</kbd>
+                    </span>
+                    <div class="border border-borderline p-1.5 rounded bg-surface group-hover:border-highlight transition-colors"><i data-lucide="command" class="w-4 h-4 md:w-5 md:h-5"></i></div>
+                </button>
+            </div>
         </div>
     </nav>
 
-    <!-- FLOATING TASKBAR -->
-    <div id="floating-taskbar" class="fixed top-24 left-1/2 transform -translate-x-1/2 -translate-y-8 z-[70] opacity-0 pointer-events-none p-1.5 w-[92%] max-w-md rounded-xl flex flex-row gap-1">
-        <a href="#about" class="taskbar-link flex-1 px-2 py-3 text-center font-mono text-[10px] md:text-xs tracking-wider hover:bg-white/10 text-gray-300 hover:text-white transition-all rounded-lg">
-            Profile
-        </a>
-        <a href="#education" class="taskbar-link flex-1 px-2 py-3 text-center font-mono text-[10px] md:text-xs tracking-wider hover:bg-white/10 text-gray-300 hover:text-white transition-all rounded-lg">
-            Background
-        </a>
-        <a href="#archive" class="taskbar-link flex-1 px-2 py-3 text-center font-mono text-[10px] md:text-xs tracking-wider hover:bg-white/10 text-gray-300 hover:text-white transition-all rounded-lg">
-            Archive
-        </a>
-        <a href="#contact" class="taskbar-link flex-1 px-2 py-3 bg-white text-black text-center font-mono text-[10px] md:text-xs tracking-wider hover:bg-highlight hover:text-white transition-all flex items-center justify-center gap-1.5 rounded-lg font-semibold">
-            <i data-lucide="mail" class="w-3.5 h-3.5"></i> Connect
-        </a>
+    <!-- PALETTE -->
+    <div id="palette" class="fixed inset-0 z-[200] invisible" role="dialog" aria-modal="true" aria-label="Command menu">
+        <div id="palette-backdrop" class="palette-backdrop absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
+        <div class="palette-panel relative mx-auto mt-[12vh] w-[92%] max-w-xl rounded-2xl border border-white/10 bg-[#0a0a0a]/95 shadow-2xl overflow-hidden">
+            <div class="flex items-center gap-3 px-4 border-b border-borderline">
+                <i data-lucide="search" class="w-4 h-4 text-muted"></i>
+                <input id="palette-input" type="text" autocomplete="off" spellcheck="false" placeholder="Cari halaman atau aksi..." class="flex-1 bg-transparent py-4 font-mono text-sm text-white placeholder-gray-600 focus:outline-none">
+                <kbd class="font-mono text-[10px] border border-borderline rounded px-1.5 py-0.5 text-gray-500">ESC</kbd>
+            </div>
+            <ul id="palette-list" class="max-h-[50vh] overflow-y-auto p-2"></ul>
+            <div class="flex items-center justify-between px-4 py-2.5 border-t border-borderline font-mono text-[10px] uppercase tracking-widest text-gray-600"><span>↑ ↓ navigasi</span><span>↵ pilih</span></div>
+        </div>
     </div>
 
-    <!-- AVATAR TERBANG (Objek Fisik untuk Animasi Lerp) -->
-    <!-- Elemen ini akan bergerak mulus menggunakan JS dari Hero ke Navbar -->
+    <!-- LIGHTBOX -->
+    <div id="lightbox" class="fixed inset-0 z-[180] bg-black/90 backdrop-blur-md flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-label="Pratinjau gambar">
+        <button id="lb-close" aria-label="Tutup" class="absolute top-5 right-5 w-11 h-11 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-black transition-colors"><i data-lucide="x" class="w-5 h-5"></i></button>
+        <button id="lb-prev" aria-label="Sebelumnya" class="absolute left-3 md:left-8 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-black transition-colors"><i data-lucide="chevron-left" class="w-5 h-5"></i></button>
+        <button id="lb-next" aria-label="Berikutnya" class="absolute right-3 md:right-8 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-black transition-colors"><i data-lucide="chevron-right" class="w-5 h-5"></i></button>
+        <figure class="max-w-5xl w-full flex flex-col items-center gap-4">
+            <img id="lb-img" src="" alt="" class="max-h-[78vh] max-w-full object-contain rounded-lg border border-borderline">
+            <figcaption class="font-mono text-[10px] md:text-xs uppercase tracking-widest text-gray-400 text-center"><span id="lb-title"></span> <span class="text-highlight mx-2">/</span> <span id="lb-count"></span></figcaption>
+        </figure>
+    </div>
+
+    <div id="toast" class="flex items-center gap-2 bg-white text-black font-mono text-[11px] uppercase tracking-widest font-semibold px-5 py-3 rounded-lg shadow-2xl"><i data-lucide="check" class="w-4 h-4"></i><span id="toast-text"></span></div>
+
+    <button id="to-top" aria-label="Kembali ke atas" class="fixed bottom-6 right-5 z-[65] w-11 h-11 rounded-full bg-surface border border-borderline flex items-center justify-center text-gray-300 hover:bg-white hover:text-black transition-colors"><i data-lucide="arrow-up" class="w-4 h-4"></i></button>
+
+    <!-- Avatar terbang -->
     <div id="flying-avatar">
-        <img 
-            src="me.png" 
-            onerror="this.src='https://api.dicebear.com/7.x/notionists/svg?seed=Rhevaldy&backgroundColor=transparent'"
-            alt="Rhevaldy" 
-            class="w-full h-full object-cover filter grayscale contrast-125 transition-all duration-300"
-            id="flying-img"
-        >
-        <!-- Overlay Duotone Subtil -->
-        <div class="absolute inset-0 bg-highlight mix-blend-multiply opacity-40 transition-opacity duration-300" id="flying-overlay"></div>
+        <img src="me.png" onerror="this.onerror=null;this.src='https://api.dicebear.com/7.x/notionists/svg?seed=Rhevaldy&backgroundColor=transparent'" alt="Rhevaldy" class="w-full h-full object-cover" style="filter:grayscale(100%) contrast(125%);transition:filter .3s" id="flying-img">
+        <div class="absolute inset-0 bg-highlight mix-blend-multiply transition-opacity duration-300" style="opacity:.4" id="flying-overlay"></div>
     </div>
 
-    <!-- HERO SECTION -->
-    <section id="hero" class="relative w-full min-h-[100dvh] pt-32 pb-16 flex flex-col items-center justify-center overflow-hidden px-4 md:px-8 reveal-group">
-        
-        <!-- Teks Latar Belakang (Lebih redup & teknis) -->
-        <div class="absolute w-full text-center z-0 pointer-events-none flex flex-col gap-2 leading-none opacity-40 select-none">
-            <span class="text-impact hero-title text-outline break-words anim-reveal">ARCHITECT</span>
-            <span class="text-impact hero-title text-outline break-words anim-reveal delay-100">ENGINEER</span>
-            <span class="text-impact hero-title text-outline break-words anim-reveal delay-200">INNOVATE</span>
-        </div>
+    <!-- ================= HERO: INSTRUMENT CLUSTER ================= -->
+    <section id="hero" class="layer relative w-full min-h-[100dvh] pt-28 pb-14 flex flex-col items-center justify-center overflow-hidden px-4 md:px-8">
+        <div class="hero-grid"></div>
+        <div class="blob w-[420px] h-[420px] -top-24 -left-24"></div>
+        <div class="blob w-[360px] h-[360px] bottom-0 -right-20" style="animation-delay:-6s;opacity:.08"></div>
 
-        <div class="relative z-20 w-full max-w-[1200px] mx-auto flex flex-col items-center mt-4">
-            
-            <div class="anim-reveal mb-8 md:mb-12 flex items-center gap-3">
-                <span class="font-mono text-muted text-[10px] md:text-xs tracking-widest uppercase">01 / Index</span>
-                <span class="w-1 h-1 rounded-full bg-borderline"></span>
-                <span class="font-mono text-[10px] md:text-xs tracking-widest uppercase text-highlight flex items-center gap-2 bg-highlight/10 px-3 py-1 rounded-full border border-highlight/20">
-                    <span class="w-1.5 h-1.5 rounded-full bg-highlight animate-pulse"></span> System Active
-                </span>
-            </div>
+        <div id="shift" class="relative z-20 mb-6 md:mb-8 anim-reveal" aria-hidden="true"></div>
 
-            <!-- TEMPAT AWAL FOTO (Placeholder) -->
-            <div class="relative w-[50%] sm:w-[35%] md:w-[25%] max-w-[200px] mx-auto mb-8 z-30 anim-reveal delay-100 group">
-                <div id="hero-target" class="aspect-[4/5] rounded-xl border border-transparent">
-                    <!-- Area transparan, wujud aslinya adalah #flying-avatar yang melayang di atasnya -->
+        <div id="cluster" class="relative z-20 w-full max-w-[1250px] grid grid-cols-2 lg:grid-cols-[1fr_1.15fr_1fr] gap-x-3 gap-y-8 lg:gap-8 items-center">
+            <div class="gauge-box order-2 lg:order-1 anim-reveal delay-100 pb-5" id="tach-box"><svg id="tach" class="gauge-svg" viewBox="0 0 300 300"></svg><div class="g-label">Tachometer</div></div>
+
+            <!-- Center display -->
+            <div class="order-1 lg:order-2 col-span-2 lg:col-span-1 flex flex-col items-center text-center anim-reveal delay-200">
+                <div class="flex items-center gap-3 mb-6">
+                    <span class="font-mono text-muted text-[10px] md:text-xs tracking-widest uppercase">01 / Cockpit</span>
+                    <span class="font-mono text-[10px] tracking-widest uppercase text-highlight flex items-center gap-2 bg-highlight/10 px-3 py-1 rounded-full border border-highlight/20">
+                        <span class="relative flex w-1.5 h-1.5"><span class="absolute inset-0 rounded-full bg-highlight animate-ping"></span><span class="relative w-1.5 h-1.5 rounded-full bg-highlight"></span></span> Engine On
+                    </span>
                 </div>
-                
-                <!-- Label yang hanya muncul di hero -->
-                <div id="hero-avatar-badge" class="absolute -bottom-4 -right-6 md:-right-10 z-40 bg-surface text-white px-4 py-2 rounded-lg shadow-2xl border border-borderline flex items-center gap-2 transition-opacity duration-300">
-                    <i data-lucide="cpu" class="w-3 h-3 text-highlight"></i>
-                    <span class="font-mono text-[9px] font-bold uppercase tracking-wider text-gray-300">Tech Lead</span>
-                </div>
-            </div>
 
-            <!-- Teks Utama dengan Animasi Split Reveal -->
-            <div class="z-40 text-center mt-4 px-2 anim-reveal delay-200 w-full">
-                <h1 class="text-impact text-5xl sm:text-6xl md:text-7xl lg:text-[7rem] text-white tracking-tight leading-[1] max-w-4xl mx-auto flex flex-col">
+                <div class="relative w-24 sm:w-28 mx-auto mb-6">
+                    <div id="hero-target" class="aspect-[4/5] rounded-xl border border-transparent"></div>
+                    <div id="hero-avatar-badge" class="absolute -bottom-3 -right-8 bg-surface px-3 py-1.5 rounded-lg shadow-2xl border border-borderline flex items-center gap-2 transition-opacity duration-300">
+                        <i data-lucide="cpu" class="w-3 h-3 text-highlight"></i><span class="font-mono text-[9px] font-bold uppercase tracking-wider text-gray-300">Tech Lead</span>
+                    </div>
+                </div>
+
+                <h1 class="text-impact text-4xl sm:text-6xl lg:text-5xl xl:text-6xl leading-[1] flex flex-col items-center">
                     <span class="text-reveal-wrapper"><span class="text-reveal-inner">RHEVALDY</span></span>
-                    <span class="text-reveal-wrapper"><span class="text-reveal-inner text-gray-400">OCTAVIAN</span></span>
+                    <span class="text-reveal-wrapper"><span class="text-reveal-inner text-shimmer">OCTAVIAN</span></span>
                 </h1>
-                
-                <p class="mt-8 font-mono text-[11px] md:text-sm text-gray-400 max-w-2xl mx-auto leading-relaxed border-t border-borderline pt-6">
-                    Merancang ekosistem digital dan fisik melalui <strong class="text-white font-medium">Rekayasa Perangkat Lunak</strong>, <strong class="text-white font-medium">Arsitektur Sistem</strong>, dan <strong class="text-white font-medium">Integrasi IoT</strong> tingkat lanjut.
+
+                <p class="mt-5 font-mono text-xs md:text-sm text-gray-300 h-5"><span class="text-highlight">&gt;</span> <span id="typed"></span><span class="caret"></span></p>
+                <p class="mt-5 font-mono text-[11px] text-gray-400 max-w-sm leading-relaxed border-t border-borderline pt-5">
+                    Menulis <strong class="text-white font-medium">kode</strong>, merakit <strong class="text-white font-medium">sirkuit</strong>, dan mencintai <strong class="text-white font-medium">mesin</strong>. Gulir halaman ini seperti menginjak gas.
                 </p>
-                
-                <div class="mt-10 flex items-center justify-center gap-4 flex-wrap">
-                    <a href="#archive" class="bg-white text-black font-mono text-[10px] md:text-xs font-bold uppercase tracking-widest px-8 py-3.5 rounded-lg flex items-center gap-2 hover:scale-105 transition-transform">
-                        Explore Archive <i data-lucide="arrow-down-right" class="w-4 h-4"></i>
-                    </a>
-                    <a href="https://github.com/rhevaldyoctavianharis-netizen" target="_blank" class="border border-borderline bg-surface text-white font-mono text-[10px] md:text-xs font-bold uppercase tracking-widest px-8 py-3.5 rounded-lg flex items-center gap-2 hover:border-highlight transition-colors">
-                        <i data-lucide="github" class="w-4 h-4"></i> GitHub Profile
-                    </a>
+
+                <div class="mt-6 flex items-center gap-4 font-mono">
+                    <div class="gear-box flex flex-col items-center border border-borderline bg-surface rounded-lg px-5 py-2">
+                        <span class="text-[9px] uppercase tracking-[0.3em] text-muted">Gear</span>
+                        <span id="gear-badge" class="text-3xl font-bold text-highlight leading-tight">1</span>
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <a href="#terminal" data-magnetic class="bg-white text-black text-[10px] font-bold uppercase tracking-widest px-6 py-3 rounded-lg flex items-center gap-2 hover:bg-highlight hover:text-white transition-colors"><i data-lucide="terminal" class="w-3.5 h-3.5"></i> Open Terminal</a>
+                        <a href="https://github.com/rhevaldyoctavianharis-netizen" target="_blank" rel="noopener noreferrer" data-magnetic class="border border-borderline bg-surface text-[10px] font-bold uppercase tracking-widest px-6 py-3 rounded-lg flex items-center gap-2 hover:border-highlight transition-colors"><i data-lucide="github" class="w-3.5 h-3.5"></i> GitHub</a>
+                    </div>
                 </div>
             </div>
-            
+
+            <div class="gauge-box order-3 anim-reveal delay-300 pb-5" id="speedo-box"><svg id="speedo" class="gauge-svg" viewBox="0 0 300 300"></svg><div class="g-label">Speedometer</div></div>
+        </div>
+
+        <div class="relative z-20 mt-10 flex flex-col items-center gap-3 anim-reveal delay-300">
+            <button id="rev-btn" class="rounded-xl px-10 py-4 font-mono text-[11px] font-bold uppercase tracking-[0.25em] text-white flex items-center gap-3" aria-label="Tahan untuk menaikkan RPM">
+                <i data-lucide="gauge" class="w-4 h-4 text-highlight"></i> Hold to Rev
+            </button>
+            <p class="font-mono text-[9px] uppercase tracking-widest text-muted text-center">Tahan tombol / gauge / tekan huruf R · atau scroll untuk gas</p>
         </div>
     </section>
 
-    <!-- Teks Marquee Berjalan (Kata-kata Profesional) -->
-    <div class="w-full border-y border-borderline bg-[#080808] text-muted py-3.5 md:py-5 overflow-hidden flex whitespace-nowrap z-20">
-        <div class="animate-marquee font-mono text-[10px] md:text-xs tracking-[0.3em] uppercase inline-block">
-            <span class="mx-4 text-gray-400">ARCHITECTING ROBUST DIGITAL EXPERIENCES</span>
-            <span class="mx-4 text-highlight">///</span>
-            <span class="mx-4 text-gray-400">ENGINEERING THE FUTURE OF WEB & HARDWARE</span>
-            <span class="mx-4 text-highlight">///</span>
-            <span class="mx-4 text-gray-400">ARCHITECTING ROBUST DIGITAL EXPERIENCES</span>
-            <span class="mx-4 text-highlight">///</span>
-            <span class="mx-4 text-gray-400">ENGINEERING THE FUTURE OF WEB & HARDWARE</span>
-            <span class="mx-4 text-highlight">///</span>
-        </div>
-        <style>
-            .animate-marquee { animation: marquee 25s linear infinite; }
-            @keyframes marquee { 0% { transform: translateX(0%); } 100% { transform: translateX(-50%); } }
-        </style>
+    <!-- MARQUEE -->
+    <div class="layer marquee-wrap w-full border-y border-borderline bg-[#080808]/90 text-muted py-3.5 md:py-5 overflow-hidden">
+        <div class="marquee-track font-mono text-[10px] md:text-xs tracking-[0.3em] uppercase whitespace-nowrap" id="marquee-track"></div>
     </div>
 
-    <!-- EXECUTIVE PROFILE -->
-    <section id="about" class="py-24 md:py-32 px-4 md:px-6 relative z-20 reveal-group">
+    <!-- ================= ABOUT: BUILD SHEET ================= -->
+    <section id="about" class="layer py-24 md:py-32 px-4 md:px-6">
         <div class="max-w-[1400px] mx-auto">
-            
-            <div class="grid lg:grid-cols-12 gap-8 md:gap-12 border-b border-borderline pb-16 md:pb-24">
-                <div class="lg:col-span-5 anim-reveal flex flex-col justify-between">
-                    <span class="font-mono text-muted text-xs tracking-widest uppercase mb-4 block">02 / Abstract</span>
-                    <h2 class="text-impact text-4xl md:text-6xl leading-tight tracking-tight">EXECUTIVE<br><span class="text-gray-500">PROFILE.</span></h2>
-                </div>
-                <div class="lg:col-span-7 flex flex-col justify-end mt-4 lg:mt-0 anim-reveal delay-100 border-l border-borderline pl-0 lg:pl-12">
-                    <p class="text-lg md:text-xl font-normal leading-relaxed mb-8 text-gray-400">
-                        Saya adalah seorang <strong class="text-white font-medium">Tech Enthusiast</strong> dan <strong class="text-white font-medium">Pengembang Sistem</strong>. Saya tidak sekadar menulis <span class="text-white border-b border-highlight pb-1 cursor-text">arsitektur kode</span>, tetapi juga merancang <span class="text-white border-b border-highlight pb-1 cursor-text">integrasi perangkat keras</span> yang kompleks untuk menciptakan solusi komprehensif.
-                    </p>
-                    <div class="flex items-center gap-3 border border-borderline bg-surface px-4 py-3 rounded-lg w-max hover:border-gray-600 transition-colors cursor-default">
-                        <i data-lucide="map-pin" class="w-4 h-4 md:w-5 md:h-5 text-highlight"></i>
-                        <span class="font-mono text-[10px] md:text-xs tracking-widest uppercase text-gray-300">Base: Jepara, ID</span>
+            <div class="grid lg:grid-cols-12 gap-10 md:gap-12 border-b border-borderline pb-16 md:pb-24">
+                <div class="lg:col-span-6 anim-reveal flex flex-col justify-between gap-10">
+                    <div>
+                        <span class="font-mono text-muted text-xs tracking-widest uppercase mb-4 block">02 / Build Sheet</span>
+                        <h2 class="text-impact text-4xl md:text-6xl leading-tight">THE<br><span class="text-gray-500">BUILD.</span></h2>
                     </div>
+                    <p class="text-lg md:text-xl leading-relaxed text-gray-400">
+                        Saya seorang <strong class="text-white font-medium">programmer</strong> yang betah di antara baris kode, papan sirkuit, dan bengkel. Bagi saya, <span class="text-white border-b border-highlight pb-1">perangkat lunak</span>, <span class="text-white border-b border-highlight pb-1">IoT</span>, dan <span class="text-white border-b border-highlight pb-1">otomotif</span> adalah satu keluarga: semuanya soal sistem yang bergerak.
+                    </p>
                 </div>
+                <dl class="lg:col-span-6 anim-reveal delay-100 border border-borderline bg-surface/80 rounded-2xl px-6 md:px-8 py-4 self-end">
+                    <div class="spec-row"><dt>Driver</dt><dd>Rhevaldy Octavian Haris</dd></div>
+                    <div class="spec-row"><dt>Engine</dt><dd>Software Engineering</dd></div>
+                    <div class="spec-row"><dt>ECU</dt><dd>IoT &amp; Microcontrollers</dd></div>
+                    <div class="spec-row"><dt>Chassis</dt><dd>Frontend Architecture</dd></div>
+                    <div class="spec-row"><dt>Cockpit</dt><dd>Interactive UX</dd></div>
+                    <div class="spec-row" style="border-bottom:0"><dt>Garage</dt><dd>Jepara, ID · <span id="clock">--:--:--</span> WIB</dd></div>
+                </dl>
             </div>
 
-            <!-- Grid Keahlian dengan Efek Mouse Spotlight -->
-            <div class="grid grid-cols-1 md:grid-cols-3 border-b border-borderline border-x">
-                <div class="spotlight-card p-8 md:p-12 border-b md:border-b-0 md:border-r border-borderline anim-reveal">
+            <!-- Passion tiles -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 py-12 md:py-16">
+                <div class="passion border border-borderline bg-surface/80 rounded-2xl p-6 flex items-center gap-5 anim-reveal"><i data-lucide="code" class="w-9 h-9 text-highlight"></i><div><p class="text-impact text-xl">PROGRAMMER</p><p class="font-mono text-[10px] uppercase tracking-widest text-muted mt-1">Code &amp; automation</p></div></div>
+                <div class="passion border border-borderline bg-surface/80 rounded-2xl p-6 flex items-center gap-5 anim-reveal delay-100"><i data-lucide="circuit-board" class="w-9 h-9 text-highlight"></i><div><p class="text-impact text-xl">IoT TINKERER</p><p class="font-mono text-[10px] uppercase tracking-widest text-muted mt-1">Sensors &amp; relays</p></div></div>
+                <div class="passion border border-borderline bg-surface/80 rounded-2xl p-6 flex items-center gap-5 anim-reveal delay-200"><i data-lucide="car" class="w-9 h-9 text-highlight"></i><div><p class="text-impact text-xl">AUTOMOTIVE</p><p class="font-mono text-[10px] uppercase tracking-widest text-muted mt-1">Engines &amp; machines</p></div></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 border border-borderline rounded-2xl overflow-hidden bg-surface/60">
+                <div class="spotlight-card tilt p-8 md:p-12 border-b md:border-b-0 md:border-r border-borderline anim-reveal">
                     <div class="spotlight-content">
-                        <div class="flex items-center justify-between mb-8">
-                            <span class="font-mono text-muted text-xs tracking-widest uppercase block">Sys. 01</span>
-                            <i data-lucide="layout-template" class="w-6 h-6 text-gray-600"></i>
-                        </div>
-                        <h3 class="text-impact text-xl md:text-2xl mb-4 text-white">FRONTEND<br>ARCHITECTURE</h3>
-                        <p class="text-sm text-gray-400 font-light leading-relaxed">Membangun antarmuka web dengan performa tinggi, berfokus pada skalabilitas kode, presisi geometris, dan standar industri modern.</p>
+                        <div class="flex items-center justify-between mb-8"><span class="font-mono text-muted text-xs tracking-widest uppercase">Sys. 01</span><i data-lucide="layout-template" class="w-6 h-6 text-gray-600"></i></div>
+                        <h3 class="text-impact text-xl md:text-2xl mb-4">FRONTEND<br>ARCHITECTURE</h3>
+                        <p class="text-sm text-gray-400 font-light leading-relaxed mb-6">Antarmuka web berperforma tinggi dengan fokus pada skalabilitas kode, presisi geometris, dan standar industri modern.</p>
+                        <div class="flex flex-wrap gap-2"><span class="chip">HTML</span><span class="chip">CSS</span><span class="chip">JavaScript</span><span class="chip">Tailwind</span></div>
                     </div>
                 </div>
-                
-                <div class="spotlight-card p-8 md:p-12 border-b md:border-b-0 md:border-r border-borderline anim-reveal delay-100">
+                <div class="spotlight-card tilt p-8 md:p-12 border-b md:border-b-0 md:border-r border-borderline anim-reveal delay-100">
                     <div class="spotlight-content">
-                        <div class="flex items-center justify-between mb-8">
-                            <span class="font-mono text-muted text-xs tracking-widest uppercase block">Sys. 02</span>
-                            <i data-lucide="cpu" class="w-6 h-6 text-gray-600"></i>
-                        </div>
-                        <h3 class="text-impact text-xl md:text-2xl mb-4 text-white">IoT & SYSTEMS<br>ENGINEERING</h3>
-                        <p class="text-sm text-gray-400 font-light leading-relaxed">Mengembangkan solusi Internet of Things (IoT) dan integrasi mikrokontroler tingkat lanjut untuk menjembatani sistem digital dan fisik.</p>
+                        <div class="flex items-center justify-between mb-8"><span class="font-mono text-muted text-xs tracking-widest uppercase">Sys. 02</span><i data-lucide="cpu" class="w-6 h-6 text-gray-600"></i></div>
+                        <h3 class="text-impact text-xl md:text-2xl mb-4">IoT & SYSTEMS<br>ENGINEERING</h3>
+                        <p class="text-sm text-gray-400 font-light leading-relaxed mb-6">Solusi Internet of Things dan integrasi mikrokontroler untuk menjembatani sistem digital dengan dunia fisik.</p>
+                        <div class="flex flex-wrap gap-2"><span class="chip">IoT</span><span class="chip">ESP8266</span><span class="chip">Relay</span></div>
                     </div>
                 </div>
-                
-                <div class="spotlight-card p-8 md:p-12 anim-reveal delay-200">
+                <div class="spotlight-card tilt p-8 md:p-12 anim-reveal delay-200">
                     <div class="spotlight-content">
-                        <div class="flex items-center justify-between mb-8">
-                            <span class="font-mono text-muted text-xs tracking-widest uppercase block">Sys. 03</span>
-                            <i data-lucide="sparkles" class="w-6 h-6 text-gray-600"></i>
-                        </div>
-                        <h3 class="text-impact text-xl md:text-2xl mb-4 text-white">INTERACTIVE<br>UX DESIGN</h3>
-                        <p class="text-sm text-gray-400 font-light leading-relaxed">Merancang pengalaman yang imersif melalui implementasi micro-interactions presisi dan animasi berbasis fisika yang mulus.</p>
+                        <div class="flex items-center justify-between mb-8"><span class="font-mono text-muted text-xs tracking-widest uppercase">Sys. 03</span><i data-lucide="sparkles" class="w-6 h-6 text-gray-600"></i></div>
+                        <h3 class="text-impact text-xl md:text-2xl mb-4">INTERACTIVE<br>UX DESIGN</h3>
+                        <p class="text-sm text-gray-400 font-light leading-relaxed mb-6">Pengalaman imersif lewat micro-interactions presisi dan animasi berbasis fisika yang mulus.</p>
+                        <div class="flex flex-wrap gap-2"><span class="chip">Micro-interactions</span><span class="chip">Animation</span></div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- BACKGROUND / EDUCATION -->
-    <section id="education" class="py-12 md:py-20 px-4 md:px-6 relative z-20 reveal-group">
+    <!-- EDUCATION -->
+    <section id="education" class="layer py-12 md:py-20 px-4 md:px-6">
         <div class="max-w-[1400px] mx-auto">
-            <div class="anim-reveal mb-10 md:mb-16">
+            <div class="anim-reveal mb-10 md:mb-14">
                 <span class="font-mono text-muted text-xs tracking-widest uppercase mb-4 block">03 / History</span>
-                <h2 class="text-impact text-3xl md:text-5xl tracking-tight">ACADEMIC<br>BACKGROUND.</h2>
+                <h2 class="text-impact text-3xl md:text-5xl">ACADEMIC<br>BACKGROUND.</h2>
             </div>
-
             <div class="border-y border-borderline">
-                <a href="https://smkn1kalinyamatan.sch.id/" target="_blank" rel="noopener noreferrer" class="block py-8 md:py-10 px-4 md:px-8 flex flex-col md:flex-row justify-between md:items-center gap-4 group hover:bg-surface transition-colors anim-reveal delay-100">
-                    
+                <a href="https://smkn1kalinyamatan.sch.id/" target="_blank" rel="noopener noreferrer" class="py-8 md:py-10 px-4 md:px-8 flex flex-col md:flex-row justify-between md:items-center gap-4 group hover:bg-surface transition-colors anim-reveal delay-100">
                     <div class="flex-1">
                         <p class="font-mono text-[10px] tracking-widest uppercase text-highlight mb-3">Vocational High School</p>
-                        <h3 class="text-impact text-2xl md:text-3xl text-white group-hover:pl-2 transition-all duration-300">
-                            SMKN 1 KALINYAMATAN
-                        </h3>
+                        <h3 class="text-impact text-2xl md:text-3xl group-hover:pl-2 transition-all duration-300">SMKN 1 KALINYAMATAN</h3>
                     </div>
-                    
-                    <div class="font-mono text-xs uppercase tracking-widest text-muted hidden md:block">
-                        Jepara, ID
-                    </div>
-                    
+                    <div class="font-mono text-xs uppercase tracking-widest text-muted hidden md:block">Jepara, ID</div>
                     <div class="flex items-center justify-between md:justify-end gap-6 mt-4 md:mt-0">
                         <span class="font-mono text-[10px] uppercase tracking-widest text-gray-400 group-hover:text-white transition-colors">View Institutional Site</span>
-                        <div class="w-10 h-10 rounded-full border border-borderline flex items-center justify-center transition-all text-gray-400 group-hover:text-black group-hover:bg-white group-hover:border-white group-hover:-rotate-45">
-                            <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                        </div>
+                        <div class="w-10 h-10 rounded-full border border-borderline flex items-center justify-center transition-all text-gray-400 group-hover:text-black group-hover:bg-white group-hover:border-white group-hover:-rotate-45"><i data-lucide="arrow-right" class="w-4 h-4"></i></div>
                     </div>
                 </a>
             </div>
         </div>
     </section>
 
-    <!-- ARCHIVE SECTION -->
-    <section id="archive" class="pt-24 md:pt-32 pb-16 md:pb-24 px-4 md:px-6 relative z-20 reveal-group bg-[#020202] border-t border-borderline">
-        <div class="max-w-[1400px] mx-auto">
-            
-            <header class="mb-16 md:mb-24 anim-reveal">
-                <span class="font-mono text-muted text-xs tracking-widest uppercase mb-6 block">04 / Database</span>
-                <h1 class="text-impact text-[10vw] md:text-[7rem] lg:text-[9rem] leading-[0.9] text-white tracking-tight mb-8 uppercase break-words">
-                    PROJECT<br><span class="text-gray-700">DIRECTORY.</span>
-                </h1>
-                <p class="font-mono text-[10px] md:text-xs uppercase tracking-widest text-muted max-w-lg border-t border-borderline pt-6">
-                    Repositori terpusat dari seluruh implementasi arsitektur, eksperimen perangkat keras, dan dokumentasi sistem.
-                </p>
-            </header>
+    <!-- ================= TERMINAL ================= -->
+    <section id="terminal" class="layer py-24 md:py-32 px-4 md:px-6">
+        <div class="max-w-[1100px] mx-auto">
+            <div class="anim-reveal mb-10 md:mb-14">
+                <span class="font-mono text-muted text-xs tracking-widest uppercase mb-4 block">04 / Terminal</span>
+                <h2 class="text-impact text-4xl md:text-6xl leading-tight">TALK TO THE<br><span class="text-gray-500">MACHINE.</span></h2>
+                <p class="font-mono text-[11px] text-muted mt-6 max-w-lg">Terminal sungguhan di dalam portfolio. Coba <b class="text-white">relay 1 on</b>, <b class="text-white">rev</b>, atau <b class="text-white">neofetch</b>.</p>
+            </div>
 
-            <div id="loading" class="text-center py-20 anim-reveal delay-100">
-                <div class="inline-flex items-center gap-3 border border-borderline bg-surface px-6 py-4 font-mono text-gray-400 uppercase tracking-widest text-[10px] rounded-lg shadow-xl">
-                    <i data-lucide="loader" class="w-4 h-4 animate-spin text-white"></i> Fetching Database Records...
+            <div class="anim-reveal delay-100 border border-borderline rounded-2xl overflow-hidden bg-[#050505]/95 shadow-2xl">
+                <div class="flex items-center gap-2 px-4 py-3 border-b border-borderline bg-surface">
+                    <span class="w-3 h-3 rounded-full bg-[#ff5f56]"></span><span class="w-3 h-3 rounded-full bg-[#ffbd2e]"></span><span class="w-3 h-3 rounded-full bg-[#27c93f]"></span>
+                    <span class="ml-3 font-mono text-[10px] md:text-xs text-muted">rhevaldy@jepara: ~</span>
                 </div>
-            </div>
-            
-            <div id="archive-container" class="border-t border-borderline hidden anim-reveal delay-200">
-                <!-- Konten dinamis -->
+                <div id="term-out" aria-live="polite"></div>
+                <form id="term-form" class="flex items-center gap-3 px-4 py-3 border-t border-borderline font-mono text-xs" autocomplete="off">
+                    <span class="text-highlight">❯</span>
+                    <input id="term-in" type="text" spellcheck="false" autocapitalize="off" autocomplete="off" aria-label="Terminal input" placeholder="ketik 'help'..." class="flex-1 bg-transparent text-white placeholder-gray-700 focus:outline-none">
+                </form>
             </div>
 
+            <div class="flex flex-wrap gap-2 mt-5 anim-reveal delay-200" id="term-chips">
+                <button class="term-chip" data-cmd="help">help</button>
+                <button class="term-chip" data-cmd="whoami">whoami</button>
+                <button class="term-chip" data-cmd="skills">skills</button>
+                <button class="term-chip" data-cmd="projects">projects</button>
+                <button class="term-chip" data-cmd="neofetch">neofetch</button>
+                <button class="term-chip" data-cmd="relay 1 on">relay 1 on</button>
+                <button class="term-chip" data-cmd="rev">rev</button>
+                <button class="term-chip" data-cmd="clear">clear</button>
+            </div>
         </div>
     </section>
 
-    <!-- CONTACT & FOOTER -->
-    <section id="contact" class="pt-24 pb-8 md:pt-32 md:pb-8 px-4 md:px-6 relative z-20 overflow-hidden bg-surface border-t border-borderline reveal-group">
-        <div class="max-w-[1400px] mx-auto relative z-10 flex flex-col">
-            
-            <div class="text-center mb-20 md:mb-32">
-                <span class="font-mono text-highlight text-xs tracking-widest uppercase mb-6 block anim-reveal">05 / Initialize Connection</span>
-                
-                <h2 class="text-impact text-5xl md:text-[7rem] leading-none mb-12 tracking-tight text-white anim-reveal delay-100">
-                    INITIATE CONTACT.
-                </h2>
-                
-                <div class="flex flex-col sm:flex-row justify-center gap-4 md:gap-6 anim-reveal delay-200">
-                    <a href="mailto:me@rhevaldy.my.id" class="flex items-center justify-center gap-3 bg-white text-black py-4 px-8 font-mono text-[10px] md:text-xs font-bold uppercase tracking-widest hover:scale-105 transition-transform rounded-lg shadow-xl">
-                        <i data-lucide="mail" class="w-4 h-4"></i>
-                        me@rhevaldy.my.id
-                    </a>
-                    
-                    <a href="https://t.me/rapaldy" target="_blank" class="flex items-center justify-center gap-3 border border-borderline bg-[#111] text-white py-4 px-8 font-mono text-[10px] md:text-xs font-bold uppercase tracking-widest hover:border-white transition-all rounded-lg">
-                        <i data-lucide="terminal" class="w-4 h-4 text-gray-400 group-hover:text-white"></i>
-                        Ping @rapaldy
-                    </a>
+    <!-- ================= IoT SANDBOX ================= -->
+    <section id="iot" class="layer py-24 md:py-32 px-4 md:px-6 border-t border-borderline bg-[#030303]/60">
+        <div class="max-w-[1400px] mx-auto">
+            <div class="anim-reveal mb-10 md:mb-14 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+                <div>
+                    <span class="font-mono text-muted text-xs tracking-widest uppercase mb-4 block">05 / IoT Sandbox</span>
+                    <h2 class="text-impact text-4xl md:text-6xl leading-tight">SMART NODE<br><span class="text-gray-500">SIMULATOR.</span></h2>
+                </div>
+                <div class="font-mono text-[10px] uppercase tracking-widest border border-highlight/30 bg-highlight/10 text-highlight px-4 py-2 rounded-lg w-max flex items-center gap-2"><i data-lucide="activity" class="w-3.5 h-3.5"></i> Simulasi · bukan data sensor asli</div>
+            </div>
+
+            <div class="grid lg:grid-cols-12 gap-6">
+                <!-- Scene -->
+                <div class="lg:col-span-7 anim-reveal delay-100 border border-borderline rounded-2xl bg-surface/80 p-4 md:p-8 flex flex-col justify-between overflow-hidden">
+                    <div class="flex items-center justify-between font-mono text-[10px] uppercase tracking-widest text-muted mb-4">
+                        <span>node1 · ESP8266 · relay board</span><span class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-[#3ddc84] animate-pulse"></span> online</span>
+                    </div>
+
+                    <svg id="car-svg" viewBox="0 0 760 250" class="w-full" role="img" aria-label="Ilustrasi mobil yang dikontrol relay">
+                        <defs>
+                            <linearGradient id="beamG" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity=".5"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+                            <linearGradient id="bodyG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2d2d2d"/><stop offset="1" stop-color="#0f0f0f"/></linearGradient>
+                            <radialGradient id="glowG"><stop offset="0" stop-color="#FF4500" stop-opacity=".95"/><stop offset="1" stop-color="#FF4500" stop-opacity="0"/></radialGradient>
+                        </defs>
+                        <line x1="0" y1="207" x2="760" y2="207" stroke="#222" stroke-width="2"/>
+                        <line class="road-dash" x1="-40" y1="230" x2="800" y2="230" stroke="#333" stroke-width="3" stroke-dasharray="40 30"/>
+                        <ellipse class="underglow" cx="305" cy="205" rx="275" ry="24" fill="url(#glowG)"/>
+                        <polygon class="beam" points="562,138 760,70 760,206 562,150" fill="url(#beamG)"/>
+                        <g class="car-body">
+                            <path d="M52 124 L36 110 L86 108 L94 120 Z" fill="#1a1a1a" stroke="#2c2c2c"/>
+                            <path d="M40 172 L44 140 Q48 128 66 124 L205 116 Q238 80 292 76 L382 76 Q424 78 452 110 L522 120 Q562 126 568 150 L570 172 Z" fill="url(#bodyG)" stroke="#3a3a3a" stroke-width="1.5"/>
+                            <path d="M218 114 Q244 86 292 84 L336 84 L336 114 Z" fill="#0d1a22" stroke="#333"/>
+                            <path d="M346 84 L380 84 Q414 86 438 112 L346 114 Z" fill="#0d1a22" stroke="#333"/>
+                            <path d="M341 84 L341 156" stroke="#2a2a2a"/>
+                            <path d="M358 130 L384 130" stroke="#555" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M60 156 L540 156" stroke="#FF4500" stroke-opacity=".5" stroke-width="1.5"/>
+                            <rect class="tail" x="40" y="134" width="9" height="14" rx="2"/>
+                            <ellipse class="hl" cx="556" cy="138" rx="14" ry="6"/>
+                            <circle class="hz" cx="565" cy="152" r="4"/>
+                            <circle class="hz" cx="46" cy="154" r="4"/>
+                        </g>
+                        <circle cx="150" cy="172" r="45" fill="#050505"/><circle cx="470" cy="172" r="45" fill="#050505"/>
+                        <g>
+                            <circle cx="150" cy="172" r="36" fill="#0b0b0b" stroke="#333" stroke-width="2"/>
+                            <g class="rim"><circle cx="150" cy="172" r="23" fill="#1a1a1a" stroke="#999" stroke-width="2"/>
+                                <path d="M150 172 L150 152 M150 172 L169 166 M150 172 L162 188 M150 172 L138 188 M150 172 L131 166" stroke="#bbb" stroke-width="3" stroke-linecap="round"/></g>
+                            <circle cx="470" cy="172" r="36" fill="#0b0b0b" stroke="#333" stroke-width="2"/>
+                            <g class="rim"><circle cx="470" cy="172" r="23" fill="#1a1a1a" stroke="#999" stroke-width="2"/>
+                                <path d="M470 172 L470 152 M470 172 L489 166 M470 172 L482 188 M470 172 L458 188 M470 172 L451 166" stroke="#bbb" stroke-width="3" stroke-linecap="round"/></g>
+                        </g>
+                    </svg>
+
+                    <div id="mqtt-log" class="mt-4 h-24 overflow-hidden font-mono text-[10px] text-gray-500 border-t border-borderline pt-3 leading-relaxed" aria-live="off"></div>
+                </div>
+
+                <!-- Controls -->
+                <div class="lg:col-span-5 flex flex-col gap-6 anim-reveal delay-200">
+                    <div class="border border-borderline rounded-2xl bg-surface/80 p-5 md:p-6">
+                        <p class="font-mono text-[10px] uppercase tracking-widest text-muted mb-4">Relay Board</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-3" id="relay-grid">
+                            <button class="relay" data-relay="1" aria-pressed="false"><span class="relay-led"></span>R1 · Headlights<span class="relay-sw"></span></button>
+                            <button class="relay" data-relay="2" aria-pressed="false"><span class="relay-led"></span>R2 · Hazard<span class="relay-sw"></span></button>
+                            <button class="relay" data-relay="3" aria-pressed="false"><span class="relay-led"></span>R3 · Underglow<span class="relay-sw"></span></button>
+                            <button class="relay" data-relay="4" aria-pressed="false"><span class="relay-led"></span>R4 · Drive<span class="relay-sw"></span></button>
+                        </div>
+                    </div>
+
+                    <div class="border border-borderline rounded-2xl bg-surface/80 p-5 md:p-6 grid grid-cols-3 gap-4 tele">
+                        <div><p class="font-mono text-[9px] uppercase tracking-widest text-muted">Coolant</p><p class="text-impact text-xl md:text-2xl mt-1"><span id="t-temp">--</span><span class="text-xs text-muted">°C</span></p><svg viewBox="0 0 120 32" preserveAspectRatio="none" class="w-full h-8 mt-2"><polyline id="s-temp" points=""/></svg></div>
+                        <div><p class="font-mono text-[9px] uppercase tracking-widest text-muted">Battery</p><p class="text-impact text-xl md:text-2xl mt-1"><span id="t-volt">--</span><span class="text-xs text-muted">V</span></p><svg viewBox="0 0 120 32" preserveAspectRatio="none" class="w-full h-8 mt-2"><polyline id="s-volt" points=""/></svg></div>
+                        <div><p class="font-mono text-[9px] uppercase tracking-widest text-muted">Wi-Fi</p><p class="text-impact text-xl md:text-2xl mt-1"><span id="t-rssi">--</span><span class="text-xs text-muted">dBm</span></p><svg viewBox="0 0 120 32" preserveAspectRatio="none" class="w-full h-8 mt-2"><polyline id="s-rssi" points=""/></svg></div>
+                    </div>
+                    <p class="font-mono text-[10px] text-muted leading-relaxed">Coolant ikut naik saat RPM tinggi. Nyalakan <b class="text-white">R4 · Drive</b> dan dengarkan mesin (aktifkan suara di navbar).</p>
                 </div>
             </div>
-            
+        </div>
+    </section>
+
+    <!-- ================= ARCHIVE ================= -->
+    <section id="archive" class="layer pt-24 md:pt-32 pb-16 md:pb-24 px-4 md:px-6 bg-[#020202]/85 border-t border-borderline">
+        <div class="max-w-[1400px] mx-auto">
+            <header class="mb-12 md:mb-16 anim-reveal">
+                <span class="font-mono text-muted text-xs tracking-widest uppercase mb-6 block">06 / Garage</span>
+                <h2 class="text-impact text-[10vw] md:text-[7rem] lg:text-[9rem] leading-[0.9] tracking-tight mb-8 uppercase break-words">PROJECT<br><span class="text-gray-700">DIRECTORY.</span></h2>
+                <p class="font-mono text-[10px] md:text-xs uppercase tracking-widest text-muted max-w-lg border-t border-borderline pt-6">Repositori terpusat dari seluruh implementasi arsitektur, eksperimen perangkat keras, dan dokumentasi sistem.</p>
+            </header>
+
+            <div id="archive-stats" class="grid grid-cols-3 border border-borderline rounded-xl overflow-hidden mb-12 md:mb-16 anim-reveal delay-100 hidden">
+                <div class="p-5 md:p-8 border-r border-borderline text-center md:text-left"><div class="text-impact text-3xl md:text-5xl"><span id="stat-records">0</span></div><div class="font-mono text-[9px] md:text-[10px] uppercase tracking-widest text-muted mt-2">Records</div></div>
+                <div class="p-5 md:p-8 border-r border-borderline text-center md:text-left"><div class="text-impact text-3xl md:text-5xl"><span id="stat-cats">0</span></div><div class="font-mono text-[9px] md:text-[10px] uppercase tracking-widest text-muted mt-2">Categories</div></div>
+                <div class="p-5 md:p-8 text-center md:text-left"><div class="text-impact text-3xl md:text-5xl text-highlight"><span id="stat-imgs">0</span></div><div class="font-mono text-[9px] md:text-[10px] uppercase tracking-widest text-muted mt-2">Assets</div></div>
+            </div>
+
+            <div id="loading" class="text-center py-20 anim-reveal delay-100">
+                <div class="inline-flex items-center gap-3 border border-borderline bg-surface px-6 py-4 font-mono text-gray-400 uppercase tracking-widest text-[10px] rounded-lg shadow-xl"><i data-lucide="loader" class="w-4 h-4 animate-spin text-white"></i> Fetching Database Records...</div>
+            </div>
+            <div id="archive-container" class="border-t border-borderline hidden anim-reveal delay-200"></div>
+        </div>
+    </section>
+
+    <!-- ================= CONTACT (GEAR P) ================= -->
+    <section id="contact" class="layer pt-24 pb-8 md:pt-32 md:pb-8 px-4 md:px-6 overflow-hidden bg-surface/90 border-t border-borderline">
+        <div class="blob w-[380px] h-[380px] left-1/2 -translate-x-1/2 top-10" style="opacity:.07"></div>
+        <div class="max-w-[1400px] mx-auto relative z-10 flex flex-col">
+            <div class="text-center mb-20 md:mb-28">
+                <span class="font-mono text-highlight text-xs tracking-widest uppercase mb-6 block anim-reveal">07 / Parked</span>
+                <h2 class="text-impact text-5xl md:text-[7rem] leading-none mb-6 text-white anim-reveal delay-100">LET'S <span class="text-shimmer">BUILD.</span></h2>
+                <p class="font-mono text-[11px] text-muted mb-12 anim-reveal delay-100">Gear P. Mesin idle. Siap mengobrol soal kode, sirkuit, atau mesin.</p>
+                <div class="flex flex-col sm:flex-row justify-center items-stretch gap-4 md:gap-6 anim-reveal delay-200">
+                    <a href="mailto:me@rhevaldy.my.id" data-magnetic class="flex items-center justify-center gap-3 bg-white text-black py-4 px-8 font-mono text-[10px] md:text-xs font-bold uppercase tracking-widest hover:bg-highlight hover:text-white transition-colors rounded-lg shadow-xl"><i data-lucide="mail" class="w-4 h-4"></i> me@rhevaldy.my.id</a>
+                    <button type="button" id="copy-email" data-magnetic class="flex items-center justify-center gap-3 border border-borderline bg-[#111] py-4 px-6 font-mono text-[10px] md:text-xs font-bold uppercase tracking-widest hover:border-white transition-all rounded-lg"><i data-lucide="copy" class="w-4 h-4 text-gray-400"></i> Copy</button>
+                    <a href="https://t.me/rapaldy" target="_blank" rel="noopener noreferrer" data-magnetic class="group flex items-center justify-center gap-3 border border-borderline bg-[#111] py-4 px-8 font-mono text-[10px] md:text-xs font-bold uppercase tracking-widest hover:border-white transition-all rounded-lg"><i data-lucide="terminal" class="w-4 h-4 text-gray-400 group-hover:text-white transition-colors"></i> Ping @rapaldy</a>
+                </div>
+            </div>
             <div class="pt-6 md:pt-8 border-t border-borderline flex flex-col md:flex-row justify-between items-center font-mono text-[9px] md:text-[10px] uppercase tracking-widest text-muted anim-reveal delay-300">
                 <p>&copy; 2026 RHEVALDY OCTAVIAN HARIS. ALL SYSTEMS NORMAL.</p>
                 <div class="mt-4 md:mt-0 flex items-center gap-6">
-                    <a href="https://github.com/rhevaldyoctavianharis-netizen" target="_blank" class="hover:text-white transition-colors flex items-center gap-2">
-                        <i data-lucide="github" class="w-3 h-3"></i> Repository
-                    </a>
-                    <span class="flex items-center gap-1.5 text-gray-500"><i data-lucide="map-pin" class="w-3 h-3"></i> SYSTEM LOCATION: JEPARA</span>
+                    <a href="https://github.com/rhevaldyoctavianharis-netizen" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors flex items-center gap-2"><i data-lucide="github" class="w-3 h-3"></i> Repository</a>
+                    <span class="flex items-center gap-1.5 text-gray-500"><i data-lucide="map-pin" class="w-3 h-3"></i> JEPARA · <span id="clock-foot">--:--</span></span>
                 </div>
             </div>
         </div>
     </section>
 
-    <script>
-        lucide.createIcons();
+<script>
+lucide.createIcons();
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const isFine = matchMedia('(pointer: fine)').matches;
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const EMAIL = 'me@rhevaldy.my.id';
+const esc = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
-        // --- MOUSE SPOTLIGHT EFFECT ---
-        document.querySelectorAll('.spotlight-card').forEach(card => {
-            card.addEventListener('mousemove', e => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                card.style.setProperty('--mouse-x', `${x}px`);
-                card.style.setProperty('--mouse-y', `${y}px`);
-            });
-        });
+/* ================= Toast & util ================= */
+let toastTimer;
+function showToast(msg) {
+    $('#toast-text').textContent = msg; $('#toast').classList.add('show');
+    clearTimeout(toastTimer); toastTimer = setTimeout(() => $('#toast').classList.remove('show'), 2200);
+}
+async function copyText(text) {
+    try { await navigator.clipboard.writeText(text); }
+    catch { const t = document.createElement('textarea'); t.value = text; document.body.appendChild(t); t.select(); document.execCommand('copy'); t.remove(); }
+    showToast('Disalin ke clipboard');
+}
+$('#copy-email').addEventListener('click', () => copyText(EMAIL));
 
-        // --- TASKBAR LOGIC ---
-        const menuBtn = document.getElementById('menu-btn');
-        const menuIconContainer = document.getElementById('menu-icon-container');
-        const floatingTaskbar = document.getElementById('floating-taskbar');
-        const taskbarLinks = document.querySelectorAll('.taskbar-link');
-        let isMenuOpen = false;
+/* ================= ENGINE STATE ================= */
+const eng = { rpm: 0, started: false, sweepStart: null, revHeld: false, burstUntil: 0, dipUntil: 0, drive: false, gear: 1 };
+const MAXRPM = 8000, MAXSPEED = 240;
 
-        const toggleMenu = () => {
-            isMenuOpen = !isMenuOpen;
-            if (isMenuOpen) {
-                floatingTaskbar.classList.add('active');
-                menuIconContainer.innerHTML = '<i data-lucide="x" class="w-4 h-4 md:w-5 md:h-5 text-white"></i>';
-                menuIconContainer.classList.add('border-highlight');
-            } else {
-                floatingTaskbar.classList.remove('active');
-                menuIconContainer.innerHTML = '<i data-lucide="command" class="w-4 h-4 md:w-5 md:h-5 text-white"></i>';
-                menuIconContainer.classList.remove('border-highlight');
-            }
-            lucide.createIcons();
-        };
-
-        menuBtn.addEventListener('click', toggleMenu);
-        taskbarLinks.forEach(link => link.addEventListener('click', () => isMenuOpen && toggleMenu()));
-
-        // --- SCROLL ANIMATION OBSERVER ---
-        document.addEventListener("DOMContentLoaded", () => {
-            const animElements = document.querySelectorAll(".anim-reveal");
-            const scrollObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add("active");
-                    } else {
-                        // Hilangkan baris ini jika Anda tidak ingin animasi terulang saat scroll naik
-                        entry.target.classList.remove("active");
-                    }
-                });
-            }, { rootMargin: "0px 0px -50px 0px", threshold: 0.1 });
-
-            animElements.forEach(el => scrollObserver.observe(el));
-            
-            setTimeout(() => {
-                animElements.forEach(el => {
-                    const rect = el.getBoundingClientRect();
-                    if(rect.top < window.innerHeight && rect.bottom > 0) el.classList.add("active");
-                });
-            }, 100);
-        });
-
-        // --- SUPER SMOOTH LERP AVATAR (APPLE-LIKE TRANSITION) ---
-        // Logika fisika pergerakan foto dari tengah layar ke pojok menu navigasi
-        
-        let currentX = 0, currentY = 0, currentW = 0, currentH = 0, currentRadius = 12; // 12px for rounded-xl
-        let targetX = 0, targetY = 0, targetW = 0, targetH = 0, targetRadius = 12;
-        let isLerpInitialized = false;
-
-        function animateAvatar() {
-            const heroTarget = document.getElementById('hero-target');
-            const navTarget = document.getElementById('nav-target');
-            const flyingAvatar = document.getElementById('flying-avatar');
-            const heroBadge = document.getElementById('hero-avatar-badge');
-            
-            if (!heroTarget || !navTarget || !flyingAvatar) {
-                requestAnimationFrame(animateAvatar);
-                return;
-            }
-
-            // Kapan kita mengubah targetnya ke Navigation Bar?
-            // Saat user scroll lebih dari 120px
-            const isDocked = window.scrollY > 120;
-            
-            const activeTarget = isDocked ? navTarget : heroTarget;
-            const rect = activeTarget.getBoundingClientRect();
-            
-            targetX = rect.left;
-            targetY = rect.top;
-            targetW = rect.width;
-            targetH = rect.height;
-            targetRadius = isDocked ? 50 : 12; // 50% untuk lingkaran, 12px untuk kotak hero
-
-            // Inisialisasi posisi awal tanpa animasi agar tidak terbang dari 0,0 saat reload
-            if (!isLerpInitialized && rect.width > 0) {
-                currentX = targetX;
-                currentY = targetY;
-                currentW = targetW;
-                currentH = targetH;
-                currentRadius = targetRadius;
-                flyingAvatar.style.opacity = 1; // Tampilkan setelah setup selesai
-                isLerpInitialized = true;
-            }
-
-            // Linear Interpolation (Kecepatan lerp 0.12 memberikan efek buttery smooth)
-            const lerpSpeed = 0.12;
-            currentX += (targetX - currentX) * lerpSpeed;
-            currentY += (targetY - currentY) * lerpSpeed;
-            currentW += (targetW - currentW) * lerpSpeed;
-            currentH += (targetH - currentH) * lerpSpeed;
-            currentRadius += (targetRadius - currentRadius) * lerpSpeed;
-
-            // Terapkan kalkulasi langsung ke style
-            flyingAvatar.style.transform = `translate(${currentX}px, ${currentY}px)`;
-            flyingAvatar.style.width = `${currentW}px`;
-            flyingAvatar.style.height = `${currentH}px`;
-            flyingAvatar.style.borderRadius = isDocked ? `${currentRadius}%` : `${currentRadius}px`;
-
-            // Efek visual tambahan
-            const img = document.getElementById('flying-img');
-            const overlay = document.getElementById('flying-overlay');
-            if (isDocked) {
-                img.style.filter = "grayscale(0%) contrast(100%)";
-                overlay.style.opacity = "0";
-                heroBadge.style.opacity = "0";
-                heroBadge.style.pointerEvents = "none";
-            } else {
-                img.style.filter = "grayscale(100%) contrast(125%)";
-                overlay.style.opacity = "0.4";
-                heroBadge.style.opacity = "1";
-                heroBadge.style.pointerEvents = "auto";
-            }
-
-            requestAnimationFrame(animateAvatar);
+/* ================= GAUGES ================= */
+function buildGauge(svg, o) {
+    const C = 150, A0 = 135, SW = 270, rad = a => a * Math.PI / 180;
+    const pt = (a, r) => [C + r * Math.cos(rad(a)), C + r * Math.sin(rad(a))];
+    const arc = (f0, f1, r) => {
+        const a0 = A0 + SW * f0, a1 = A0 + SW * f1, [x0, y0] = pt(a0, r), [x1, y1] = pt(a1, r);
+        return `M${x0.toFixed(2)} ${y0.toFixed(2)}A${r} ${r} 0 ${(a1 - a0) > 180 ? 1 : 0} 1 ${x1.toFixed(2)} ${y1.toFixed(2)}`;
+    };
+    let h = `<circle cx="150" cy="150" r="146" fill="#050505" stroke="#1f1f1f" stroke-width="2"/>
+             <circle cx="150" cy="150" r="136" fill="none" stroke="#101010"/>
+             <path d="${arc(0, 1, 120)}" fill="none" stroke="#141414" stroke-width="10" stroke-linecap="round"/>
+             <path d="${arc(o.red / o.max, 1, 120)}" fill="none" stroke="#5a1000" stroke-width="10"/>
+             <path class="g-prog" d="${arc(0, 1, 120)}" fill="none" stroke="#FF4500" stroke-width="10" stroke-linecap="round" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"/>`;
+    for (let v = 0; v <= o.max; v += o.minor) {
+        const a = A0 + SW * v / o.max, major = v % o.major === 0, len = major ? 14 : 7;
+        const [x0, y0] = pt(a, 106 - len), [x1, y1] = pt(a, 106);
+        h += `<line x1="${x0.toFixed(1)}" y1="${y0.toFixed(1)}" x2="${x1.toFixed(1)}" y2="${y1.toFixed(1)}" stroke="${v >= o.red ? '#ff3a1a' : (major ? '#cfcfcf' : '#555')}" stroke-width="${major ? 2 : 1}"/>`;
+        if (v % o.labelEvery === 0) {
+            const [lx, ly] = pt(a, 82);
+            h += `<text x="${lx.toFixed(1)}" y="${(ly + 4).toFixed(1)}" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" font-weight="500" fill="${v >= o.red ? '#ff5a3a' : '#9a9a9a'}">${o.labelFn(v)}</text>`;
         }
-        
-        // Memulai Loop Fisika
-        requestAnimationFrame(animateAvatar);
+    }
+    h += `<text x="150" y="118" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" letter-spacing="3" fill="#555">${o.title}</text>
+          <text class="g-val" x="150" y="196" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="30" font-weight="700" fill="#fff">0</text>
+          <text x="150" y="214" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" letter-spacing="3" fill="#FF4500">${o.unit}</text>
+          <g class="g-needle"><line x1="128" y1="150" x2="${(C + 108).toFixed(0)}" y2="150" stroke="#FF4500" stroke-width="3" stroke-linecap="round"/><line x1="128" y1="150" x2="118" y2="150" stroke="#FF4500" stroke-width="5" stroke-linecap="round"/></g>
+          <circle cx="150" cy="150" r="9" fill="#111" stroke="#FF4500" stroke-width="2"/>`;
+    svg.innerHTML = h;
+    const prog = $('.g-prog', svg), needle = $('.g-needle', svg), val = $('.g-val', svg);
+    return {
+        set(v) {
+            const f = clamp(v / o.max, 0, 1);
+            needle.setAttribute('transform', `rotate(${A0 + SW * f} 150 150)`);
+            prog.setAttribute('stroke-dashoffset', (100 * (1 - f)).toFixed(2));
+            prog.setAttribute('stroke', v >= o.red ? '#ff2a00' : '#FF4500');
+            val.textContent = Math.round(v);
+        }
+    };
+}
+const tach = buildGauge($('#tach'), { max: 8000, minor: 500, major: 1000, labelEvery: 1000, red: 6500, title: 'RPM x1000', unit: 'RPM', labelFn: v => v / 1000 });
+const speedo = buildGauge($('#speedo'), { max: 240, minor: 10, major: 20, labelEvery: 40, red: 200, title: 'SPEED', unit: 'KM/H', labelFn: v => v });
+tach.set(0); speedo.set(0);
 
-        // --- LOGIKA FETCH ARCHIVE JSON ---
-        document.addEventListener("DOMContentLoaded", () => {
-            const fallbackData = [
-                {
-                    id: "sys-web",
-                    title: "FRONTEND SYSTEMS",
-                    folderName: "web",
-                    projects: [
-                        {
-                            title: "Portfolio Architecture V1",
-                            description: "Implementasi awal arsitektur portfolio menggunakan native HTML, CSS, JS dengan integrasi fisika animasi dan layout brutalist.",
-                            images: ["web1.jpg", "web2.jpg"]
-                        }
-                    ]
-                },
-                {
-                    id: "sys-iot",
-                    title: "HARDWARE & IOT INTEGRATION",
-                    folderName: "hardware",
-                    projects: [
-                        {
-                            title: "Smart Environment Node",
-                            description: "Eksperimen kontrol nirkabel menggunakan mikrokontroler ESP8266 untuk otomatisasi relai dan lampu berbasis jaringan terdesentralisasi.",
-                            images: ["iot1.jpg"]
-                        }
-                    ]
-                }
-            ];
+/* Shift lights */
+const shift = $('#shift');
+for (let i = 0; i < 12; i++) { const d = document.createElement('div'); d.className = 'led ' + (i < 5 ? 'g' : i < 9 ? 'a' : 'r'); shift.appendChild(d); }
+const leds = $$('.led', shift);
 
-            fetch('archive.json')
-                .then(response => {
-                    if (!response.ok) throw new Error("Database fetch failed.");
-                    return response.json();
-                })
-                .then(data => renderArchive(data))
-                .catch(error => {
-                    console.warn("API Offline / Local File Detection. Falling back to local state.", error);
-                    renderArchive(fallbackData);
-                    const loadingEl = document.getElementById('loading');
-                    loadingEl.classList.remove('hidden');
-                    loadingEl.innerHTML = `
-                        <div class="inline-flex items-center gap-2 border border-highlight bg-highlight/10 px-4 py-2 font-mono text-highlight uppercase tracking-widest text-[10px] rounded-lg shadow-lg">
-                            <i data-lucide="wifi-off" class="w-3 h-3"></i> System Offline: Rendering Cached Data
-                        </div>
-                    `;
-                    setTimeout(() => { loadingEl.classList.add('hidden'); }, 4000);
-                    lucide.createIcons();
-                });
+/* ================= GEAR (berdasarkan section) ================= */
+const gearMap = { hero: 1, about: 2, education: 2, terminal: 3, iot: 4, archive: 5, contact: 'P' };
+function setGear(g) {
+    if (eng.gear === g) return;
+    eng.gear = g;
+    eng.dipUntil = performance.now() + 380; // simulasi pindah gigi
+    $('#gear-badge').textContent = g; $('#nav-gear').textContent = g;
+    const b = $('#gear-badge'); b.classList.add('pop'); setTimeout(() => b.classList.remove('pop'), 200);
+}
+(function () {
+    const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) setGear(gearMap[e.target.id]); }), { rootMargin: '-45% 0px -50% 0px' });
+    Object.keys(gearMap).forEach(id => io.observe(document.getElementById(id)));
+})();
+
+/* ================= SOUND (WebAudio, disintesis) ================= */
+const snd = { ctx: null, on: false };
+function initAudio() {
+    if (snd.ctx) { snd.ctx.resume(); return; }
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return;
+    const c = new AC();
+    const master = c.createGain(); master.gain.value = 0;
+    const filt = c.createBiquadFilter(); filt.type = 'lowpass'; filt.frequency.value = 400; filt.Q.value = 3;
+    const eg = c.createGain(); eg.gain.value = 0;
+    const o1 = c.createOscillator(); o1.type = 'sawtooth';
+    const o2 = c.createOscillator(); o2.type = 'square';
+    const g2 = c.createGain(); g2.gain.value = .5;
+    o1.connect(filt); o2.connect(g2); g2.connect(filt); filt.connect(eg); eg.connect(master); master.connect(c.destination);
+    o1.start(); o2.start();
+    Object.assign(snd, { ctx: c, master, filt, eg, o1, o2 });
+}
+function updateAudio() {
+    if (!snd.ctx || !snd.on) return;
+    const t = snd.ctx.currentTime, r = clamp(eng.rpm / MAXRPM, 0, 1);
+    const f = Math.max(eng.rpm / 60 * 2, 20) * (1 + (Math.random() - .5) * .01);
+    snd.o1.frequency.setTargetAtTime(f, t, .03);
+    snd.o2.frequency.setTargetAtTime(f / 2, t, .03);
+    snd.filt.frequency.setTargetAtTime(220 + eng.rpm * .28, t, .05);
+    snd.eg.gain.setTargetAtTime(eng.rpm < 40 ? 0 : .07 + .12 * r, t, .05);
+}
+function setSound(on) {
+    snd.on = on;
+    if (on) initAudio();
+    if (snd.master) snd.master.gain.setTargetAtTime(on ? .6 : 0, snd.ctx.currentTime, .1);
+    $('#sound-btn').innerHTML = `<i data-lucide="${on ? 'volume-2' : 'volume-x'}" class="w-4 h-4 md:w-5 md:h-5"></i>`;
+    $('#sound-btn').classList.toggle('text-highlight', on);
+    lucide.createIcons();
+}
+$('#sound-btn').addEventListener('click', () => { setSound(!snd.on); showToast(snd.on ? 'Suara mesin: ON' : 'Suara mesin: OFF'); });
+
+/* ================= MAIN LOOP ================= */
+let lastScroll = scrollY, vel = 0, speedCur = 0, navTick = 0;
+function loop(t) {
+    const dy = Math.abs(scrollY - lastScroll); lastScroll = scrollY;
+    vel += (dy - vel) * .15;
+
+    if (eng.sweepStart !== null) {
+        const p = (t - eng.sweepStart) / 2000;
+        if (p >= 1) { eng.sweepStart = null; }
+        else {
+            const e = x => 1 - Math.pow(1 - x, 3);
+            eng.rpm = p < .5 ? MAXRPM * e(p * 2) : MAXRPM - (MAXRPM - 850) * e((p - .5) * 2);
+            speedCur = eng.rpm / MAXRPM * MAXSPEED;
+        }
+    }
+    if (eng.sweepStart === null) {
+        let target = eng.started ? 850 + Math.sin(t / 230) * 25 + Math.sin(t / 97) * 12 : 0;
+        if (eng.started) {
+            target += Math.min(vel * 70, 5200);
+            if (eng.drive) target = Math.max(target, 3300 + Math.sin(t / 400) * 220);
+            if (eng.revHeld || t < eng.burstUntil) target = 7650 + Math.sin(t / 38) * 220; // rev limiter
+            if (t < eng.dipUntil) target -= 1500;
+        }
+        eng.rpm += (target - eng.rpm) * (target > eng.rpm ? .09 : .045);
+        const gf = eng.gear === 'P' ? 0 : .3 + .14 * eng.gear;
+        speedCur += (eng.rpm / MAXRPM * MAXSPEED * gf - speedCur) * .06;
+    }
+
+    tach.set(clamp(eng.rpm, 0, MAXRPM)); speedo.set(clamp(speedCur, 0, MAXSPEED));
+    const lit = Math.floor(clamp(eng.rpm / MAXRPM, 0, 1) * 12), blink = eng.rpm > 7200 && Math.floor(t / 70) % 2;
+    leds.forEach((l, i) => l.classList.toggle('on', blink ? false : i < lit));
+    if (eng.rpm > 7200 && !blink) leds.forEach(l => l.classList.add('on'));
+    $('#cluster').classList.toggle('redline', eng.rpm > 6800);
+
+    if (t - navTick > 90) { navTick = t; $('#nav-rpm').textContent = Math.round(eng.rpm / 10) * 10; updateCarFx(); }
+    updateAudio();
+    requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+
+/* Rev controls */
+const revBtn = $('#rev-btn');
+const revOn = () => { if (!eng.started) return; eng.revHeld = true; revBtn.classList.add('held'); };
+const revOff = () => { eng.revHeld = false; revBtn.classList.remove('held'); };
+['pointerdown'].forEach(ev => { revBtn.addEventListener(ev, e => { e.preventDefault(); revOn(); }); $('#tach-box').addEventListener(ev, e => { e.preventDefault(); revOn(); }); $('#speedo-box').addEventListener(ev, e => { e.preventDefault(); revOn(); }); });
+['pointerup', 'pointercancel', 'pointerleave'].forEach(ev => { revBtn.addEventListener(ev, revOff); $('#tach-box').addEventListener(ev, revOff); $('#speedo-box').addEventListener(ev, revOff); });
+addEventListener('pointerup', revOff);
+addEventListener('keydown', e => { if (e.key.toLowerCase() === 'r' && !e.repeat && !e.ctrlKey && !e.metaKey && !/INPUT|TEXTAREA/.test(document.activeElement.tagName)) revOn(); });
+addEventListener('keyup', e => { if (e.key.toLowerCase() === 'r') revOff(); });
+function revBurst(ms = 2200) { if (eng.started) eng.burstUntil = performance.now() + ms; }
+
+/* ================= IGNITION ================= */
+(function () {
+    const ov = $('#ignition'), btn = $('#start-btn'), log = $('#boot-log');
+    const lines = ['ECU handshake', 'Mounting /dev/portfolio', 'Calibrating sensors', 'Loading projects.json', 'Engine ready'];
+    let busy = false;
+    function finish(withSound) {
+        ov.classList.add('done'); document.documentElement.style.overflow = '';
+        eng.started = true; eng.sweepStart = performance.now();
+        try { sessionStorage.setItem('ignited', '1'); } catch {}
+        if (withSound) setSound(true);
+    }
+    function start(withSound) {
+        if (busy) return; busy = true;
+        if (withSound) initAudio(); // harus di dalam gesture pengguna
+        btn.classList.add('on'); $('#ign-hint').style.opacity = 0;
+        lines.forEach((l, i) => setTimeout(() => {
+            log.innerHTML += `<div><span class="ok">[ OK ]</span> ${l}</div>`;
+        }, 200 + i * 230));
+        setTimeout(() => finish(withSound), 200 + lines.length * 230 + 250);
+    }
+    let seen = false; try { seen = sessionStorage.getItem('ignited') === '1'; } catch {}
+    if (seen) { ov.style.display = 'none'; eng.started = true; eng.sweepStart = performance.now(); }
+    else document.documentElement.style.overflow = 'hidden';
+    btn.addEventListener('click', () => start(true));
+    $('#start-silent').addEventListener('click', () => start(false));
+})();
+
+/* ================= CIRCUIT CANVAS ================= */
+(function () {
+    const cv = $('#circuit'), ctx = cv.getContext('2d');
+    let W, H, paths = [], mouse = { x: -999, y: -999 };
+    const GRID = 40, DIRS = [[1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0], [-1, -1], [0, -1], [1, -1]];
+    function build() {
+        const dpr = Math.min(devicePixelRatio || 1, 2);
+        W = innerWidth; H = innerHeight; cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        paths = [];
+        const n = clamp(Math.round(W * H / 30000), 14, 46);
+        for (let i = 0; i < n; i++) {
+            let x = Math.round(Math.random() * W / GRID) * GRID, y = Math.round(Math.random() * H / GRID) * GRID;
+            let d = Math.floor(Math.random() * 8);
+            const pts = [[x, y]];
+            const segs = 4 + Math.floor(Math.random() * 5);
+            for (let s = 0; s < segs; s++) {
+                const turn = [-1, 1, -2, 2][Math.floor(Math.random() * 4)];
+                d = (d + turn + 8) % 8;
+                const L = GRID * (2 + Math.floor(Math.random() * 5));
+                const dx = DIRS[d][0], dy = DIRS[d][1];
+                const k = dx && dy ? L * .7071 : L;
+                x += dx * k; y += dy * k; pts.push([x, y]);
+            }
+            const cum = [0];
+            for (let j = 1; j < pts.length; j++) cum[j] = cum[j - 1] + Math.hypot(pts[j][0] - pts[j - 1][0], pts[j][1] - pts[j - 1][1]);
+            paths.push({ pts, cum, len: cum[cum.length - 1], t: Math.random() * cum[cum.length - 1], sp: 40 + Math.random() * 60 });
+        }
+    }
+    function at(p, d) {
+        d = ((d % p.len) + p.len) % p.len;
+        let j = 1; while (j < p.cum.length - 1 && p.cum[j] < d) j++;
+        const f = (d - p.cum[j - 1]) / (p.cum[j] - p.cum[j - 1] || 1);
+        return [p.pts[j - 1][0] + (p.pts[j][0] - p.pts[j - 1][0]) * f, p.pts[j - 1][1] + (p.pts[j][1] - p.pts[j - 1][1]) * f];
+    }
+    let last = performance.now();
+    function draw(now) {
+        const dt = Math.min((now - last) / 1000, .05); last = now;
+        ctx.clearRect(0, 0, W, H);
+        ctx.lineWidth = 1; ctx.lineJoin = 'round';
+        const boost = 1 + eng.rpm / 1800;
+        paths.forEach(p => {
+            ctx.strokeStyle = 'rgba(255,255,255,.055)'; ctx.beginPath();
+            p.pts.forEach((q, i) => i ? ctx.lineTo(q[0], q[1]) : ctx.moveTo(q[0], q[1])); ctx.stroke();
+            [p.pts[0], p.pts[p.pts.length - 1]].forEach(q => { ctx.beginPath(); ctx.arc(q[0], q[1], 2.5, 0, 6.283); ctx.strokeStyle = 'rgba(255,255,255,.12)'; ctx.stroke(); });
+            const head = at(p, p.t), dm = Math.hypot(head[0] - mouse.x, head[1] - mouse.y), near = dm < 160;
+            p.t += p.sp * boost * (near ? 2.2 : 1) * dt;
+            const n = 9;
+            for (let k = 0; k < n; k++) {
+                const q = at(p, p.t - k * 7), a = (1 - k / n) * (near ? .95 : .55);
+                ctx.fillStyle = `rgba(255,${90 + k * 8},20,${a})`;
+                ctx.beginPath(); ctx.arc(q[0], q[1], (near ? 2.6 : 1.8) * (1 - k / (n + 2)), 0, 6.283); ctx.fill();
+            }
         });
+        if (!reduceMotion && !document.hidden) requestAnimationFrame(draw);
+    }
+    build();
+    addEventListener('resize', () => { build(); });
+    addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) { last = performance.now(); requestAnimationFrame(draw); } });
+    requestAnimationFrame(draw);
+})();
 
-        function renderArchive(archiveData) {
-            const container = document.getElementById('archive-container');
-            const loading = document.getElementById('loading');
-            const fallbackFn = "this.onerror=null; this.outerHTML='<div class=\\'w-full aspect-video flex flex-col items-center justify-center bg-surface border border-borderline text-muted p-4 text-center rounded-lg\\'><i data-lucide=\\'file-warning\\' class=\\'w-6 h-6 mb-3\\'></i><span class=\\'font-mono text-[9px] uppercase tracking-widest break-all\\'>Asset '+this.getAttribute('data-filename')+' Missing</span></div>'; setTimeout(() => lucide.createIcons(), 100);";
+/* ================= HERO FX: parallax cluster, typing, marquee, clock ================= */
+(function () {
+    const cl = $('#cluster');
+    if (isFine && !reduceMotion) {
+        $('#hero').addEventListener('mousemove', e => {
+            const r = $('#hero').getBoundingClientRect();
+            const x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+            cl.style.transform = `perspective(1400px) rotateY(${x * 5}deg) rotateX(${-y * 4}deg)`;
+        });
+        $('#hero').addEventListener('mouseleave', () => { cl.style.transform = ''; });
+    }
+    const el = $('#typed'), roles = ['Programmer', 'IoT Tinkerer', 'Automotive Enthusiast', 'System Architect'];
+    if (reduceMotion) { el.textContent = roles[0]; }
+    else {
+        let r = 0, c = 0, del = false;
+        (function tick() {
+            const w = roles[r]; el.textContent = w.slice(0, c);
+            let d = del ? 35 : 80;
+            if (!del && c === w.length) { del = true; d = 1600; }
+            else if (del && c === 0) { del = false; r = (r + 1) % roles.length; d = 350; }
+            else c += del ? -1 : 1;
+            setTimeout(tick, d);
+        })();
+    }
+    const ph = ['FROM CODE TO CIRCUITS', 'FROM CIRCUITS TO CRANKSHAFTS', 'BUILD · FLASH · DRIVE', 'PRECISION IN EVERY PIXEL'];
+    const g = ph.map(p => `<span class="mx-4 text-gray-400">${p}</span><span class="mx-4 text-highlight">///</span>`).join('');
+    $('#marquee-track').innerHTML = `<div class="flex">${g}${g}</div><div class="flex">${g}${g}</div>`;
+    const fmt = new Intl.DateTimeFormat('id-ID', { timeZone: 'Asia/Jakarta', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+    (function tick() { const t = fmt.format(new Date()).replace(/\./g, ':'); $('#clock').textContent = t; $('#clock-foot').textContent = t.slice(0, 5); setTimeout(tick, 1000); })();
+})();
 
-            let htmlContent = '';
+/* Spotlight + tilt + magnetic */
+$$('.spotlight-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+        const r = card.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
+        card.style.setProperty('--mouse-x', x + 'px'); card.style.setProperty('--mouse-y', y + 'px');
+        if (card.classList.contains('tilt') && !reduceMotion) card.style.transform = `perspective(900px) rotateX(${((y / r.height) - .5) * -5}deg) rotateY(${((x / r.width) - .5) * 5}deg)`;
+    });
+    card.addEventListener('mouseleave', () => card.style.transform = '');
+});
+if (isFine && !reduceMotion) {
+    $$('[data-magnetic]').forEach(el => {
+        el.addEventListener('mousemove', e => { const r = el.getBoundingClientRect(); el.style.transform = `translate(${(e.clientX - r.left - r.width / 2) * .25}px, ${(e.clientY - r.top - r.height / 2) * .35}px)`; });
+        el.addEventListener('mouseleave', () => el.style.transform = '');
+    });
+}
 
-            archiveData.forEach((category, catIndex) => {
-                let projectsHtml = '';
-                const catNum = String(catIndex + 1).padStart(2, '0');
-                
-                category.projects.forEach((project, projIndex) => {
-                    let imagesHtml = '';
-                    project.images.forEach(imgName => {
-                        const imgPath = `upload/${category.folderName}/${imgName}`;
-                        imagesHtml += `
-                            <div class="mb-4 overflow-hidden border border-borderline rounded-lg bg-surface relative group/img">
-                                <img src="${imgPath}" data-filename="${imgName}" onerror="${fallbackFn}" alt="${project.title}" class="w-full object-cover transition-transform duration-700 group-hover/img:scale-105">
-                                <div class="absolute inset-0 bg-black/50 opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-sm">
-                                    <span class="font-mono text-white text-[10px] uppercase tracking-widest border border-white/30 px-3 py-1 rounded">Preview</span>
-                                </div>
-                            </div>
-                        `;
-                    });
+/* Scroll: progress, back-to-top */
+let ticking = false;
+function onScroll() {
+    const max = document.documentElement.scrollHeight - innerHeight;
+    $('#scroll-progress').style.transform = `scaleX(${max > 0 ? scrollY / max : 0})`;
+    $('#to-top').classList.toggle('show', scrollY > 700);
+    ticking = false;
+}
+addEventListener('scroll', () => { if (!ticking) { requestAnimationFrame(onScroll); ticking = true; } }, { passive: true });
+onScroll();
+$('#to-top').addEventListener('click', () => scrollTo({ top: 0, behavior: 'smooth' }));
 
-                    const formattedNum = String(projIndex + 1).padStart(2, '0');
+/* Reveal */
+document.addEventListener('DOMContentLoaded', () => {
+    const obs = new IntersectionObserver(es => es.forEach(e => e.target.classList.toggle('active', e.isIntersecting)), { rootMargin: '0px 0px -50px 0px', threshold: .1 });
+    $$('.anim-reveal').forEach(el => obs.observe(el));
+    setTimeout(() => $$('.anim-reveal').forEach(el => { const r = el.getBoundingClientRect(); if (r.top < innerHeight && r.bottom > 0) el.classList.add('active'); }), 100);
+});
 
-                    projectsHtml += `
-                        <div class="mb-16 last:mb-0 md:grid md:grid-cols-12 md:gap-12 pt-8 border-t border-borderline first:border-t-0 first:pt-0 group relative">
-                            <div class="md:col-span-5 mb-8 md:mb-0 relative z-10 flex flex-col border-l-2 border-borderline pl-4 md:pl-6 ml-2 md:ml-0 group-hover:border-highlight transition-colors">
-                                <span class="font-mono text-[10px] tracking-widest uppercase text-muted mb-4 flex items-center gap-2">
-                                    Record ${formattedNum} 
-                                </span>
-                                <h4 class="text-impact text-2xl md:text-3xl text-white leading-tight mb-4 group-hover:text-highlight transition-colors">
-                                    ${project.title}
-                                </h4>
-                                <p class="text-sm text-gray-400 leading-relaxed font-light mb-6">
-                                    ${project.description}
-                                </p>
-                            </div>
-                            <div class="md:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 relative z-10">
-                                ${imagesHtml}
-                            </div>
-                        </div>
-                    `;
-                });
+/* Avatar lerp hero -> navbar */
+(function () {
+    let cX = 0, cY = 0, cW = 0, cH = 0, cR = 12, ready = false, prev = null;
+    const fa = $('#flying-avatar'), fi = $('#flying-img'), fo = $('#flying-overlay'), ht = $('#hero-target'), nt = $('#nav-target'), hb = $('#hero-avatar-badge');
+    (function frame() {
+        const docked = scrollY > 120, r = (docked ? nt : ht).getBoundingClientRect(), tR = docked ? 50 : 12;
+        if (!ready && r.width > 0) { cX = r.left; cY = r.top; cW = r.width; cH = r.height; cR = tR; fa.style.opacity = 1; ready = true; }
+        const k = reduceMotion ? 1 : .12;
+        cX += (r.left - cX) * k; cY += (r.top - cY) * k; cW += (r.width - cW) * k; cH += (r.height - cH) * k; cR += (tR - cR) * k;
+        fa.style.transform = `translate(${cX}px, ${cY}px)`; fa.style.width = cW + 'px'; fa.style.height = cH + 'px';
+        fa.style.borderRadius = docked ? cR + '%' : cR + 'px';
+        if (docked !== prev) {
+            prev = docked;
+            fi.style.filter = docked ? 'grayscale(0%) contrast(100%)' : 'grayscale(100%) contrast(125%)';
+            fo.style.opacity = docked ? 0 : .4; hb.style.opacity = docked ? 0 : 1;
+        }
+        requestAnimationFrame(frame);
+    })();
+})();
 
-                htmlContent += `
-                    <div class="border-b border-borderline">
-                        <button class="w-full flex items-center justify-between py-10 md:py-12 text-left focus:outline-none group hover:bg-[#060606] transition-colors px-2 md:px-6" onclick="toggleAccordion('content-${category.id}', 'icon-${category.id}')">
-                            <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-8">
-                                <div class="font-mono text-muted text-xs tracking-widest uppercase w-12 hidden md:block group-hover:text-highlight transition-colors">${catNum}</div>
-                                <h3 class="text-impact text-3xl md:text-5xl text-white group-hover:text-white transition-colors tracking-tight">
-                                    ${category.title}
-                                </h3>
-                                <div class="font-mono text-[10px] uppercase tracking-widest bg-surface border border-borderline px-3 py-1.5 rounded-lg text-gray-400 md:ml-4 flex items-center gap-2 group-hover:border-gray-600 transition-colors">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-highlight"></span>
-                                    ${category.projects.length} Records
-                                </div>
-                            </div>
-                            <div id="icon-${category.id}" class="icon-rotate w-10 h-10 md:w-12 md:h-12 rounded-full border border-borderline flex items-center justify-center text-muted group-hover:border-white group-hover:text-white transition-all flex-shrink-0 bg-surface">
-                                <i data-lucide="plus" class="w-4 h-4 md:w-5 md:h-5"></i>
-                            </div>
-                        </button>
-                        
-                        <div id="content-${category.id}" class="accordion-content px-2 md:px-6 md:ml-12">
-                            <div class="pb-12 pt-8">
-                                ${projectsHtml}
-                            </div>
-                        </div>
+/* ================= IoT SANDBOX ================= */
+const carSvg = $('#car-svg');
+const relayInfo = { 1: { n: 'headlight', c: 'lights-on' }, 2: { n: 'hazard', c: 'hazard-on' }, 3: { n: 'underglow', c: 'glow-on' }, 4: { n: 'drive', c: 'drive-on' } };
+const relayState = { 1: false, 2: false, 3: false, 4: false };
+const hhmmss = () => new Date().toLocaleTimeString('id-ID', { timeZone: 'Asia/Jakarta', hour12: false }).replace(/\./g, ':');
+function mqttLog(msg) {
+    const box = $('#mqtt-log'), d = document.createElement('div');
+    d.innerHTML = `<span class="text-gray-700">${hhmmss()}</span> <span class="text-highlight">mqtt&gt;</span> ${esc(msg)}`;
+    box.appendChild(d); while (box.children.length > 6) box.firstChild.remove();
+}
+function setRelay(n, val) {
+    n = +n; if (!relayInfo[n]) return false;
+    relayState[n] = val; carSvg.classList.toggle(relayInfo[n].c, val);
+    const b = $(`.relay[data-relay="${n}"]`); b.setAttribute('aria-pressed', String(val));
+    if (n === 4) eng.drive = val;
+    mqttLog(`PUB node1/${relayInfo[n].n} ${val ? 'ON' : 'OFF'}`);
+    return true;
+}
+$('#relay-grid').addEventListener('click', e => { const b = e.target.closest('.relay'); if (b) setRelay(b.dataset.relay, !relayState[b.dataset.relay]); });
+mqttLog('CONNECT broker ok · node1 ready');
+
+function updateCarFx() {
+    const r = clamp(eng.rpm / MAXRPM, 0, 1);
+    carSvg.style.setProperty('--spin', clamp(2.2 - r * 2.1, .1, 2.2).toFixed(2) + 's');
+    carSvg.style.setProperty('--road', clamp(1.1 - r * 1.0, .1, 1.1).toFixed(2) + 's');
+    carSvg.style.setProperty('--jit', (.3 + r * 1.6).toFixed(2) + 'px');
+}
+
+const series = { temp: [], volt: [], rssi: [] };
+const ranges = { temp: [70, 112], volt: [11.5, 14.6], rssi: [-82, -42] };
+function pushSeries(k, v) {
+    const s = series[k]; s.push(v); if (s.length > 48) s.shift();
+    const [lo, hi] = ranges[k];
+    $('#s-' + k).setAttribute('points', s.map((x, i) => `${(i / 47 * 120).toFixed(1)},${(32 - clamp((x - lo) / (hi - lo), 0, 1) * 30 - 1).toFixed(1)}`).join(' '));
+}
+setInterval(() => {
+    const temp = 78 + clamp(eng.rpm / MAXRPM, 0, 1) * 22 + (Math.random() - .5) * 1.5;
+    const volt = (eng.started ? 13.7 : 12.4) + (Math.random() - .5) * .25;
+    const rssi = -62 + (Math.random() - .5) * 10;
+    pushSeries('temp', temp); pushSeries('volt', volt); pushSeries('rssi', rssi);
+    $('#t-temp').textContent = temp.toFixed(0); $('#t-volt').textContent = volt.toFixed(1); $('#t-rssi').textContent = rssi.toFixed(0);
+}, 250);
+
+/* ================= TERMINAL ================= */
+const termOut = $('#term-out'), termIn = $('#term-in');
+const hist = []; let hi = 0, archiveData = null;
+function tPrint(html, cls = '') { const d = document.createElement('div'); d.className = 'term-line ' + cls; d.innerHTML = html; termOut.appendChild(d); termOut.scrollTop = termOut.scrollHeight; }
+const sections = { top: '#hero', hero: '#hero', about: '#about', profile: '#about', education: '#education', terminal: '#terminal', iot: '#iot', archive: '#archive', projects: '#archive', contact: '#contact' };
+const cmds = {
+    help() {
+        tPrint(`<b>Perintah tersedia:</b>
+  <b>whoami</b>          siapa saya
+  <b>skills</b>          keahlian
+  <b>projects</b>        daftar proyek dari archive
+  <b>neofetch</b>        info sistem
+  <b>relay</b> &lt;1-4&gt; on|off   kontrol relay simulator
+  <b>rev</b>             naikkan RPM mesin
+  <b>sound</b> on|off    suara mesin
+  <b>goto</b> &lt;section&gt;   about, terminal, iot, archive, contact
+  <b>contact</b>         cara menghubungi saya
+  <b>date</b> · <b>echo</b> · <b>ls</b> · <b>clear</b>`);
+    },
+    whoami() { tPrint(`<b>Rhevaldy Octavian Haris</b> — programmer, IoT tinkerer, penyuka otomotif. Berbasis di Jepara, ID.`); },
+    skills() { tPrint(`<b>engine/</b>   Software Engineering\n<b>ecu/</b>      IoT &amp; Microcontrollers (ESP8266, relay)\n<b>chassis/</b>  Frontend Architecture (HTML · CSS · JS · Tailwind)\n<b>cockpit/</b>  Interactive UX &amp; animasi`); },
+    ls() { tPrint('about/  skills/  projects/  iot/  contact/'); },
+    projects() {
+        if (!archiveData) return tPrint('Database proyek belum dimuat. Coba lagi sebentar.', 'text-yellow-400');
+        archiveData.forEach(c => {
+            tPrint(`<b>▸ ${esc(c.title)}</b>`);
+            c.projects.forEach(p => tPrint(`   • ${esc(p.title)}`));
+        });
+        tPrint('Ketik <b>goto archive</b> untuk melihat detail & gambar.');
+    },
+    neofetch() {
+        const up = Math.floor(performance.now() / 1000);
+        tPrint(`<pre style="margin:0;font:inherit"><span class="text-highlight">     _.-=====-._       </span><b>rhevaldy</b>@<b>jepara</b>
+<span class="text-highlight">  .-'  |     |  '-.   </span>----------------
+<span class="text-highlight"> (_o___|_____|___o_)  </span><b>OS</b>:      Portfolio 2026
+<span class="text-highlight">                       </span><b>Host</b>:    Jepara, ID
+<span class="text-highlight">                       </span><b>Shell</b>:   portfolio-sh
+<span class="text-highlight">                       </span><b>Uptime</b>:  ${up}s
+<span class="text-highlight">                       </span><b>RPM</b>:     ${Math.round(eng.rpm)}
+<span class="text-highlight">                       </span><b>Gear</b>:    ${eng.gear}</pre>`);
+    },
+    rev() { if (!eng.started) return tPrint('Mesin belum menyala.', 'text-yellow-400'); revBurst(2200); tPrint('Vrooooom… 🏁'); },
+    relay(a) {
+        if (!a[0]) { tPrint(Object.keys(relayInfo).map(n => `R${n} ${relayInfo[n].n.padEnd(10)} ${relayState[n] ? '<b>ON</b>' : 'off'}`).join('\n')); return; }
+        const n = +a[0], v = (a[1] || 'toggle').toLowerCase();
+        if (!relayInfo[n]) return tPrint('Relay tidak ada. Gunakan 1–4.', 'text-red-400');
+        const val = v === 'on' ? true : v === 'off' ? false : !relayState[n];
+        setRelay(n, val); tPrint(`R${n} (${relayInfo[n].n}) → <b>${val ? 'ON' : 'OFF'}</b>`);
+        if (!$('#iot').classList.contains('seen')) tPrint('Lihat efeknya di bagian IoT: <b>goto iot</b>');
+    },
+    sound(a) { const on = (a[0] || '').toLowerCase() !== 'off'; if (!snd.ctx && !on) return; setSound(on); tPrint(`Suara mesin: <b>${on ? 'ON' : 'OFF'}</b>`); },
+    goto(a) { const t = sections[(a[0] || '').toLowerCase()]; if (!t) return tPrint('Section: about, terminal, iot, archive, contact', 'text-yellow-400'); tPrint(`Menuju ${esc(a[0])}…`); setTimeout(() => $(t).scrollIntoView({ behavior: 'smooth' }), 250); },
+    contact() { tPrint(`<b>Email</b>     <a href="mailto:${EMAIL}">${EMAIL}</a>\n<b>Telegram</b>  <a href="https://t.me/rapaldy" target="_blank" rel="noopener">@rapaldy</a>\n<b>GitHub</b>    <a href="https://github.com/rhevaldyoctavianharis-netizen" target="_blank" rel="noopener">rhevaldyoctavianharis-netizen</a>`); },
+    date() { tPrint(new Date().toLocaleString('id-ID', { timeZone: 'Asia/Jakarta', dateStyle: 'full', timeStyle: 'medium' }) + ' WIB'); },
+    echo(a) { tPrint(esc(a.join(' '))); },
+    sudo() { tPrint('Permission denied: bahkan root pun butuh kopi dulu ☕', 'text-red-400'); },
+    clear() { termOut.innerHTML = ''; }
+};
+function runCmd(raw) {
+    const line = raw.trim();
+    tPrint(`<span class="text-highlight">❯</span> ${esc(line)}`);
+    if (!line) return;
+    hist.push(line); hi = hist.length;
+    const [c, ...a] = line.split(/\s+/), fn = cmds[c.toLowerCase()];
+    fn ? fn(a) : tPrint(`command not found: ${esc(c)} — ketik <b>help</b>`, 'text-red-400');
+}
+$('#term-form').addEventListener('submit', e => { e.preventDefault(); const v = termIn.value; termIn.value = ''; runCmd(v); });
+termIn.addEventListener('keydown', e => {
+    if (e.key === 'ArrowUp') { e.preventDefault(); if (hi > 0) termIn.value = hist[--hi]; }
+    else if (e.key === 'ArrowDown') { e.preventDefault(); hi < hist.length - 1 ? termIn.value = hist[++hi] : (hi = hist.length, termIn.value = ''); }
+    else if (e.key === 'Tab') { e.preventDefault(); const m = Object.keys(cmds).filter(k => k.startsWith(termIn.value.toLowerCase())); if (m.length === 1) termIn.value = m[0] + ' '; }
+});
+$('#term-chips').addEventListener('click', e => { const b = e.target.closest('[data-cmd]'); if (b) runCmd(b.dataset.cmd); });
+$('#term-out').addEventListener('click', () => termIn.focus({ preventScroll: true }));
+tPrint(`<b>Selamat datang di portfolio-sh 1.0</b>\nKetik <b>help</b> untuk melihat perintah, atau klik chip di bawah.`);
+
+/* ================= PALETTE ================= */
+const palette = $('#palette'), pInput = $('#palette-input'), pList = $('#palette-list');
+$('#kbd-hint').textContent = /Mac|iPhone|iPad/.test(navigator.platform) ? '⌘ K' : 'Ctrl K';
+const goTo = id => () => $(id).scrollIntoView({ behavior: 'smooth' });
+const commands = [
+    { group: 'Navigasi', label: 'Cockpit (Home)', icon: 'gauge', run: goTo('#hero') },
+    { group: 'Navigasi', label: 'The Build (About)', icon: 'user', run: goTo('#about') },
+    { group: 'Navigasi', label: 'Terminal', icon: 'terminal', run: goTo('#terminal') },
+    { group: 'Navigasi', label: 'IoT Sandbox', icon: 'circuit-board', run: goTo('#iot') },
+    { group: 'Navigasi', label: 'Project Directory', icon: 'folder-open', run: goTo('#archive') },
+    { group: 'Navigasi', label: 'Contact', icon: 'mail', run: goTo('#contact') },
+    { group: 'Aksi', label: 'Rev engine', icon: 'zap', run: () => revBurst(2200) },
+    { group: 'Aksi', label: 'Toggle suara mesin', icon: 'volume-2', run: () => { setSound(!snd.on); showToast(snd.on ? 'Suara mesin: ON' : 'Suara mesin: OFF'); } },
+    { group: 'Aksi', label: 'Copy email', icon: 'copy', run: () => copyText(EMAIL) },
+    { group: 'Aksi', label: 'Buka GitHub', icon: 'github', run: () => window.open('https://github.com/rhevaldyoctavianharis-netizen', '_blank', 'noopener') },
+    { group: 'Aksi', label: 'Chat Telegram @rapaldy', icon: 'send', run: () => window.open('https://t.me/rapaldy', '_blank', 'noopener') },
+];
+let filtered = commands, sel = 0, paletteOpen = false;
+function renderPalette() {
+    const q = pInput.value.toLowerCase().trim();
+    filtered = commands.filter(c => (c.label + ' ' + c.group).toLowerCase().includes(q));
+    if (sel >= filtered.length) sel = 0;
+    if (!filtered.length) { pList.innerHTML = '<li class="px-4 py-8 text-center font-mono text-xs text-gray-600 uppercase tracking-widest">Tidak ada hasil</li>'; return; }
+    let h = '', last = '';
+    filtered.forEach((c, i) => {
+        if (c.group !== last) { h += `<li class="px-3 pt-3 pb-1 font-mono text-[9px] uppercase tracking-[0.25em] text-gray-600">${c.group}</li>`; last = c.group; }
+        h += `<li class="palette-item flex items-center gap-3 px-3 py-3 rounded-lg cursor-pointer ${i === sel ? 'active' : ''}" data-i="${i}"><i data-lucide="${c.icon}" class="w-4 h-4 text-gray-400"></i><span class="flex-1 font-mono text-xs md:text-sm text-gray-200">${c.label}</span><i data-lucide="corner-down-left" class="palette-arrow w-3.5 h-3.5 text-highlight"></i></li>`;
+    });
+    pList.innerHTML = h; lucide.createIcons();
+}
+function setSel(n) { sel = (n + filtered.length) % filtered.length; $$('.palette-item', pList).forEach(el => el.classList.toggle('active', +el.dataset.i === sel)); const a = $('.palette-item.active', pList); if (a) a.scrollIntoView({ block: 'nearest' }); }
+function openPalette() { if (paletteOpen) return; paletteOpen = true; sel = 0; pInput.value = ''; renderPalette(); palette.classList.add('open'); document.documentElement.style.overflow = 'hidden'; setTimeout(() => pInput.focus(), 50); }
+function closePalette() { if (!paletteOpen) return; paletteOpen = false; palette.classList.remove('open'); document.documentElement.style.overflow = ''; }
+function runSelected(i = sel) { const c = filtered[i]; if (!c) return; closePalette(); setTimeout(c.run, 200); }
+$('#menu-btn').addEventListener('click', () => paletteOpen ? closePalette() : openPalette());
+$('#palette-backdrop').addEventListener('click', closePalette);
+pInput.addEventListener('input', () => { sel = 0; renderPalette(); });
+pList.addEventListener('mousemove', e => { const li = e.target.closest('.palette-item'); if (li && +li.dataset.i !== sel) setSel(+li.dataset.i); });
+pList.addEventListener('click', e => { const li = e.target.closest('.palette-item'); if (li) runSelected(+li.dataset.i); });
+
+/* ================= LIGHTBOX ================= */
+const lb = $('#lightbox'), lbImg = $('#lb-img'); let lbList = [], lbIdx = 0;
+function lbShow(i, animate = true) {
+    lbIdx = (i + lbList.length) % lbList.length; const item = lbList[lbIdx];
+    const apply = () => { lbImg.src = item.src; lbImg.alt = item.title; $('#lb-title').textContent = item.title; $('#lb-count').textContent = `${String(lbIdx + 1).padStart(2, '0')} / ${String(lbList.length).padStart(2, '0')}`; lb.classList.remove('swap'); };
+    if (animate && lb.classList.contains('open')) { lb.classList.add('swap'); setTimeout(apply, 180); } else apply();
+    $('#lb-prev').style.display = $('#lb-next').style.display = lbList.length > 1 ? '' : 'none';
+}
+function lbOpen(list, i) { lbList = list; lbShow(i, false); lb.classList.add('open'); document.documentElement.style.overflow = 'hidden'; }
+function lbClose() { lb.classList.remove('open'); if (!paletteOpen) document.documentElement.style.overflow = ''; }
+$('#lb-close').addEventListener('click', lbClose);
+$('#lb-prev').addEventListener('click', () => lbShow(lbIdx - 1));
+$('#lb-next').addEventListener('click', () => lbShow(lbIdx + 1));
+lb.addEventListener('click', e => { if (e.target === lb) lbClose(); });
+let touchX = null;
+lb.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; }, { passive: true });
+lb.addEventListener('touchend', e => { if (touchX === null) return; const dx = e.changedTouches[0].clientX - touchX; if (Math.abs(dx) > 50) lbShow(lbIdx + (dx < 0 ? 1 : -1)); touchX = null; });
+
+addEventListener('keydown', e => {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); paletteOpen ? closePalette() : openPalette(); return; }
+    if (paletteOpen) {
+        if (e.key === 'Escape') closePalette();
+        else if (e.key === 'ArrowDown') { e.preventDefault(); setSel(sel + 1); }
+        else if (e.key === 'ArrowUp') { e.preventDefault(); setSel(sel - 1); }
+        else if (e.key === 'Enter') { e.preventDefault(); runSelected(); }
+        return;
+    }
+    if (lb.classList.contains('open')) {
+        if (e.key === 'Escape') lbClose(); else if (e.key === 'ArrowRight') lbShow(lbIdx + 1); else if (e.key === 'ArrowLeft') lbShow(lbIdx - 1);
+    }
+});
+
+/* ================= ARCHIVE ================= */
+function countUp(el, to) {
+    if (reduceMotion || !to) { el.textContent = to; return; }
+    const s = performance.now();
+    (function step(n) { const p = Math.min((n - s) / 1200, 1); el.textContent = Math.round(to * (1 - Math.pow(1 - p, 3))); if (p < 1) requestAnimationFrame(step); })(s);
+}
+const fallbackData = [
+    { id: 'sys-web', title: 'FRONTEND SYSTEMS', folderName: 'web', projects: [{ title: 'Portfolio Architecture V1', description: 'Implementasi awal arsitektur portfolio menggunakan native HTML, CSS, JS dengan integrasi fisika animasi dan layout brutalist.', images: ['web1.jpg', 'web2.jpg'] }] },
+    { id: 'sys-iot', title: 'HARDWARE & IOT INTEGRATION', folderName: 'hardware', projects: [{ title: 'Smart Environment Node', description: 'Eksperimen kontrol nirkabel menggunakan mikrokontroler ESP8266 untuk otomatisasi relai dan lampu berbasis jaringan terdesentralisasi.', images: ['iot1.jpg'] }] }
+];
+document.addEventListener('DOMContentLoaded', () => {
+    fetch('archive.json').then(r => { if (!r.ok) throw new Error('fetch failed'); return r.json(); }).then(renderArchive)
+        .catch(err => {
+            console.warn('Archive offline / file lokal. Memakai data cadangan.', err);
+            renderArchive(fallbackData);
+            const el = $('#loading'); el.classList.remove('hidden');
+            el.innerHTML = `<div class="inline-flex items-center gap-2 border border-highlight bg-highlight/10 px-4 py-2 font-mono text-highlight uppercase tracking-widest text-[10px] rounded-lg shadow-lg"><i data-lucide="wifi-off" class="w-3 h-3"></i> System Offline: Rendering Cached Data</div>`;
+            lucide.createIcons(); setTimeout(() => el.classList.add('hidden'), 4000);
+        });
+});
+function missingTile(name) {
+    const d = document.createElement('div');
+    d.className = 'w-full aspect-video flex flex-col items-center justify-center bg-surface border border-borderline text-muted p-4 text-center rounded-lg';
+    d.innerHTML = `<i data-lucide="file-warning" class="w-6 h-6 mb-3"></i><span class="font-mono text-[9px] uppercase tracking-widest break-all"></span>`;
+    d.querySelector('span').textContent = `Asset ${name} Missing`; return d;
+}
+function refreshOpenAccordions() { $$('.accordion-content[data-open="1"]').forEach(c => c.style.maxHeight = c.scrollHeight + 'px'); }
+function renderArchive(data) {
+    archiveData = data;
+    const container = $('#archive-container'); let totalRecords = 0, totalImgs = 0, html = '';
+    data.forEach((cat, ci) => {
+        const catNum = String(ci + 1).padStart(2, '0'); let projectsHtml = ''; totalRecords += cat.projects.length;
+        cat.projects.forEach((p, pi) => {
+            totalImgs += p.images.length;
+            const t = p.title.replace(/"/g, '&quot;');
+            const tiles = p.images.map(name => `
+                <button type="button" class="img-tile block w-full text-left overflow-hidden border border-borderline rounded-lg bg-surface relative group/img" data-title="${t}">
+                    <img src="upload/${cat.folderName}/${name}" data-filename="${name}" loading="lazy" alt="${t}" class="w-full object-cover transition-transform duration-700 group-hover/img:scale-105">
+                    <div class="absolute inset-0 bg-black/50 opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-sm"><span class="font-mono text-white text-[10px] uppercase tracking-widest border border-white/30 px-3 py-1 rounded flex items-center gap-2"><i data-lucide="maximize-2" class="w-3 h-3"></i> Preview</span></div>
+                </button>`).join('');
+            projectsHtml += `
+                <div class="mb-16 last:mb-0 md:grid md:grid-cols-12 md:gap-12 pt-8 border-t border-borderline first:border-t-0 first:pt-0 group relative">
+                    <div class="md:col-span-5 mb-8 md:mb-0 relative z-10 flex flex-col border-l-2 border-borderline pl-4 md:pl-6 ml-2 md:ml-0 group-hover:border-highlight transition-colors">
+                        <span class="font-mono text-[10px] tracking-widest uppercase text-muted mb-4">Record ${String(pi + 1).padStart(2, '0')}</span>
+                        <h4 class="text-impact text-2xl md:text-3xl text-white leading-tight mb-4 group-hover:text-highlight transition-colors">${p.title}</h4>
+                        <p class="text-sm text-gray-400 leading-relaxed font-light mb-6">${p.description}</p>
                     </div>
-                `;
-            });
+                    <div class="project-images md:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 relative z-10 items-start">${tiles}</div>
+                </div>`;
+        });
+        html += `
+            <div class="border-b border-borderline">
+                <button class="acc-btn w-full flex items-center justify-between py-10 md:py-12 text-left group hover:bg-[#060606] transition-colors px-2 md:px-6" aria-expanded="false" aria-controls="content-${cat.id}" data-target="${cat.id}">
+                    <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-8">
+                        <div class="font-mono text-muted text-xs tracking-widest uppercase w-12 hidden md:block group-hover:text-highlight transition-colors">${catNum}</div>
+                        <h3 class="text-impact text-3xl md:text-5xl text-white tracking-tight">${cat.title}</h3>
+                        <div class="font-mono text-[10px] uppercase tracking-widest bg-surface border border-borderline px-3 py-1.5 rounded-lg text-gray-400 md:ml-4 flex items-center gap-2 group-hover:border-gray-600 transition-colors w-max"><span class="w-1.5 h-1.5 rounded-full bg-highlight"></span>${cat.projects.length} Records</div>
+                    </div>
+                    <div id="icon-${cat.id}" class="icon-rotate w-10 h-10 md:w-12 md:h-12 rounded-full border border-borderline flex items-center justify-center text-muted group-hover:border-white group-hover:text-white transition-all flex-shrink-0 bg-surface"><i data-lucide="plus" class="w-4 h-4 md:w-5 md:h-5"></i></div>
+                </button>
+                <div id="content-${cat.id}" class="accordion-content px-2 md:px-6 md:ml-12"><div class="pb-12 pt-8">${projectsHtml}</div></div>
+            </div>`;
+    });
+    container.innerHTML = html; $('#loading').classList.add('hidden'); container.classList.remove('hidden'); lucide.createIcons();
 
-            container.innerHTML = htmlContent;
-            loading.classList.add('hidden');
-            container.classList.remove('hidden');
-            lucide.createIcons();
-        }
+    $$('img[data-filename]', container).forEach(img => {
+        img.addEventListener('load', refreshOpenAccordions, { once: true });
+        img.addEventListener('error', () => { img.closest('.img-tile').replaceWith(missingTile(img.dataset.filename)); lucide.createIcons(); refreshOpenAccordions(); }, { once: true });
+    });
+    $$('.acc-btn', container).forEach(btn => btn.addEventListener('click', () => {
+        const id = btn.dataset.target, content = $('#content-' + id), icon = $('#icon-' + id), open = content.dataset.open === '1';
+        if (open) { content.dataset.open = '0'; content.style.maxHeight = null; content.style.opacity = 0; icon.style.transform = 'rotate(0deg)'; icon.innerHTML = '<i data-lucide="plus" class="w-4 h-4 md:w-5 md:h-5"></i>'; }
+        else { content.dataset.open = '1'; content.style.maxHeight = content.scrollHeight + 'px'; content.style.opacity = 1; icon.style.transform = 'rotate(180deg)'; icon.innerHTML = '<i data-lucide="minus" class="w-4 h-4 md:w-5 md:h-5"></i>'; }
+        btn.setAttribute('aria-expanded', String(!open)); lucide.createIcons();
+    }));
+    container.addEventListener('click', e => {
+        const tile = e.target.closest('.img-tile'); if (!tile) return;
+        const tiles = $$('.img-tile', tile.closest('.project-images'));
+        lbOpen(tiles.map(t => ({ src: $('img', t).getAttribute('src'), title: t.dataset.title })), tiles.indexOf(tile));
+    });
 
-        function toggleAccordion(contentId, iconId) {
-            const content = document.getElementById(contentId);
-            const icon = document.getElementById(iconId);
-            
-            if (content.style.maxHeight) {
-                content.style.maxHeight = null;
-                content.style.opacity = 0;
-                icon.style.transform = 'rotate(0deg)';
-                setTimeout(() => {
-                    icon.innerHTML = '<i data-lucide="plus" class="w-4 h-4 md:w-5 md:h-5"></i>';
-                    lucide.createIcons();
-                }, 150);
-            } else {
-                content.style.maxHeight = content.scrollHeight + "px";
-                content.style.opacity = 1;
-                icon.style.transform = 'rotate(45deg)'; 
-                setTimeout(() => {
-                    icon.innerHTML = '<i data-lucide="x" class="w-4 h-4 md:w-5 md:h-5"></i>';
-                    lucide.createIcons();
-                }, 150);
-            }
-        }
-    </script>
+    const stats = $('#archive-stats'); stats.classList.remove('hidden');
+    const so = new IntersectionObserver(([en]) => { if (!en.isIntersecting) return; countUp($('#stat-records'), totalRecords); countUp($('#stat-cats'), data.length); countUp($('#stat-imgs'), totalImgs); so.disconnect(); }, { threshold: .4 });
+    so.observe(stats);
+    [stats, container].forEach(el => { const o = new IntersectionObserver(es => es.forEach(x => x.target.classList.toggle('active', x.isIntersecting)), { threshold: .05 }); o.observe(el); });
+}
+addEventListener('resize', refreshOpenAccordions);
+</script>
 </body>
 </html>
