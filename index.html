@@ -34,7 +34,7 @@
         .text-shimmer {
             background: linear-gradient(90deg, #9ca3af 0%, #fff 25%, #FF4500 50%, #fff 75%, #9ca3af 100%);
             background-size: 250% auto; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
-            animation: shimmer 6s linear infinite;
+            background-position: 50% center;
         }
         @keyframes shimmer { to { background-position: 250% center; } }
 
@@ -43,7 +43,7 @@
         #gl.ready { opacity: 1; }
         #vignette { position: fixed; inset: 0; z-index: 1; pointer-events: none;
             background: radial-gradient(ellipse at 50% 45%, transparent 35%, rgba(3,3,3,.3) 80%, rgba(3,3,3,.72) 100%); }
-        .noise-bg { position: fixed; inset: 0; pointer-events: none; z-index: 50; opacity: .03;
+        .noise-bg { display: none; position: fixed; inset: 0; pointer-events: none; z-index: 50; opacity: .03;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
         /* Fallback bila WebGL tidak tersedia */
         html.nogl body {
@@ -53,7 +53,7 @@
         html.nogl #power-wrap, html.nogl #rail { display: none; }
 
         .layer { position: relative; z-index: 10; }
-        .panel { background: rgba(3,3,3,.46); -webkit-backdrop-filter: blur(5px); backdrop-filter: blur(5px); border: 1px solid #1f1f1f; border-radius: 20px; }
+        .panel { background: rgba(3,3,3,.78); border: 1px solid #1f1f1f; border-radius: 20px; }
 
         /* Loader */
         #loader { position: fixed; inset: 0; z-index: 120; background: #030303; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; transition: opacity .9s ease, visibility 0s linear .9s; }
@@ -92,7 +92,7 @@
         /* Rail kanan */
         #rail { position: fixed; right: 16px; top: 50%; transform: translateY(-50%); z-index: 55; display: flex; flex-direction: column; gap: 22px; padding: 6px 0; }
         #rail::before { content: ""; position: absolute; left: 50%; top: 10px; bottom: 10px; width: 1px; background: #222; transform: translateX(-50%); }
-        #rail::after { content: ""; position: absolute; left: 50%; top: 10px; width: 1px; height: calc((100% - 20px) * var(--p, 0)); background: #FF4500; box-shadow: 0 0 10px #FF4500; transform: translateX(-50%); }
+        #rail::after { content: ""; position: absolute; left: 50%; top: 10px; width: 1px; height: calc(100% - 20px); background: #FF4500; box-shadow: 0 0 10px #FF4500; transform: translateX(-50%) scaleY(var(--p, 0)); transform-origin: top; will-change: transform; }
         .dot { position: relative; z-index: 1; width: 13px; height: 13px; border-radius: 50%; border: 1px solid #444; background: #0a0a0a; transition: all .35s; }
         .dot.energized { background: #FF4500; border-color: #FF4500; box-shadow: 0 0 14px #FF4500; }
         .dot.active { transform: scale(1.5); }
@@ -143,7 +143,7 @@
     <div id="loader"><p class="font-mono text-[10px] uppercase tracking-[0.4em] text-muted">Powering up circuit</p><div class="bar"></div></div>
 
     <!-- NAV -->
-    <nav class="fixed w-full top-0 z-[60] bg-[#030303]/60 backdrop-blur-xl border-b border-borderline px-4 md:px-6 py-3 md:py-4">
+    <nav class="fixed w-full top-0 z-[60] bg-[#030303]/85 border-b border-borderline px-4 md:px-6 py-3 md:py-4">
         <div class="max-w-[1400px] mx-auto flex justify-between items-center gap-4">
             <div class="flex items-center gap-3">
                 <div id="nav-target" class="w-8 h-8 rounded-full shrink-0"></div>
@@ -169,7 +169,7 @@
 
     <!-- PALETTE -->
     <div id="palette" class="fixed inset-0 z-[200] invisible" role="dialog" aria-modal="true" aria-label="Command menu">
-        <div id="palette-backdrop" class="palette-backdrop absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
+        <div id="palette-backdrop" class="palette-backdrop absolute inset-0 bg-black/70"></div>
         <div class="palette-panel relative mx-auto mt-[12vh] w-[92%] max-w-xl rounded-2xl border border-white/10 bg-[#0a0a0a]/95 shadow-2xl overflow-hidden">
             <div class="flex items-center gap-3 px-4 border-b border-borderline">
                 <i data-lucide="search" class="w-4 h-4 text-muted"></i>
@@ -182,7 +182,7 @@
     </div>
 
     <!-- LIGHTBOX -->
-    <div id="lightbox" class="fixed inset-0 z-[180] bg-black/90 backdrop-blur-md flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-label="Pratinjau gambar">
+    <div id="lightbox" class="fixed inset-0 z-[180] bg-black/90 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-label="Pratinjau gambar">
         <button id="lb-close" aria-label="Tutup" class="absolute top-5 right-5 w-11 h-11 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-black transition-colors"><i data-lucide="x" class="w-5 h-5"></i></button>
         <button id="lb-prev" aria-label="Sebelumnya" class="absolute left-3 md:left-8 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-black transition-colors"><i data-lucide="chevron-left" class="w-5 h-5"></i></button>
         <button id="lb-next" aria-label="Berikutnya" class="absolute right-3 md:right-8 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-black transition-colors"><i data-lucide="chevron-right" class="w-5 h-5"></i></button>
@@ -340,7 +340,7 @@
                 </div>
             </div>
         </div>
-        <div class="max-w-[1400px] w-full mx-auto pt-6 border-t border-borderline flex flex-col md:flex-row justify-between items-center font-mono text-[9px] md:text-[10px] uppercase tracking-widest text-muted mt-16 bg-[#030303]/50 backdrop-blur-sm px-2 py-4 rounded-lg">
+        <div class="max-w-[1400px] w-full mx-auto pt-6 border-t border-borderline flex flex-col md:flex-row justify-between items-center font-mono text-[9px] md:text-[10px] uppercase tracking-widest text-muted mt-16 bg-[#030303]/50 px-2 py-4 rounded-lg">
             <p>&copy; 2026 RHEVALDY OCTAVIAN HARIS. ALL SYSTEMS NORMAL.</p>
             <div class="mt-4 md:mt-0 flex items-center gap-6">
                 <a href="https://github.com/rhevaldyoctavianharis-netizen" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors flex items-center gap-2"><i data-lucide="github" class="w-3 h-3"></i> Repository</a>
@@ -355,6 +355,8 @@ const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 const lerp = (a, b, t) => a + (b - a) * t;
+// ubah teks tanpa memicu MutationObserver Tailwind CDN (childList)
+const setText = (el, v) => { v = String(v); const n = el.firstChild; if (n && n.nodeType === 3) { if (n.data !== v) n.data = v; } else el.textContent = v; };
 const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 const isFine = matchMedia('(pointer: fine)').matches;
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -404,7 +406,7 @@ function scrollToP(y) {
     }
     return 1;
 }
-new ResizeObserver(updateAnchors).observe(document.body);
+let anchorT; new ResizeObserver(() => { clearTimeout(anchorT); anchorT = setTimeout(updateAnchors, 150); }).observe(document.body);
 addEventListener('load', updateAnchors);
 updateAnchors();
 
@@ -427,8 +429,10 @@ document.addEventListener('click', e => {
     e.preventDefault(); goTo(+t.dataset.goto);
 });
 
+let hudLast = -1;
 function updateHud(cur) {
-    $('#power').textContent = Math.round(cur * 100);
+    if (Math.abs(cur - hudLast) < .0008) return; hudLast = cur;
+    setText($('#power'), Math.round(cur * 100));
     railEl.style.setProperty('--p', cur.toFixed(3));
     let near = 0, best = 9;
     NODES.forEach((n, i) => { const d = Math.abs(cur - n.T); if (d < best) { best = d; near = i; } });
@@ -442,12 +446,12 @@ function updateHud(cur) {
 /* ================= DUNIA PCB 3D (canvas + perspektif sendiri, tanpa library) ================= */
 function initGL() {
     const cv = $('#gl');
-    const ctx = cv.getContext('2d', { alpha: false });
+    const ctx = cv.getContext('2d', { alpha: false, desynchronized: true });
     if (!ctx) throw new Error('Canvas 2D tidak tersedia');
 
     const L = 1500, NEAR = .6, FAR = 250;
     const mobileNow = () => innerWidth < 768;
-    let W = 1, H = 1, DPR = 1, F = 800, HX = 0, HY = 0, dprCap = 2, lowQ = false;
+    let W = 1, H = 1, DPR = 1, F = 800, HX = 0, HY = 0, dprCap = 1.5, lowQ = false;
 
     /* ---------- util ---------- */
     function mulberry(a) { return function () { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
@@ -551,7 +555,7 @@ function initGL() {
 
     /* ---------- resize ---------- */
     function resize() {
-        DPR = Math.min(devicePixelRatio || 1, dprCap, mobileNow() ? 1.5 : 2);
+        DPR = Math.min(devicePixelRatio || 1, dprCap, mobileNow() ? 1.25 : 1.5);
         W = innerWidth; H = innerHeight;
         cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
         HX = W / 2; HY = H * .5;
@@ -599,7 +603,7 @@ function initGL() {
             line3(p[i][0], 0, p[i][1], p[i + 1][0], 0, p[i + 1][1], tr.w * .9, e * .8);
         }
         ctx.strokeStyle = '#ffe2bc';
-        for (let j = 0; j < 2; j++) {
+        for (let j = 0; j < (lowQ ? 1 : 2); j++) {
             const d = ph * tr.sp + tr.seed * tr.len + j * tr.len * .5;
             for (let k = 0; k < 4; k++) {
                 ptAt(tr, d - k * 1.5); const ax = px, az = pz;
@@ -668,7 +672,7 @@ function initGL() {
         const dt = Math.min((now - last) / 1000, .05); last = now;
         const t = now / 1000;
         ema += (dt - ema) * .05;
-        if (now - t0 > 3500 && now - lastAdapt > 2500 && ema > .034) {
+        if (now - t0 > 3500 && now - lastAdapt > 2500 && ema > .021) {
             lastAdapt = now;
             if (dprCap > 1) { dprCap = 1; resize(); } else if (!lowQ) lowQ = true;
         }
@@ -729,7 +733,7 @@ function initGL() {
         /* --- titik drill --- */
         ctx.fillStyle = '#ffb894';
         const kmax = world.mobile ? 7 : 12;
-        for (let zi = Math.ceil((cam.z - 8) / 6) * 6; zi < cam.z + 200; zi += 6) {
+        for (let zi = Math.ceil((cam.z - 8) / 6) * 6; zi < cam.z + 200; zi += (lowQ ? 12 : 6)) {
             const bx = busX(zi);
             for (let k = -kmax; k <= kmax; k += (lowQ ? 2 : 1)) {
                 toCam(bx + k * 5.5, 0, zi); if (qz < NEAR) continue;
@@ -856,7 +860,7 @@ function initGL() {
                     line3(o.x + sx0, .01, o.z + sz0, o.x - sx0, .01, o.z + sz0, .1, .14); line3(o.x - sx0, .01, o.z + sz0, o.x - sx0, .01, o.z - sz0, .1, .14);
                 }
                 if (box(o.x, 0, o.z, o.hx, o.hz, o.h, '#0c0c10', '#050507', edge, .3 + e * .6, 1)) {
-                    if (o.d < 110) {
+                    if (o.d < (lowQ ? 55 : 110)) {
                         ctx.strokeStyle = e > .1 ? '#ff7a3a' : '#7a716b';
                         for (let p = 0; p < o.pins; p++) {
                             const px2 = o.x - o.hx + (p + .5) * (2 * o.hx / o.pins);
@@ -937,7 +941,7 @@ setTimeout(() => $('#loader').classList.add('done'), 7000);
     else {
         let r = 0, c = 0, del = false;
         (function tick() {
-            const w = roles[r]; el.textContent = w.slice(0, c);
+            const w = roles[r]; setText(el, w.slice(0, c));
             let d = del ? 35 : 80;
             if (!del && c === w.length) { del = true; d = 1600; }
             else if (del && c === 0) { del = false; r = (r + 1) % roles.length; d = 350; }
@@ -946,7 +950,7 @@ setTimeout(() => $('#loader').classList.add('done'), 7000);
         })();
     }
     const fmt = new Intl.DateTimeFormat('id-ID', { timeZone: 'Asia/Jakarta', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
-    (function tick() { const t = fmt.format(new Date()).replace(/\./g, ':'); $('#clock').textContent = t; $('#clock-foot').textContent = t.slice(0, 5); setTimeout(tick, 1000); })();
+    (function tick() { const t = fmt.format(new Date()).replace(/\./g, ':'); setText($('#clock'), t); setText($('#clock-foot'), t.slice(0, 5)); setTimeout(tick, 1000); })();
 })();
 
 $$('.spotlight-card').forEach(card => {
@@ -987,7 +991,9 @@ document.addEventListener('DOMContentLoaded', () => {});
 (function () {
     let cX = 0, cY = 0, cW = 0, cH = 0, cR = 12, ready = false, prev = null;
     const fa = $('#flying-avatar'), fi = $('#flying-img'), fo = $('#flying-overlay'), ht = $('#hero-target'), nt = $('#nav-target'), hb = $('#hero-avatar-badge');
-    (function frame() {
+    let idle = false;
+    function frame() {
+        idle = false;
         const docked = scrollY > 120, r = (docked ? nt : ht).getBoundingClientRect(), tR = docked ? 50 : 12;
         if (!ready && r.width > 0) { cX = r.left; cY = r.top; cW = r.width; cH = r.height; cR = tR; fa.style.opacity = 1; ready = true; }
         const k = reduceMotion ? 1 : .12;
@@ -999,8 +1005,14 @@ document.addEventListener('DOMContentLoaded', () => {});
             fi.style.filter = docked ? 'grayscale(0%) contrast(100%)' : 'grayscale(100%) contrast(125%)';
             fo.style.opacity = docked ? 0 : .4; hb.style.opacity = docked ? 0 : 1;
         }
+        const settled = reduceMotion || (Math.abs(r.left - cX) < .2 && Math.abs(r.top - cY) < .2 && Math.abs(r.width - cW) < .2 && Math.abs(r.height - cH) < .2 && Math.abs(tR - cR) < .2);
+        if (settled) { idle = true; return; }
         requestAnimationFrame(frame);
-    })();
+    }
+    const wake = () => { if (idle) { idle = false; requestAnimationFrame(frame); } };
+    addEventListener('scroll', wake, { passive: true }); addEventListener('resize', wake);
+    new ResizeObserver(wake).observe(document.body);
+    requestAnimationFrame(frame);
 })();
 
 /* ================= Command palette ================= */
@@ -1099,7 +1111,7 @@ function renderArchive(data) {
             const tiles = p.images.map(name => `
                 <button type="button" class="img-tile block w-full text-left overflow-hidden border border-borderline rounded-lg bg-surface relative group/img" data-title="${t}">
                     <img src="upload/${cat.folderName}/${name}" data-filename="${name}" loading="lazy" alt="${t}" class="w-full object-cover transition-transform duration-700 group-hover/img:scale-105">
-                    <div class="absolute inset-0 bg-black/50 opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-sm"><span class="font-mono text-white text-[10px] uppercase tracking-widest border border-white/30 px-3 py-1 rounded flex items-center gap-2"><i data-lucide="maximize-2" class="w-3 h-3"></i> Preview</span></div>
+                    <div class="absolute inset-0 bg-black/50 opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 flex items-center justify-center"><span class="font-mono text-white text-[10px] uppercase tracking-widest border border-white/30 px-3 py-1 rounded flex items-center gap-2"><i data-lucide="maximize-2" class="w-3 h-3"></i> Preview</span></div>
                 </button>`).join('');
             projectsHtml += `
                 <div class="mb-16 last:mb-0 md:grid md:grid-cols-12 md:gap-12 pt-8 border-t border-borderline first:border-t-0 first:pt-0 group relative">
