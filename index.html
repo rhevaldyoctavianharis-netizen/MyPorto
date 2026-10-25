@@ -13,13 +13,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
 
-    <script type="importmap">
-    { "imports": {
-        "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-        "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
-    } }
-    </script>
-
     <script>
         tailwind.config = {
             theme: { extend: {
@@ -49,7 +42,7 @@
         #gl { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; opacity: 0; transition: opacity 1.4s ease; }
         #gl.ready { opacity: 1; }
         #vignette { position: fixed; inset: 0; z-index: 1; pointer-events: none;
-            background: radial-gradient(ellipse at 50% 45%, transparent 35%, rgba(3,3,3,.55) 80%, rgba(3,3,3,.9) 100%); }
+            background: radial-gradient(ellipse at 50% 45%, transparent 35%, rgba(3,3,3,.3) 80%, rgba(3,3,3,.72) 100%); }
         .noise-bg { position: fixed; inset: 0; pointer-events: none; z-index: 50; opacity: .03;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
         /* Fallback bila WebGL tidak tersedia */
@@ -60,7 +53,7 @@
         html.nogl #power-wrap, html.nogl #rail { display: none; }
 
         .layer { position: relative; z-index: 10; }
-        .panel { background: rgba(3,3,3,.58); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); border: 1px solid #1f1f1f; border-radius: 20px; }
+        .panel { background: rgba(3,3,3,.46); -webkit-backdrop-filter: blur(5px); backdrop-filter: blur(5px); border: 1px solid #1f1f1f; border-radius: 20px; }
 
         /* Loader */
         #loader { position: fixed; inset: 0; z-index: 120; background: #030303; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; transition: opacity .9s ease, visibility 0s linear .9s; }
@@ -446,337 +439,496 @@ function updateHud(cur) {
     });
 }
 
-/* ================= WEBGL: DUNIA SIRKUIT 3D ================= */
-async function initGL() {
-    const THREE = await import('three');
-    const { EffectComposer } = await import('three/addons/postprocessing/EffectComposer.js');
-    const { RenderPass } = await import('three/addons/postprocessing/RenderPass.js');
-    const { UnrealBloomPass } = await import('three/addons/postprocessing/UnrealBloomPass.js');
-    const { OutputPass } = await import('three/addons/postprocessing/OutputPass.js');
-    const { Vector2, Vector3 } = THREE;
+/* ================= DUNIA PCB 3D (canvas + perspektif sendiri, tanpa library) ================= */
+function initGL() {
+    const cv = $('#gl');
+    const ctx = cv.getContext('2d', { alpha: false });
+    if (!ctx) throw new Error('Canvas 2D tidak tersedia');
 
-    const canvas = $('#gl');
-    const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, powerPreference: 'high-performance' });
+    const L = 1500, NEAR = .6, FAR = 250;
     const mobileNow = () => innerWidth < 768;
-    const pr = () => Math.min(devicePixelRatio || 1, mobileNow() ? 1.5 : 2);
-    renderer.setPixelRatio(pr()); renderer.setSize(innerWidth, innerHeight, false);
+    let W = 1, H = 1, DPR = 1, F = 800, HX = 0, HY = 0, dprCap = 2, lowQ = false;
 
-    const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x030303);
-    scene.fog = new THREE.FogExp2(0x030303, 0.013);
-    const camera = new THREE.PerspectiveCamera(60, innerWidth / innerHeight, .1, 400);
+    /* ---------- util ---------- */
+    function mulberry(a) { return function () { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+    const busX = z => 34 * Math.sin(z / 230) + 14 * Math.sin(z / 97 + 1.3);
+    const busD = z => 34 / 230 * Math.cos(z / 230) + 14 / 97 * Math.cos(z / 97 + 1.3);
+    const sstep = (a, b, x) => { const t = clamp((x - a) / (b - a), 0, 1); return t * t * (3 - 2 * t); };
+    const fog = z => { if (z >= FAR) return 0; const a = 1 - z / FAR; return Math.pow(a, 1.25) * (z < 3 ? z / 3 : 1); };
 
-    const composer = new EffectComposer(renderer);
-    composer.setPixelRatio(pr()); composer.setSize(innerWidth, innerHeight);
-    composer.addPass(new RenderPass(scene, camera));
-    const bloom = new UnrealBloomPass(new Vector2(innerWidth, innerHeight), 1.05, .7, .1);
-    composer.addPass(bloom);
-    composer.addPass(new OutputPass());
-
-    /* Kabel utama */
-    const path = new THREE.CatmullRomCurve3([
-        [0, 0, 14], [0, 0, -30], [12, 1.2, -72], [10, 0, -118], [-10, 1.6, -164], [-8, 0, -210], [0, 0, -252], [0, 0, -292]
-    ].map(p => new Vector3(...p)), false, 'centripetal');
-    path.arcLengthDivisions = 1500;
-
-    /* Uniform bersama */
-    const U = { phase: { value: 0 }, density: { value: .013 }, surge: { value: new Vector2(-1, 0) }, cam: { value: new Vector3() } };
-
-    const wireVS = `
-        varying float vU; varying float vDepth;
-        void main(){ vU = uv.x; vec4 mv = modelViewMatrix * vec4(position,1.); vDepth = -mv.z; gl_Position = projectionMatrix * mv; }`;
-    const wireFS = `
-        varying float vU; varying float vDepth;
-        uniform float uFill, uFreq, uFlash, uPhase, uDensity; uniform vec2 uSurge;
-        void main(){
-            float lit = max(smoothstep(uFill, uFill - .006, vU), uFlash);
-            float f = fract(vU * uFreq - uPhase);
-            float pulse = pow(f, 9.);
-            float head = exp(-pow((vU - uFill) * 160., 2.)) * step(uFill, .999) * step(.001, uFill);
-            float surge = exp(-pow((vU - uSurge.x) * 110., 2.)) * uSurge.y;
-            vec3 hot = vec3(1., .07, 0.);
-            vec3 col = vec3(.035, .035, .045)
-                     + lit * (hot * .55 + hot * 2.2 * pulse + vec3(1., .55, .25) * pulse * pulse * 1.4)
-                     + hot * head * 4. + vec3(1., .75, .5) * surge * 3.5 + hot * uFlash * .9;
-            col *= exp(-vDepth * uDensity);
-            gl_FragColor = vec4(col, 1.);
-        }`;
-
-    function makeWire(curve, radius, segs, freq, isMain) {
-        const geo = new THREE.TubeGeometry(curve, segs, radius, isMain ? 8 : 6, false);
-        const mat = new THREE.ShaderMaterial({
-            uniforms: { uFill: { value: 0 }, uFreq: { value: freq }, uFlash: { value: 0 }, uSurge: { value: isMain ? U.surge : new Vector2(-1, 0) }, uPhase: U.phase, uDensity: U.density },
-            vertexShader: wireVS, fragmentShader: wireFS
-        });
-        return new THREE.Mesh(geo, mat);
+    /* ---------- kamera ---------- */
+    const cam = { x: 0, y: 8, z: 0, fx: 0, fz: 1, rx: 1, rz: 0, cp: 1, sp: 0 };
+    let qx = 0, qy = 0, qz = 0;
+    function toCam(x, y, z) {
+        const dx = x - cam.x, dz = z - cam.z, yh = y - cam.y;
+        qx = dx * cam.rx + dz * cam.rz;
+        const zf = dx * cam.fx + dz * cam.fz;
+        qy = zf * cam.sp + yh * cam.cp;
+        qz = zf * cam.cp - yh * cam.sp;
     }
-    const polyCurve = pts => { const c = new THREE.CurvePath(); for (let i = 0; i < pts.length - 1; i++) c.add(new THREE.LineCurve3(pts[i], pts[i + 1])); return c; };
-    const polyLen = pts => pts.reduce((s, p, i) => i ? s + p.distanceTo(pts[i - 1]) : 0, 0);
-
-    /* Sprite label */
-    function labelTexture(text) {
-        const c = document.createElement('canvas'); c.width = 768; c.height = 160;
-        const x = c.getContext('2d');
-        x.font = "700 78px 'JetBrains Mono', monospace"; x.textAlign = 'center'; x.textBaseline = 'middle';
-        x.shadowColor = '#FF4500'; x.shadowBlur = 28; x.fillStyle = '#ff6a2e'; x.fillText(text, 384, 82);
-        x.shadowBlur = 0; x.fillStyle = '#ffd2bd'; x.fillText(text, 384, 82);
-        const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t;
+    function line3(ax, ay, az, bx, by, bz, w, alpha) {
+        toCam(ax, ay, az); let x1 = qx, y1 = qy, z1 = qz;
+        toCam(bx, by, bz); let x2 = qx, y2 = qy, z2 = qz;
+        if (z1 < NEAR && z2 < NEAR) return;
+        if (z1 < NEAR) { const t = (NEAR - z1) / (z2 - z1); x1 += (x2 - x1) * t; y1 += (y2 - y1) * t; z1 = NEAR; }
+        else if (z2 < NEAR) { const t = (NEAR - z2) / (z1 - z2); x2 += (x1 - x2) * t; y2 += (y1 - y2) * t; z2 = NEAR; }
+        const a = alpha * fog((z1 + z2) * .5);
+        if (a < .012) return;
+        const s1 = F / z1, s2 = F / z2;
+        ctx.globalAlpha = a; ctx.lineWidth = Math.max(.6, w * (s1 + s2) * .5);
+        ctx.beginPath(); ctx.moveTo(HX + x1 * s1, HY - y1 * s1); ctx.lineTo(HX + x2 * s2, HY - y2 * s2); ctx.stroke();
     }
 
-    function makeChip(label, cs) {
-        const g = new THREE.Group();
-        const bodyGeo = new THREE.BoxGeometry(3.2, .5, 3.2);
-        g.add(new THREE.Mesh(bodyGeo, new THREE.MeshBasicMaterial({ color: 0x08080a })));
-        const edgeMat = new THREE.LineBasicMaterial({ color: 0xff4500, transparent: true, opacity: 1 });
-        g.add(new THREE.LineSegments(new THREE.EdgesGeometry(bodyGeo), edgeMat));
-        const dieMat = new THREE.MeshBasicMaterial({ color: 0xff4500 });
-        const die = new THREE.Mesh(new THREE.BoxGeometry(1.7, .06, 1.7), dieMat); die.position.y = .29; g.add(die);
-        const dieEdgeMat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: .0 });
-        const dEdge = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(2.3, .02, 2.3)), dieEdgeMat); dEdge.position.y = .27; g.add(dEdge);
+    /* ---------- dunia ---------- */
+    const DIRS = [[1, 0], [.7071, .7071], [0, 1], [-.7071, .7071], [-1, 0], [-.7071, -.7071], [0, -1], [.7071, -.7071]];
+    let world = null, builtMobile = null, chips = [];
 
-        const pinMat = new THREE.MeshBasicMaterial({ color: 0x444444 });
-        const pins = new THREE.InstancedMesh(new THREE.BoxGeometry(.14, .07, .5), pinMat, 32);
-        const m = new THREE.Matrix4(), q = new THREE.Quaternion(), s1 = new Vector3(1, 1, 1);
-        let k = 0;
-        for (let side = 0; side < 4; side++) for (let i = 0; i < 8; i++) {
-            const off = -1.4 + i * .4, rot = side < 2 ? 0 : Math.PI / 2;
-            const px = side === 0 ? off : side === 1 ? off : side === 2 ? -1.82 : 1.82;
-            const pz = side === 0 ? -1.82 : side === 1 ? 1.82 : off;
-            q.setFromAxisAngle(new Vector3(0, 1, 0), rot);
-            m.compose(new Vector3(px, -.05, pz), q, s1); pins.setMatrixAt(k++, m);
-        }
-        g.add(pins);
-
-        const spMat = new THREE.SpriteMaterial({ map: labelTexture(label), transparent: true, depthWrite: false, opacity: .6 });
-        const sprite = new THREE.Sprite(spMat); sprite.scale.set(6.2, 1.3, 1); sprite.position.y = 2.3; g.add(sprite);
-
-        const ringMat = new THREE.MeshBasicMaterial({ color: 0xff4500, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide });
-        const ring = new THREE.Mesh(new THREE.RingGeometry(2.2, 2.32, 64), ringMat); ring.rotation.x = -Math.PI / 2; ring.position.y = -.2; g.add(ring);
-
-        g.scale.setScalar(cs);
-        return { group: g, edgeMat, dieMat, dieEdgeMat, pinMat, spMat, ringMat, ring };
-    }
-
-    /* Jejak PCB dekoratif (satu draw call) */
-    const traceVS = `
-        attribute float aU; attribute float aSeed; attribute float aLen;
-        varying float vU; varying float vSeed; varying float vLen; varying float vDepth;
-        void main(){ vU = aU; vSeed = aSeed; vLen = aLen; vec4 mv = modelViewMatrix * vec4(position,1.); vDepth = -mv.z; gl_Position = projectionMatrix * mv; }`;
-    const traceFS = `
-        varying float vU; varying float vSeed; varying float vLen; varying float vDepth;
-        uniform float uPhase, uDensity;
-        void main(){
-            float f = fract(vU * vLen / 7. - uPhase * 1.4 + vSeed);
-            float pulse = pow(f, 14.);
-            float a = (.075 + pulse * .95) * exp(-vDepth * uDensity * 1.3);
-            vec3 col = mix(vec3(.55,.55,.62), vec3(1., .09, 0.), clamp(pulse * 1.6, 0., 1.)) * (1. + pulse * 3.);
-            gl_FragColor = vec4(col, a);
-        }`;
-    function makeTraces(count) {
-        const pos = [], aU = [], aSeed = [], aLen = [], pads = [];
-        const DIRS = [[1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0], [-1, -1], [0, -1], [1, -1]];
-        for (let i = 0; i < count; i++) {
-            const P = path.getPointAt(Math.random());
-            let x = P.x + (Math.random() < .5 ? -1 : 1) * (4 + Math.random() * 36), z = P.z + (Math.random() - .5) * 30;
-            const y = Math.random() < .82 ? -3.3 + Math.floor(Math.random() * 3) * .7 : 7 + Math.random() * 6;
-            let d = Math.floor(Math.random() * 8);
-            const pts = [[x, z]], segs = 3 + Math.floor(Math.random() * 5);
-            for (let s = 0; s < segs; s++) {
-                d = (d + [-1, 1, -2, 2][Math.floor(Math.random() * 4)] + 8) % 8;
-                const L = 2 * (2 + Math.floor(Math.random() * 6)), k = (DIRS[d][0] && DIRS[d][1]) ? L * .7071 : L;
-                x += DIRS[d][0] * k; z += DIRS[d][1] * k; pts.push([x, z]);
-            }
-            const cum = [0]; for (let j = 1; j < pts.length; j++) cum[j] = cum[j - 1] + Math.hypot(pts[j][0] - pts[j - 1][0], pts[j][1] - pts[j - 1][1]);
-            const total = cum[cum.length - 1], seed = Math.random();
-            for (let j = 0; j < pts.length - 1; j++) {
-                pos.push(pts[j][0], y, pts[j][1], pts[j + 1][0], y, pts[j + 1][1]);
-                aU.push(cum[j] / total, cum[j + 1] / total); aSeed.push(seed, seed); aLen.push(total, total);
-            }
-            pads.push(pts[0][0], y, pts[0][1], pts[pts.length - 1][0], y, pts[pts.length - 1][1]);
-        }
-        const geo = new THREE.BufferGeometry();
-        geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
-        geo.setAttribute('aU', new THREE.Float32BufferAttribute(aU, 1));
-        geo.setAttribute('aSeed', new THREE.Float32BufferAttribute(aSeed, 1));
-        geo.setAttribute('aLen', new THREE.Float32BufferAttribute(aLen, 1));
-        const mat = new THREE.ShaderMaterial({ uniforms: { uPhase: U.phase, uDensity: U.density }, vertexShader: traceVS, fragmentShader: traceFS, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false });
-        const lines = new THREE.LineSegments(geo, mat);
-        const pg = new THREE.BufferGeometry(); pg.setAttribute('position', new THREE.Float32BufferAttribute(pads, 3));
-        const points = new THREE.Points(pg, new THREE.PointsMaterial({ color: 0xff4500, size: .3, sizeAttenuation: true, transparent: true, opacity: .55, blending: THREE.AdditiveBlending, depthWrite: false }));
-        return [lines, points];
-    }
-
-    /* Lantai grid */
-    function makeFloor() {
-        const mat = new THREE.ShaderMaterial({
-            uniforms: { uCam: U.cam },
-            transparent: true, depthWrite: false,
-            vertexShader: `varying vec3 vW; void main(){ vec4 w = modelMatrix * vec4(position,1.); vW = w.xyz; gl_Position = projectionMatrix * viewMatrix * w; }`,
-            fragmentShader: `varying vec3 vW; uniform vec3 uCam;
-                void main(){
-                    vec2 c = vW.xz / 4.; vec2 g = abs(fract(c - .5) - .5) / fwidth(c);
-                    float line = 1. - min(min(g.x, g.y), 1.);
-                    float fade = exp(-length(vW.xz - uCam.xz) * .02);
-                    gl_FragColor = vec4(vec3(.55,.55,.65) * line, line * .11 * fade);
-                }`
-        });
-        const m = new THREE.Mesh(new THREE.PlaneGeometry(520, 420), mat);
-        m.rotation.x = -Math.PI / 2; m.position.set(0, -3.5, -125); return m;
-    }
-
-    /* Debu / percikan */
-    function makeDust(n) {
-        const pos = new Float32Array(n * 3), col = new Float32Array(n * 3);
-        for (let i = 0; i < n; i++) {
-            const P = path.getPointAt(Math.random()), a = Math.random() * 6.283, r = 2 + Math.random() * 14;
-            pos[i * 3] = P.x + Math.cos(a) * r; pos[i * 3 + 1] = -3 + Math.random() * 12; pos[i * 3 + 2] = P.z + Math.sin(a) * r;
-            const o = Math.random() < .5; col[i * 3] = 1; col[i * 3 + 1] = o ? .35 : .8; col[i * 3 + 2] = o ? .05 : .7;
-        }
-        const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(pos, 3)); g.setAttribute('color', new THREE.BufferAttribute(col, 3));
-        return new THREE.Points(g, new THREE.PointsMaterial({ size: .09, vertexColors: true, sizeAttenuation: true, transparent: true, opacity: .55, blending: THREE.AdditiveBlending, depthWrite: false }));
-    }
-
-    /* ---------- Susun dunia ---------- */
-    let world = null, nodes = [], stubs = [], mainMesh = null, builtMobile = null;
-    function buildWorld() {
-        if (world) { scene.remove(world); world.traverse(o => { if (o.geometry) o.geometry.dispose(); if (o.material) { (o.material.map) && o.material.map.dispose(); o.material.dispose(); } }); }
+    function build() {
         const mobile = mobileNow(); builtMobile = mobile;
-        world = new THREE.Group(); nodes = []; stubs = [];
-        const lat = mobile ? 3.6 : 6.4, cs = mobile ? .72 : 1;
+        const rng = mulberry(20261025);
+        const traces = [], items = [], vias = [];
+        const lat = mobile ? 7.6 : 19;
 
-        mainMesh = makeWire(path, .11, 1000, 62, true); world.add(mainMesh);
-        world.add(makeFloor());
-        world.add(...makeTraces(mobile ? 38 : 88));
-        world.add(makeDust(mobile ? 350 : 700));
-
-        NODES.forEach(n => {
-            const Pm = path.getPointAt(n.T), s = n.side, d = lat * .22;
-            const a = new Vector3(Pm.x, Pm.y, Pm.z);
-            const b = new Vector3(Pm.x + s * lat * .3, Pm.y, Pm.z);
-            const c = new Vector3(b.x + s * d, Pm.y, Pm.z - d);
-            const e = new Vector3(Pm.x + s * lat, Pm.y, c.z);
-            const pts = [a, b, c, e], len = polyLen(pts);
-            const wire = makeWire(polyCurve(pts), .08, 160, len / 3.6, false); world.add(wire);
-            const chip = makeChip(n.label, cs);
-            chip.group.position.set(e.x + s * 1.6 * cs, Pm.y, e.z); world.add(chip.group);
-            nodes.push({ ...chip, wire, T: n.T, flash: 0, glow: 0 });
-        });
-
-        for (let i = 0; i < (mobile ? 9 : 18); i++) {
-            const T = .02 + Math.random() * .96, Pm = path.getPointAt(T), s = Math.random() < .5 ? -1 : 1;
-            const L1 = 2.5 + Math.random() * 4, L2 = 2 + Math.random() * 3, L3 = 1.5 + Math.random() * 4;
-            const a = new Vector3(Pm.x, Pm.y, Pm.z), b = new Vector3(a.x + s * L1, a.y, a.z), c = new Vector3(b.x + s * L2, b.y, b.z - L2), dd = new Vector3(c.x + s * L3, c.y, c.z);
-            const pts = [a, b, c, dd], len = polyLen(pts);
-            const w = makeWire(polyCurve(pts), .05, 90, len / 3.4, false); world.add(w);
-            const padG = new THREE.BufferGeometry(); padG.setAttribute('position', new THREE.Float32BufferAttribute([dd.x, dd.y, dd.z], 3));
-            const pad = new THREE.Points(padG, new THREE.PointsMaterial({ color: 0xff5a1a, size: .5, sizeAttenuation: true, transparent: true, opacity: .8, blending: THREE.AdditiveBlending, depthWrite: false }));
-            world.add(pad); stubs.push({ wire: w, T, pad });
+        function finishTrace(tr) {
+            tr.cum = [0];
+            for (let j = 1; j < tr.pts.length; j++) tr.cum[j] = tr.cum[j - 1] + Math.hypot(tr.pts[j][0] - tr.pts[j - 1][0], tr.pts[j][1] - tr.pts[j - 1][1]);
+            tr.len = tr.cum[tr.cum.length - 1] || 1;
+            tr.zMin = Math.min(...tr.pts.map(p => p[1])); tr.zMax = Math.max(...tr.pts.map(p => p[1]));
+            return tr;
         }
-        scene.add(world);
-    }
-    buildWorld();
 
-    /* ---------- Resize ---------- */
-    function onResize() {
-        const w = innerWidth, h = innerHeight;
-        renderer.setPixelRatio(pr()); renderer.setSize(w, h, false);
-        composer.setPixelRatio(pr()); composer.setSize(w, h);
-        camera.aspect = w / h; camera.updateProjectionMatrix();
-        if (mobileNow() !== builtMobile) buildWorld();
-    }
-    addEventListener('resize', onResize); onResize();
+        const nTr = mobile ? 210 : 260;
+        for (let i = 0; i < nTr; i++) {
+            const branch = rng() < .5, zA = -30 + rng() * (L + 130), side = rng() < .5 ? -1 : 1;
+            let x, z = zA, d;
+            if (branch) { x = busX(zA) + side * 2.2; d = side > 0 ? 0 : 4; }
+            else { x = busX(zA) + side * (5 + rng() * (mobile ? 34 : 62)); d = Math.floor(rng() * 8); }
+            const pts = [[x, z]], nseg = 3 + Math.floor(rng() * 5);
+            for (let s = 0; s < nseg; s++) {
+                if (!(branch && s === 0)) d = (d + [-1, 1, -1, 1, -2, 2, 0][Math.floor(rng() * 7)] + 8) % 8;
+                const len = (branch && s === 0) ? 3 + rng() * 7 : 2 * (2 + Math.floor(rng() * 6));
+                x += DIRS[d][0] * len; z += DIRS[d][1] * len; pts.push([x, z]);
+            }
+            const tr = finishTrace({ pts, zA, w: .16 + rng() * .14, seed: rng(), sp: 9 + rng() * 9 });
+            traces.push(tr);
+            const last = pts[pts.length - 1];
+            vias.push({ x: last[0], z: last[1], zA: tr.zMax });
+            if (!branch) vias.push({ x: pts[0][0], z: pts[0][1], zA });
+        }
 
-    /* ---------- Surge (paket listrik ke tab tujuan) ---------- */
+        const nParts = mobile ? 460 : 560;
+        let icN = 0;
+        for (let i = 0; i < nParts; i++) {
+            const z = -20 + rng() * (L + 110), side = rng() < .5 ? -1 : 1, x = busX(z) + side * (5 + Math.pow(rng(), 1.5) * (mobile ? 30 : 52)), r = rng();
+            if (r < .6) {
+                const horiz = rng() < .5, s = .85 + rng() * .5;
+                items.push({ t: 'smd', x, z, hx: (horiz ? 1.5 : .8) * s, hz: (horiz ? .8 : 1.5) * s, h: .5 });
+            } else if (r < .8) {
+                items.push({ t: 'cap', x, z, r: 1 + rng() * .9, h: 1.4 + rng() * 1.3 });
+            } else {
+                const hx = 2.4 + rng() * 2.6, hz = 1.9 + rng() * 2.2;
+                items.push({ t: 'ic', x, z, hx, hz, h: .8, pins: Math.max(3, Math.floor(hx * 2.3)), ref: 'U' + (++icN) });
+            }
+        }
+
+        // chip tab
+        chips = NODES.map((n, i) => {
+            const cz = n.T * (L - 40) + 20, cx = busX(cz) + n.side * lat;
+            const hs = mobile ? 3.3 : 5.4;
+            const feeders = [];
+            for (let j = -1; j <= 1; j++) {
+                const xb = busX(cz - 4), s = n.side, d = 3.6 - j * 1.2;
+                const p0 = [xb + s * 1.8, cz + j * 1.2 - 4], p1 = [xb + s * 4.4, p0[1]];
+                const p2 = [p1[0] + s * d, p1[1] + d], p3 = [cx - s * (hs + 1.1), p2[1]];
+                feeders.push(finishTrace({ pts: [p0, p1, p2, p3], zA: cz - 10, w: .26, seed: j * .31 + i, sp: 11, feeder: true }));
+            }
+            return { t: 'chip', i, x: cx, z: cz, hs, h: 1.7, side: n.side, label: n.label, feeders, glow: 0, flash: 0, ripple: 1, energy: 0 };
+        });
+        items.push(...chips);
+        world = { traces, items, vias, mobile };
+    }
+    build();
+
+    /* ---------- resize ---------- */
+    function resize() {
+        DPR = Math.min(devicePixelRatio || 1, dprCap, mobileNow() ? 1.5 : 2);
+        W = innerWidth; H = innerHeight;
+        cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
+        HX = W / 2; HY = H * .5;
+        F = W / H < 1 ? Math.max(W * 1.2, H * .6) : H * 1.0;
+        if (mobileNow() !== builtMobile) build();
+    }
+    addEventListener('resize', resize); resize();
+
+    /* ---------- state ---------- */
+    let cur = 0, prevCur = 0, smoothVel = 0, ph = 0, mx = 0, my = 0, smx = 0, smy = 0;
+    let maxFront = -30, last = performance.now(), hudT = 0, ema = .016, lastAdapt = 0;
+    const t0 = performance.now();
+    const sparks = [];
     let surge = null;
-    function surgeTo(i) { surge = { from: cur, to: NODES[i].T, start: performance.now(), dur: 950, idx: i, done: false }; }
-
-    /* ---------- Loop ---------- */
-    let cur = 0, prevCur = 0, smoothVel = 0, mx = 0, my = 0, smx = 0, smy = 0, last = performance.now(), hudT = 0;
     addEventListener('pointermove', e => { mx = e.clientX / innerWidth - .5; my = e.clientY / innerHeight - .5; });
-    const baseFov = () => innerWidth / innerHeight < 1 ? 78 : 60;
-    const tmpP = new Vector3(), tmpT = new Vector3(), look = new Vector3();
 
-    // sapuan listrik pembuka
-    surge = { from: 0, to: .35, start: performance.now() + 500, dur: 1700, idx: -1, done: true };
+    function spawn(x, y, z, n, spread, up) {
+        for (let i = 0; i < n; i++) {
+            if (sparks.length > 260) sparks.shift();
+            const a = Math.random() * 6.283, s = (.3 + Math.random()) * spread;
+            sparks.push({ x, y, z, vx: Math.cos(a) * s, vy: up * (.4 + Math.random()), vz: Math.sin(a) * s, life: 0, max: .6 + Math.random() * .8 });
+        }
+    }
+    function surgeTo(i) {
+        surge = { from: cam.z + 4, to: chips[i].z - 3, start: performance.now(), dur: 1000, idx: i, done: false };
+    }
 
+    /* ---------- primitif gambar ---------- */
+    let px = 0, pz = 0;
+    function ptAt(tr, d) {
+        d = ((d % tr.len) + tr.len) % tr.len;
+        let i = 1; while (i < tr.cum.length - 1 && tr.cum[i] < d) i++;
+        const f = (d - tr.cum[i - 1]) / ((tr.cum[i] - tr.cum[i - 1]) || 1);
+        px = tr.pts[i - 1][0] + (tr.pts[i][0] - tr.pts[i - 1][0]) * f;
+        pz = tr.pts[i - 1][1] + (tr.pts[i][1] - tr.pts[i - 1][1]) * f;
+    }
+    function drawTrace(tr, e) {
+        const p = tr.pts;
+        ctx.strokeStyle = '#8b7d78';
+        for (let i = 0; i < p.length - 1; i++) line3(p[i][0], 0, p[i][1], p[i + 1][0], 0, p[i + 1][1], tr.w * .8, .34);
+        if (e < .02) return;
+        ctx.strokeStyle = '#ff4a12';
+        for (let i = 0; i < p.length - 1; i++) {
+            if (!lowQ) line3(p[i][0], 0, p[i][1], p[i + 1][0], 0, p[i + 1][1], tr.w * 2.3, e * .1);
+            line3(p[i][0], 0, p[i][1], p[i + 1][0], 0, p[i + 1][1], tr.w * .9, e * .8);
+        }
+        ctx.strokeStyle = '#ffe2bc';
+        for (let j = 0; j < 2; j++) {
+            const d = ph * tr.sp + tr.seed * tr.len + j * tr.len * .5;
+            for (let k = 0; k < 4; k++) {
+                ptAt(tr, d - k * 1.5); const ax = px, az = pz;
+                ptAt(tr, d - (k + 1) * 1.5);
+                line3(ax, 0, az, px, 0, pz, tr.w * (1.35 - k * .22), e * (1 - k * .24));
+            }
+        }
+    }
+
+    const sbx = new Float64Array(4), sby = new Float64Array(4), stx = new Float64Array(4), sty = new Float64Array(4);
+    const cxs = new Float64Array(4), czs = new Float64Array(4);
+    let boxA = 0;
+    function box(x, y0, z, hx, hz, h, fillTop, fillSide, edge, edgeA, lw) {
+        cxs[0] = x - hx; cxs[1] = x + hx; cxs[2] = x + hx; cxs[3] = x - hx;
+        czs[0] = z - hz; czs[1] = z - hz; czs[2] = z + hz; czs[3] = z + hz;
+        let zs = 0;
+        for (let i = 0; i < 4; i++) {
+            toCam(cxs[i], y0, czs[i]); if (qz < NEAR) return false; let s = F / qz; sbx[i] = HX + qx * s; sby[i] = HY - qy * s; zs += qz;
+            toCam(cxs[i], y0 + h, czs[i]); if (qz < NEAR) return false; s = F / qz; stx[i] = HX + qx * s; sty[i] = HY - qy * s;
+        }
+        const a = fog(zs / 4); boxA = a; if (a < .015) return false;
+        ctx.globalAlpha = a; ctx.lineWidth = lw; ctx.strokeStyle = edge;
+        for (let i = 0; i < 4; i++) {
+            const j = (i + 1) & 3;
+            ctx.beginPath(); ctx.moveTo(sbx[i], sby[i]); ctx.lineTo(sbx[j], sby[j]); ctx.lineTo(stx[j], sty[j]); ctx.lineTo(stx[i], sty[i]); ctx.closePath();
+            ctx.fillStyle = fillSide; ctx.fill();
+            ctx.globalAlpha = a * edgeA; ctx.stroke(); ctx.globalAlpha = a;
+        }
+        ctx.beginPath(); ctx.moveTo(stx[0], sty[0]); for (let i = 1; i < 4; i++) ctx.lineTo(stx[i], sty[i]); ctx.closePath();
+        ctx.fillStyle = fillTop; ctx.fill(); ctx.globalAlpha = a * Math.min(1, edgeA * 1.4); ctx.stroke(); ctx.globalAlpha = a;
+        return true;
+    }
+    function ring(x, y, z, r, n) {
+        let ok = true, first = true;
+        ctx.beginPath();
+        for (let i = 0; i <= n; i++) {
+            const a = i / n * 6.2832; toCam(x + Math.cos(a) * r, y, z + Math.sin(a) * r);
+            if (qz < NEAR) { ok = false; break; }
+            const s = F / qz, X = HX + qx * s, Y = HY - qy * s;
+            if (first) { ctx.moveTo(X, Y); first = false; } else ctx.lineTo(X, Y);
+        }
+        return ok;
+    }
+    function label(text, x, y, z, size, color, a, glow) {
+        toCam(x, y, z); if (qz < NEAR) return;
+        const s = F / qz, px = clamp(size * s, 8, 70);
+        ctx.globalAlpha = a * Math.min(1, fog(qz) * 1.6); if (ctx.globalAlpha < .02) return;
+        ctx.font = `700 ${px}px 'JetBrains Mono', monospace`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        if (glow) { ctx.shadowColor = '#ff4500'; ctx.shadowBlur = 18; }
+        ctx.fillStyle = color; ctx.fillText(text, HX + qx * s, HY - qy * s);
+        ctx.shadowBlur = 0;
+    }
+    function flare(x, y, z, r, a, hot) {
+        toCam(x, y, z); if (qz < NEAR) return;
+        const s = F / qz, X = HX + qx * s, Y = HY - qy * s, R = r * s;
+        const g = ctx.createRadialGradient(X, Y, 0, X, Y, R);
+        g.addColorStop(0, hot ? `rgba(255,236,210,${a})` : `rgba(255,110,40,${a})`);
+        g.addColorStop(.25, `rgba(255,90,25,${a * .55})`); g.addColorStop(1, 'rgba(255,60,0,0)');
+        ctx.globalAlpha = 1; ctx.fillStyle = g; ctx.fillRect(X - R, Y - R, R * 2, R * 2);
+    }
+
+    /* ---------- frame ---------- */
     function frame(now) {
         requestAnimationFrame(frame);
+        if (document.hidden) { last = now; return; }
         const dt = Math.min((now - last) / 1000, .05); last = now;
+        const t = now / 1000;
+        ema += (dt - ema) * .05;
+        if (now - t0 > 3500 && now - lastAdapt > 2500 && ema > .034) {
+            lastAdapt = now;
+            if (dprCap > 1) { dprCap = 1; resize(); } else if (!lowQ) lowQ = true;
+        }
+
+        // progres & kecepatan
         const target = scrollToP(scrollY);
-        cur += (target - cur) * (reduceMotion ? 1 : 1 - Math.exp(-dt * 5));
-        const vel = Math.abs(cur - prevCur) / Math.max(dt, .001); prevCur = cur;
-        smoothVel += (vel - smoothVel) * .1;
+        cur += (target - cur) * (reduceMotion ? 1 : 1 - Math.exp(-dt * 4.5));
+        const curZ = cur * (L - 40);
+        const vel = Math.abs(cur - prevCur) * (L - 40) / Math.max(dt, .001); prevCur = cur;
+        smoothVel += (vel - smoothVel) * .08;
+        const boost = 1 + clamp(smoothVel / 55, 0, 5);
+        ph += dt * (reduceMotion ? .3 : boost);
 
-        U.phase.value += dt * (reduceMotion ? .15 : .32 + clamp(smoothVel * 22, 0, 14));
+        // intro
+        const it = reduceMotion ? 1 : clamp((now - t0) / 2800, 0, 1), ie = 1 - Math.pow(1 - it, 3);
 
-        // kabel utama: listrik mengalir sedikit di depan kamera
-        mainMesh.material.uniforms.uFill.value = clamp(cur + .045, 0, 1.05);
-
-        // surge
+        // gelombang listrik
+        const desired = curZ + 72;
+        maxFront = Math.max(maxFront, it < 1 ? lerp(-30, desired, ie) : desired);
         if (surge) {
             const e = (now - surge.start) / surge.dur;
-            if (e >= 0 && e < 1) { U.surge.value.set(lerp(surge.from, surge.to, ease(e)), 1); }
-            else if (e >= 1) {
-                U.surge.value.y = Math.max(0, U.surge.value.y - dt * 3);
-                if (!surge.done) { surge.done = true; if (surge.idx >= 0) nodes[surge.idx].flash = 1; }
-                if (U.surge.value.y <= 0) { U.surge.value.set(-1, 0); surge = null; }
+            if (e >= 1) {
+                if (!surge.done) { surge.done = true; const c = chips[surge.idx]; c.flash = 1; c.ripple = 0; spawn(c.x, 1.2, c.z, 46, 11, 14); }
+                if (e > 1.35) surge = null;
+            } else if (e >= 0) maxFront = Math.max(maxFront, lerp(surge.from, surge.to, 1 - Math.pow(1 - e, 3)) + 8);
+        }
+        const front = maxFront;
+
+        // kamera
+        smx += (mx - smx) * .05; smy += (my - smy) * .05;
+        const tz = curZ, tan0x = busD(tz + 6), n0 = Math.hypot(tan0x, 1), f0x = tan0x / n0, f0z = 1 / n0;
+        const ang = Math.atan2(f0x, f0z) + (reduceMotion ? 0 : smx * .1 + Math.sin(t * .31) * .012);
+        cam.fx = Math.sin(ang); cam.fz = Math.cos(ang); cam.rx = cam.fz; cam.rz = -cam.fx;
+        const back = W / H < 1 ? 15 : 13;
+        cam.x = busX(tz) - f0x * back + (reduceMotion ? 0 : smx * 2.4);
+        cam.z = tz - f0z * back;
+        cam.y = 14 + (1 - ie) * 40 + (reduceMotion ? 0 : Math.sin(t * .9) * .18 - smy * .8);
+        const pitch = .56 + (1 - ie) * .55 + (reduceMotion ? 0 : smy * .05);
+        cam.cp = Math.cos(pitch); cam.sp = Math.sin(pitch);
+        const turn = Math.atan(busD(tz + 28)) - Math.atan(busD(tz));
+        const roll = reduceMotion ? 0 : clamp(turn * 1.1, -.07, .07) + Math.sin(t * .5) * .004;
+        const fovKick = reduceMotion ? 1 : 1 + clamp(smoothVel / 700, 0, .1);
+        const Fsave = F; F *= fovKick;
+
+        /* --- latar --- */
+        ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+        ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 1;
+        ctx.fillStyle = '#030303'; ctx.fillRect(0, 0, W, H);
+        const hz = HY - Math.tan(pitch) * F;
+        const hg = ctx.createRadialGradient(HX, hz + 30, 0, HX, hz + 30, W * .6);
+        hg.addColorStop(0, 'rgba(255,69,0,.10)'); hg.addColorStop(1, 'rgba(255,69,0,0)');
+        ctx.fillStyle = hg; ctx.fillRect(0, 0, W, H);
+
+        ctx.translate(W / 2, H / 2); ctx.rotate(roll); ctx.translate(-W / 2, -H / 2);
+        ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+        ctx.globalCompositeOperation = 'lighter';
+
+        /* --- titik drill --- */
+        ctx.fillStyle = '#ffb894';
+        const kmax = world.mobile ? 7 : 12;
+        for (let zi = Math.ceil((cam.z - 8) / 6) * 6; zi < cam.z + 200; zi += 6) {
+            const bx = busX(zi);
+            for (let k = -kmax; k <= kmax; k += (lowQ ? 2 : 1)) {
+                toCam(bx + k * 5.5, 0, zi); if (qz < NEAR) continue;
+                const a = .24 * fog(qz); if (a < .012) continue;
+                const s = F / qz; ctx.globalAlpha = a; ctx.fillRect(HX + qx * s - .7, HY - qy * s - .7, 1.4, 1.4);
             }
         }
 
-        // cabang & chip
-        nodes.forEach((n, i) => {
-            const fill = clamp((cur - (n.T - .11)) / .09, 0, 1);
-            n.flash = Math.max(0, n.flash - dt * .9);
-            n.wire.material.uniforms.uFill.value = fill;
-            n.wire.material.uniforms.uFlash.value = n.flash * .8;
-            const near = clamp(1 - Math.abs(cur - n.T) / .075, 0, 1);
-            const g = (fill >= 1 ? .22 : 0) + near * .85 + n.flash;
-            n.glow = lerp(n.glow, g, .12);
-            const G = n.glow;
-            n.edgeMat.color.setRGB(.22 + G * 2.4, .05 + G * .16, 0);
-            n.dieMat.color.setRGB(.05 + G * 2.4, .015 + G * .22, 0);
-            n.dieEdgeMat.opacity = clamp(G * .9, 0, 1);
-            n.pinMat.color.setRGB(.2 + G * 1.4, .2 + G * .15, .22 - G * .1 > 0 ? .22 - G * .1 : 0);
-            n.spMat.opacity = .45 + clamp(G, 0, 1) * .55;
-            const ph = (now / 1700 + i * .31) % 1;
-            n.ring.scale.setScalar(1 + ph * 1.5);
-            n.ringMat.opacity = clamp(G, 0, 1.2) * (1 - ph) * .55;
-        });
-        stubs.forEach(s => {
-            s.wire.material.uniforms.uFill.value = clamp((cur - (s.T - .08)) / .06, 0, 1);
-            s.pad.material.opacity = .25 + .6 * s.wire.material.uniforms.uFill.value;
-        });
+        /* --- trace PCB --- */
+        for (const tr of world.traces) {
+            if (tr.zMax < cam.z - 12 || tr.zMin > cam.z + FAR) continue;
+            drawTrace(tr, sstep(0, 12, front - tr.zA));
+        }
+        for (const c of chips) for (const f of c.feeders) {
+            if (f.zMax < cam.z - 12 || f.zMin > cam.z + FAR) continue;
+            drawTrace(f, Math.max(sstep(0, 10, front - f.zA), c.flash * .9));
+        }
 
-        // kamera menyusuri kabel
-        const t = clamp(cur, 0, 1);
-        path.getPointAt(t, tmpP); path.getTangentAt(t, tmpT);
-        smx += (mx - smx) * .05; smy += (my - smy) * .05;
-        const sway = reduceMotion ? 0 : Math.sin(now / 2600) * .25;
-        const back = innerWidth / innerHeight < 1 ? 11 : 8.5;
-        camera.position.set(tmpP.x - tmpT.x * back + smx * 1.8 + sway, tmpP.y + 3.3 - smy * 1.0, tmpP.z - tmpT.z * back);
-        look.set(tmpP.x + tmpT.x * 12, tmpP.y - .4, tmpP.z + tmpT.z * 12);
-        camera.lookAt(look);
-        camera.fov = baseFov() + (reduceMotion ? 0 : clamp(smoothVel * 16, 0, 7));
-        camera.updateProjectionMatrix();
-        U.cam.value.copy(camera.position);
+        /* --- via --- */
+        ctx.strokeStyle = '#ffa070'; ctx.lineWidth = 1;
+        for (const v of world.vias) {
+            if (v.z < cam.z - 8 || v.z > cam.z + 160) continue;
+            const e = sstep(0, 12, front - v.zA);
+            if (!ring(v.x, 0, v.z, .62, 10)) continue;
+            toCam(v.x, 0, v.z); const a = fog(qz); if (a < .02) continue;
+            ctx.lineWidth = Math.max(.7, .16 * F / qz);
+            ctx.globalAlpha = a * (.28 + e * .7); ctx.strokeStyle = e > .1 ? '#ff6a28' : '#9a8a84'; ctx.stroke();
+        }
 
-        composer.render();
+        /* --- bus utama (3 jalur) --- */
+        const zs = Math.floor((cam.z - 18) / 4) * 4, ze = cam.z + FAR;
+        const offs = [-1.4, 0, 1.4];
+        function busPt(z, o) { const d = busD(z), n = Math.hypot(d, 1); return [busX(z) + o / n, z - o * d / n]; }
+        ctx.strokeStyle = '#9a8c86';
+        for (const o of offs) {
+            let a = busPt(zs, o);
+            for (let z = zs + 4; z <= ze; z += 4) { const b = busPt(z, o); line3(a[0], 0, a[1], b[0], 0, b[1], .26, .4); a = b; }
+        }
+        ctx.strokeStyle = '#ff4a12';
+        for (const o of offs) {
+            let a = busPt(zs, o);
+            for (let z = zs + 4; z <= ze && z < front + 8; z += 4) {
+                const b = busPt(z, o), e = sstep(front + 6, front - 10, z);
+                if (e > .01) { line3(a[0], 0, a[1], b[0], 0, b[1], .8, e * .12); line3(a[0], 0, a[1], b[0], 0, b[1], .26, e * .95); }
+                a = b;
+            }
+        }
+        // pulsa di bus
+        ctx.strokeStyle = '#ffe6c4';
+        const span = Math.max(30, Math.min(front - (cam.z - 25), 150));
+        for (let li = 0; li < 3; li++) for (let k = 0; k < 4; k++) {
+            const zp = cam.z - 25 + ((ph * 52 + k * span / 4 + li * 11) % span);
+            if (zp > front) continue;
+            for (let m = 0; m < 3; m++) {
+                const a = busPt(zp - m * 3.2, offs[li]), b = busPt(zp - (m + 1) * 3.2, offs[li]);
+                line3(a[0], 0.05, a[1], b[0], 0.05, b[1], .34 - m * .06, 1 - m * .3);
+            }
+        }
+        // kepala gelombang
+        { const hp = busPt(front, 0); flare(hp[0], .4, hp[1], 6, .9, true);
+          if (!reduceMotion && Math.random() < .9) spawn(hp[0] + (Math.random() - .5) * 2, .3, hp[1], 1, 4, 7); }
+        // paket surge
+        if (surge) {
+            const e = (now - surge.start) / surge.dur;
+            if (e >= 0 && e < 1) {
+                const z = lerp(surge.from, surge.to, 1 - Math.pow(1 - e, 3)), p = busPt(z, 0);
+                flare(p[0], .5, p[1], 8, 1, true);
+                ctx.strokeStyle = '#fff1dc';
+                for (let m = 0; m < 6; m++) { const a = busPt(z - m * 2.6, 0), b = busPt(z - (m + 1) * 2.6, 0); line3(a[0], 0.2, a[1], b[0], 0.2, b[1], .55 - m * .08, 1 - m * .16); }
+                spawn(p[0], .4, p[1], 2, 5, 8);
+            }
+        }
 
+        /* --- komponen (urut dari jauh) --- */
+        const its = world.items, vis = [];
+        for (const it2 of its) {
+            toCam(it2.x, 0, it2.z);
+            if (qz > NEAR - 4 && qz < FAR) { it2.d = qz; vis.push(it2); }
+        }
+        vis.sort((a, b) => b.d - a.d);
+        ctx.globalCompositeOperation = 'source-over';
+
+        for (const c of chips) {
+            const fillE = sstep(0, 12, front - (c.z - 10));
+            const near = clamp(1 - Math.abs(curZ - (c.z - 20)) / 48, 0, 1);
+            c.flash = Math.max(0, c.flash - dt * .9);
+            c.energy = fillE;
+            c.glow += ((fillE * .3 + near * .85 + c.flash) - c.glow) * .12;
+            if (c.ripple < 1) c.ripple = Math.min(1, c.ripple + dt / 1.3);
+        }
+
+        for (const o of vis) {
+            const e = sstep(0, 14, front - o.z);
+            if (o.t === 'smd') {
+                const edge = e > .05 ? `rgb(255,${Math.round(110 + 40 * (1 - e))},60)` : '#c9b8a6';
+                if (box(o.x, 0, o.z, o.hx, o.hz, o.h, '#15110d', '#0b0907', edge, .28 + e * .5, 1)) {
+                    if (o.d < 90) {
+                        ctx.strokeStyle = '#c9a778'; ctx.lineCap = 'butt';
+                        const horiz = o.hx > o.hz;
+                        if (horiz) { line3(o.x - o.hx - .4, .02, o.z, o.x - o.hx + .4, .02, o.z, o.hz * 1.5, .75); line3(o.x + o.hx - .4, .02, o.z, o.x + o.hx + .4, .02, o.z, o.hz * 1.5, .75); }
+                        else { line3(o.x, .02, o.z - o.hz - .4, o.x, .02, o.z - o.hz + .4, o.hx * 1.7, .6); line3(o.x, .02, o.z + o.hz - .4, o.x, .02, o.z + o.hz + .4, o.hx * 1.7, .6); }
+                        ctx.lineCap = 'round';
+                    }
+                }
+            } else if (o.t === 'cap') {
+                if (ring(o.x, 0, o.z, o.r, 14)) {
+                    toCam(o.x, 0, o.z); const a = fog(qz);
+                    ctx.globalAlpha = a; ctx.fillStyle = '#0a0a0c'; ctx.fill();
+                    ctx.strokeStyle = '#70665f'; ctx.lineWidth = 1; ctx.stroke();
+                    if (ring(o.x, o.h, o.z, o.r, 14)) {
+                        ctx.fillStyle = '#17171c'; ctx.globalAlpha = a; ctx.fill();
+                        ctx.strokeStyle = e > .05 ? '#ff5a1c' : '#9a8f88'; ctx.globalAlpha = a * (.35 + e * .6); ctx.stroke();
+                        if (o.d < 70) { ctx.strokeStyle = '#ff7a3a'; ctx.globalAlpha = a * .35; ctx.beginPath();
+                            toCam(o.x - o.r * .4, o.h, o.z); const s1 = F / qz; const X = HX + qx * s1, Y = HY - qy * s1;
+                            ctx.moveTo(X, Y); ctx.lineTo(X + o.r * .8 * s1, Y); ctx.stroke(); }
+                    }
+                }
+            } else if (o.t === 'ic') {
+                const edge = e > .05 ? `rgb(255,${Math.round(100 + 50 * (1 - e))},50)` : '#8f8680';
+                if (o.d < 100) {
+                    ctx.strokeStyle = '#d8d0c8'; ctx.globalAlpha = .1 * fog(o.d); ctx.lineWidth = 1;
+                    const sx0 = o.hx + 1, sz0 = o.hz + 1;
+                    line3(o.x - sx0, .01, o.z - sz0, o.x + sx0, .01, o.z - sz0, .1, .14); line3(o.x + sx0, .01, o.z - sz0, o.x + sx0, .01, o.z + sz0, .1, .14);
+                    line3(o.x + sx0, .01, o.z + sz0, o.x - sx0, .01, o.z + sz0, .1, .14); line3(o.x - sx0, .01, o.z + sz0, o.x - sx0, .01, o.z - sz0, .1, .14);
+                }
+                if (box(o.x, 0, o.z, o.hx, o.hz, o.h, '#0c0c10', '#050507', edge, .3 + e * .6, 1)) {
+                    if (o.d < 110) {
+                        ctx.strokeStyle = e > .1 ? '#ff7a3a' : '#7a716b';
+                        for (let p = 0; p < o.pins; p++) {
+                            const px2 = o.x - o.hx + (p + .5) * (2 * o.hx / o.pins);
+                            line3(px2, .2, o.z - o.hz, px2, .2, o.z - o.hz - .9, .22, .75); line3(px2, .2, o.z + o.hz, px2, .2, o.z + o.hz + .9, .22, .75);
+                        }
+                        if (o.d < 75) label(o.ref, o.x, o.h + .02, o.z, 1.1, e > .1 ? '#ffb48a' : '#8d857f', .55, false);
+                    }
+                }
+            } else if (o.t === 'chip') {
+                const G = o.glow, gc = clamp(G, 0, 1.3);
+                const rr = Math.round(60 + gc * 195), gg = Math.round(24 + gc * 64);
+                const edge = `rgb(${Math.min(255, rr)},${gg},10)`;
+                // lapisan alas (silkscreen)
+                ctx.strokeStyle = '#ddd'; ctx.globalAlpha = .12 * fog(o.d);
+                line3(o.x - o.hs - 2.4, .01, o.z - o.hs - 2.4, o.x + o.hs + 2.4, .01, o.z - o.hs - 2.4, .12, .18); line3(o.x + o.hs + 2.4, .01, o.z - o.hs - 2.4, o.x + o.hs + 2.4, .01, o.z + o.hs + 2.4, .12, .18);
+                line3(o.x + o.hs + 2.4, .01, o.z + o.hs + 2.4, o.x - o.hs - 2.4, .01, o.z + o.hs + 2.4, .12, .18); line3(o.x - o.hs - 2.4, .01, o.z + o.hs + 2.4, o.x - o.hs - 2.4, .01, o.z - o.hs - 2.4, .12, .18);
+                box(o.x, 0, o.z, o.hs, o.hs, o.h, '#0b0b0f', '#050507', edge, .55 + gc * .45, 1.3);
+                // kaki
+                ctx.strokeStyle = gc > .25 ? '#ff7a38' : '#6a625c';
+                for (let p = 0; p < 10; p++) {
+                    const u = -o.hs + (p + .5) * (2 * o.hs / 10);
+                    line3(o.x + u, .3, o.z - o.hs, o.x + u, .3, o.z - o.hs - 1.2, .26, .8); line3(o.x + u, .3, o.z + o.hs, o.x + u, .3, o.z + o.hs + 1.2, .26, .8);
+                    line3(o.x - o.hs, .3, o.z + u, o.x - o.hs - 1.2, .3, o.z + u, .26, .8); line3(o.x + o.hs, .3, o.z + u, o.x + o.hs + 1.2, .3, o.z + u, .26, .8);
+                }
+                // die
+                box(o.x, o.h, o.z, o.hs * .55, o.hs * .55, .16, `rgb(${Math.round(40 + gc * 215)},${Math.round(14 + gc * 70)},4)`, '#1a0a04', '#ffb080', .2 + gc * .8, 1);
+            }
+        }
+
+        /* --- cahaya & label chip (additive) --- */
+        ctx.globalCompositeOperation = 'lighter';
+        for (const c of chips) {
+            if (c.z < cam.z - 14 || c.z > cam.z + 200) continue;
+            const G = clamp(c.glow, 0, 1.4);
+            if (G > .05) flare(c.x, 1, c.z, 14 + G * 8, G * .55, false);
+            // riak di papan
+            const rp = c.ripple < 1 ? c.ripple : ((t * .5 + c.i * .27) % 1), ra = c.ripple < 1 ? (1 - c.ripple) : G * (1 - rp) * .5;
+            if (ra > .02 && ring(c.x, .02, c.z, c.hs + 2 + rp * 22, 36)) {
+                toCam(c.x, 0, c.z); ctx.lineWidth = Math.max(.8, .3 * F / qz);
+                ctx.strokeStyle = '#ff5a1c'; ctx.globalAlpha = ra * fog(qz); ctx.stroke();
+            }
+            label(c.label, c.x, c.h + 5.2, c.z, mobileNow() ? 1.75 : 3.1, `rgb(255,${Math.round(150 + 70 * clamp(G, 0, 1))},${Math.round(110 + 80 * clamp(G, 0, 1))})`, .4 + clamp(G, 0, 1) * .6, G > .3);
+        }
+
+        /* --- percikan --- */
+        for (let i = sparks.length - 1; i >= 0; i--) {
+            const s = sparks[i]; s.life += dt;
+            if (s.life > s.max) { sparks.splice(i, 1); continue; }
+            s.vy -= 16 * dt; s.x += s.vx * dt; s.y = Math.max(0, s.y + s.vy * dt); s.z += s.vz * dt;
+            toCam(s.x, s.y, s.z); if (qz < NEAR) continue;
+            const sc = F / qz, a = (1 - s.life / s.max) * fog(qz), r = Math.max(.7, .16 * sc);
+            ctx.globalAlpha = a; ctx.fillStyle = s.life < .12 ? '#fff0d8' : '#ff6a28';
+            ctx.beginPath(); ctx.arc(HX + qx * sc, HY - qy * sc, r, 0, 6.283); ctx.fill();
+        }
+
+        F = Fsave;
+        ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over'; ctx.setTransform(1, 0, 0, 1, 0, 0);
         if (now - hudT > 80) { hudT = now; updateHud(cur); }
     }
     requestAnimationFrame(frame);
-    canvas.classList.add('ready');
-
+    cv.classList.add('ready');
     GL = { surgeTo };
 }
-initGL().then(() => { $('#loader').classList.add('done'); })
-        .catch(err => {
-            console.warn('WebGL tidak tersedia / gagal dimuat — memakai tampilan statis.', err);
-            document.documentElement.classList.add('nogl');
-            $('#loader').classList.add('done');
-            updateHud(0);
-        });
+try { initGL(); $('#loader').classList.add('done'); }
+catch (err) {
+    console.warn('Dunia PCB gagal dimuat — memakai tampilan statis.', err);
+    document.documentElement.classList.add('nogl');
+    $('#loader').classList.add('done');
+    updateHud(0);
+}
 setTimeout(() => $('#loader').classList.add('done'), 7000);
+
 
 /* ================= Teks & efek UI ================= */
 (function () {
